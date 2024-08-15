@@ -1,0 +1,14 @@
+**/.dockerignore
+**/.gitignore
+**/*.user
+**/*.md
+**/.git/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/bin/
+**/obj/
+**/out/
+Dockerfile
+
+docs/
