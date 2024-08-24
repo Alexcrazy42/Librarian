@@ -1,15 +1,37 @@
+using Application;
+using Microsoft.OpenApi.Models;
+using Repositories;
+using Store.Cache;
+using Store.Db;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Library Web Api",
+        Version = "v1"
+    });
+    options.MapType<DateOnly>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "date"
+    });
+});
+
+builder.Services.AddStore(builder.Configuration);
+builder.Services.AddCache(builder.Configuration);
+builder.Services.AddServices();
+builder.Services.AddRepositories();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
