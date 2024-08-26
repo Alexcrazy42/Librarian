@@ -4,14 +4,29 @@ namespace Domain.Entities;
 
 public class Student : Person
 {
-    public SchoolClass SchoolClass { get; set; }
+	public Guid Id { get; set; }
 
-	public Student(string surname,
-		string name,
-		string patronymic,
-		SchoolClass schoolClass)
-		: base(surname, name, patronymic)
-	{
-		SchoolClass = schoolClass;
-	}
+	public bool IsGraduated { get; set; }
+
+    public SchoolClass? SchoolClass { get; set; }
+
+	public School School { get; set; }
+
+    private Student()
+    { }
+
+	public Student(Guid id,
+		bool isGraduated,
+        string surname,
+        string name,
+        string patronymic,
+        SchoolClass schoolClass,
+        School school)
+        : base(surname, name, patronymic)
+    {
+        Id = id;
+        SchoolClass = schoolClass;
+        School = school;
+        IsGraduated = isGraduated;
+    }
 }

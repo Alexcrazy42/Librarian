@@ -2,6 +2,6 @@
 
 public enum EmployeeStatusEnum
 {
-    Teached,
+    Teacher,
     NotTeacher
 }

@@ -8,6 +8,8 @@ public abstract class Person
 
     public string Patronymic { get; set; }
 
+    public Person() { }
+
     public Person(string surname, string name, string patronymic)
     {
         Surname = surname;

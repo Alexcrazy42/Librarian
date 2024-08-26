@@ -1,11 +1,37 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Domain.HelpingEntities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Store.Db;
 
 public class LibraryDbContext : DbContext
 {
-    public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
+    public DbSet<School> Schools => Set<School>();
+
+    public DbSet<Librarian> Librarians => Set<Librarian>();
+
+    public DbSet<Employee> Employees => Set<Employee>();
+
+    public DbSet<SchoolClass> Classes => Set<SchoolClass>();
+
+    public DbSet<Student> Students => Set<Student>();
+
+
+    public LibraryDbContext()
     { }
+
+    public LibraryDbContext(DbContextOptions<LibraryDbContext> contextOptions)
+        : base(contextOptions)
+    { }
+
+    // TODO: refactor
+    protected override void OnConfiguring(DbContextOptionsBuilder builder)
+    {
+        builder.UseNpgsql(
+                    "Host=localhost; Port = 5432; Database=swipty-companies; Username=postgres; Password=123;",
+                    x => x.MigrationsAssembly(typeof(LibraryDbContext).Assembly.GetName().Name));
+    }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

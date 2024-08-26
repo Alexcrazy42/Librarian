@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Store.Db.EntitiesConfigurations;
 
-public class LibrarianConfiguration : IEntityTypeConfiguration<Librarian>
+public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
-    public void Configure(EntityTypeBuilder<Librarian> builder)
+    public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.ToTable("librarians");
+        builder.ToTable("employees");
 
         builder.HasKey(x => x.Id)
             .HasName("id");
@@ -29,7 +29,15 @@ public class LibrarianConfiguration : IEntityTypeConfiguration<Librarian>
             .IsRequired();
 
         builder.HasOne(x => x.School)
-            .WithMany(school => school.Librarians)
+            .WithMany(school => school.Employees)
             .HasForeignKey("school_id");
+
+        builder.Property(x => x.EmployeeStatus)
+            .IsRequired();
+
+        builder.HasOne(x => x.ManagementClass)
+            .WithOne(schoolClass => schoolClass.Manager)
+            .HasForeignKey<Employee>("managing_class_id")
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

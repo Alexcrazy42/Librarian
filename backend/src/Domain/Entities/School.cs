@@ -2,13 +2,15 @@
 
 public sealed class School
 {
+    public Guid Id { get; set; }
+
     public string ShortName { get; private set; }
 
     public string OfficialName { get; private set; }
 
-    public Librarian Librarian { get; private set; }
+    public IReadOnlyCollection<Librarian> Librarians { get; private set; } = new List<Librarian>();
 
-    public IReadOnlyCollection<SchoolEmployee> Employees { get; private set; } = new List<SchoolEmployee>();
+    public IReadOnlyCollection<Employee> Employees { get; private set; } = new List<Employee>();
 
     public IReadOnlyCollection<SchoolClass> Classes { get; private set; } = new List<SchoolClass>();
 
@@ -18,14 +20,18 @@ public sealed class School
 
     public IReadOnlyCollection<EducationalBook> EducationalBooks { get; private set; } = new List<EducationalBook>();
 
-    public School(string shortName,
+    private School() { }
+
+    public School(Guid id,
+        string shortName,
         string officialName,
-        Librarian librarian,
+        IReadOnlyCollection<Librarian> librarians,
         IReadOnlyCollection<SchoolClass> classes)
     {
+        Id = id;
         ShortName = shortName;
         OfficialName = officialName;
-        Librarian = librarian;
+        Librarians = librarians;
         Classes = classes;
     }
 
