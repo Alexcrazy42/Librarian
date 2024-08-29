@@ -10,8 +10,7 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
     {
         builder.ToTable("schools");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.Property(x => x.ShortName)
             .HasMaxLength(100)

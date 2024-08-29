@@ -10,8 +10,7 @@ public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
     {
         builder.ToTable("subjects");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Name)
             .HasColumnName("name")

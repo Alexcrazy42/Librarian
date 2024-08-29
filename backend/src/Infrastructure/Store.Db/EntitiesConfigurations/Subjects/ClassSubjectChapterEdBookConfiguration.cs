@@ -10,8 +10,7 @@ public class ClassSubjectChapterEdBookConfiguration : IEntityTypeConfiguration<C
     {
         builder.ToTable("class_subject_chapter_ed_books");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.HasOne(x => x.SubjectChapter)
             .WithMany(e => e.EdBooks)

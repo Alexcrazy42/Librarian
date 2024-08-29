@@ -8,6 +8,8 @@ public class EducationalBookInBalanceConfiguration : IEntityTypeConfiguration<Ed
 {
     public void Configure(EntityTypeBuilder<EducationalBookInBalance> builder)
     {
+        builder.ToTable("ed_books_in_balance");
+
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.BaseEducationalBook)

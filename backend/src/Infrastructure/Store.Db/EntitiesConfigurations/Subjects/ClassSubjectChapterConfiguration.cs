@@ -10,8 +10,7 @@ public class ClassSubjectChapterConfiguration : IEntityTypeConfiguration<ClassSu
     {
         builder.ToTable("class_subject_chapters");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.Property(x => x.Title)
             .HasMaxLength(ClassSubjectChapter.TitleMaxLength)

@@ -10,13 +10,9 @@ public sealed class School
 
     public string OfficialName { get; private set; }
 
-    public IReadOnlyCollection<Librarian> Librarians { get; private set; } = new List<Librarian>();
-
-    public IReadOnlyCollection<SchoolGround> Grounds { get; private set; } = new List<SchoolGround>(); 
+    public IReadOnlyCollection<SchoolGround> Grounds { get; set; } = new List<SchoolGround>();
 
     public IReadOnlyCollection<Employee> Employees { get; private set; } = new List<Employee>();
-
-    public IReadOnlyCollection<SchoolClass> Classes { get; private set; } = new List<SchoolClass>();
 
     public IReadOnlyCollection<Student> Students { get; private set; } = new List<Student>();
     
@@ -26,17 +22,11 @@ public sealed class School
 
     public School(Guid id,
         string shortName,
-        string officialName,
-        IReadOnlyCollection<Librarian> librarians,
-        IReadOnlyCollection<SchoolGround> Grounds,
-        IReadOnlyCollection<SchoolClass> classes)
+        string officialName)
     {
         Id = id;
         ShortName = shortName;
         OfficialName = officialName;
-        Librarians = librarians;
-        Grounds = Grounds;
-        Classes = classes;
     }
 
 }

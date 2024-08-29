@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Store.Db.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_book_authors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,7 +32,7 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_book_editors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,7 +44,7 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_publishing_houses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,7 +56,7 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_publishing_places", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,7 +69,7 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_schools", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,11 +81,11 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_subjects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "school_Grounds",
+                name: "school_grounds",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -94,9 +94,9 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_school_grounds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_school_Grounds_schools_school_id",
+                        name: "FK_school_grounds_schools_school_id",
                         column: x => x.school_id,
                         principalTable: "schools",
                         principalColumn: "Id",
@@ -124,7 +124,7 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_base_ed_books", x => x.Id);
                     table.ForeignKey(
                         name: "FK_base_ed_books_book_authors_author_id",
                         column: x => x.author_id,
@@ -158,61 +158,30 @@ namespace Store.Db.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "employees",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    EmployeeStatus = table.Column<int>(type: "integer", nullable: false),
-                    school_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Ground_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    managing_class_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    surname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_employees_school_Grounds_Ground_id",
-                        column: x => x.Ground_id,
-                        principalTable: "school_Grounds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_employees_schools_school_id",
-                        column: x => x.school_id,
-                        principalTable: "schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "librarians",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    school_id = table.Column<Guid>(type: "uuid", nullable: false),
                     Ground_id = table.Column<Guid>(type: "uuid", nullable: true),
                     IsGeneral = table.Column<bool>(type: "boolean", nullable: false),
+                    SchoolGroundId = table.Column<Guid>(type: "uuid", nullable: true),
                     surname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_librarians", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_librarians_school_Grounds_Ground_id",
+                        name: "FK_librarians_school_grounds_Ground_id",
                         column: x => x.Ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_librarians_schools_school_id",
-                        column: x => x.school_id,
-                        principalTable: "schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_librarians_school_grounds_SchoolGroundId",
+                        column: x => x.SchoolGroundId,
+                        principalTable: "school_grounds",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -240,7 +209,7 @@ namespace Store.Db.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EducationalBooks",
+                name: "ed_books_in_balance",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -260,104 +229,40 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EducationalBooks", x => x.Id);
+                    table.PrimaryKey("PK_ed_books_in_balance", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EducationalBooks_EducationalBooks_base_book_id",
-                        column: x => x.base_book_id,
-                        principalTable: "EducationalBooks",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_EducationalBooks_base_ed_books_base_ed_book_id",
+                        name: "FK_ed_books_in_balance_base_ed_books_base_ed_book_id",
                         column: x => x.base_ed_book_id,
                         principalTable: "base_ed_books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EducationalBooks_school_Grounds_SchoolGroundId",
-                        column: x => x.SchoolGroundId,
-                        principalTable: "school_Grounds",
+                        name: "FK_ed_books_in_balance_ed_books_in_balance_base_book_id",
+                        column: x => x.base_book_id,
+                        principalTable: "ed_books_in_balance",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_EducationalBooks_school_Grounds_book_owner_school_ground_id",
+                        name: "FK_ed_books_in_balance_school_grounds_SchoolGroundId",
+                        column: x => x.SchoolGroundId,
+                        principalTable: "school_grounds",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ed_books_in_balance_school_grounds_book_owner_school_ground~",
                         column: x => x.book_owner_school_ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EducationalBooks_school_Grounds_current_school_ground_id",
+                        name: "FK_ed_books_in_balance_school_grounds_current_school_ground_id",
                         column: x => x.current_school_ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EducationalBooks_schools_SchoolId",
+                        name: "FK_ed_books_in_balance_schools_SchoolId",
                         column: x => x.SchoolId,
                         principalTable: "schools",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "classes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    num = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "character varying(1)", maxLength: 1, nullable: false),
-                    SubjectCount = table.Column<int>(type: "integer", nullable: false),
-                    school_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Ground_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    managing_teacher_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_classes_employees_managing_teacher_id",
-                        column: x => x.managing_teacher_id,
-                        principalTable: "employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_classes_school_Grounds_Ground_id",
-                        column: x => x.Ground_id,
-                        principalTable: "school_Grounds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_classes_schools_school_id",
-                        column: x => x.school_id,
-                        principalTable: "schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ed_book_employee_rent",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    employee_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ed_book_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    count = table.Column<int>(type: "integer", nullable: false),
-                    is_archived = table.Column<bool>(type: "boolean", nullable: false),
-                    start_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    end_date = table.Column<DateOnly>(type: "date", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ed_book_employee_rent_EducationalBooks_ed_book_id",
-                        column: x => x.ed_book_id,
-                        principalTable: "EducationalBooks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ed_book_employee_rent_employees_employee_id",
-                        column: x => x.employee_id,
-                        principalTable: "employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -382,29 +287,29 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_ed_book_school_rent_requests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ed_book_school_rent_requests_EducationalBooks_ed_book_in_ba~",
+                        name: "FK_ed_book_school_rent_requests_ed_books_in_balance_ed_book_in~",
                         column: x => x.ed_book_in_balance_id,
-                        principalTable: "EducationalBooks",
+                        principalTable: "ed_books_in_balance",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ed_book_school_rent_requests_school_Grounds_created_by",
+                        name: "FK_ed_book_school_rent_requests_school_grounds_created_by",
                         column: x => x.created_by,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ed_book_school_rent_requests_school_Grounds_debtor_school_g~",
+                        name: "FK_ed_book_school_rent_requests_school_grounds_debtor_school_g~",
                         column: x => x.debtor_school_ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ed_book_school_rent_requests_school_Grounds_owner_school_gr~",
+                        name: "FK_ed_book_school_rent_requests_school_grounds_owner_school_gr~",
                         column: x => x.owner_school_ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -426,25 +331,91 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_ed_book_school_rents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ed_book_school_rents_EducationalBooks_ed_book_id",
+                        name: "FK_ed_book_school_rents_ed_books_in_balance_ed_book_id",
                         column: x => x.ed_book_id,
-                        principalTable: "EducationalBooks",
+                        principalTable: "ed_books_in_balance",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ed_book_school_rents_school_Grounds_deptor_school_ground_id",
+                        name: "FK_ed_book_school_rents_school_grounds_deptor_school_ground_id",
                         column: x => x.deptor_school_ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ed_book_school_rents_school_Grounds_owner_school_ground_id",
+                        name: "FK_ed_book_school_rents_school_grounds_owner_school_ground_id",
                         column: x => x.owner_school_ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ed_books_school_rent_request_conversation_messages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ed_book_rent_request_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    school_ground_sender_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    message = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    viewed_by_receiver = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ed_books_school_rent_request_conversation_messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ed_books_school_rent_request_conversation_messages_ed_book_~",
+                        column: x => x.ed_book_rent_request_id,
+                        principalTable: "ed_book_school_rent_requests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ed_books_school_rent_request_conversation_messages_school_g~",
+                        column: x => x.school_ground_sender_id,
+                        principalTable: "school_grounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "class_subject_chapter_ed_books",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    subject_chapter_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    base_ed_book_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    ed_book_in_balance_id = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_class_subject_chapter_ed_books", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_class_subject_chapter_ed_books_base_ed_books_base_ed_book_id",
+                        column: x => x.base_ed_book_id,
+                        principalTable: "base_ed_books",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_class_subject_chapter_ed_books_ed_books_in_balance_ed_book_~",
+                        column: x => x.ed_book_in_balance_id,
+                        principalTable: "ed_books_in_balance",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "class_subject_chapters",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    class_subject_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_class_subject_chapters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -457,17 +428,75 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_class_subjects_classes_school_class_id",
-                        column: x => x.school_class_id,
-                        principalTable: "classes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_class_subjects", x => x.Id);
                     table.ForeignKey(
                         name: "FK_class_subjects_subjects_subject_id",
                         column: x => x.subject_id,
                         principalTable: "subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "classes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    num = table.Column<int>(type: "integer", nullable: false),
+                    name = table.Column<string>(type: "character varying(1)", maxLength: 1, nullable: false),
+                    SubjectCount = table.Column<int>(type: "integer", nullable: false),
+                    Ground_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    managing_teacher_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    SchoolGroundId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_classes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_classes_school_grounds_Ground_id",
+                        column: x => x.Ground_id,
+                        principalTable: "school_grounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_classes_school_grounds_SchoolGroundId",
+                        column: x => x.SchoolGroundId,
+                        principalTable: "school_grounds",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "employees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    EmployeeStatus = table.Column<int>(type: "integer", nullable: false),
+                    school_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Ground_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ManagementClassId = table.Column<Guid>(type: "uuid", nullable: true),
+                    managing_class_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    surname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_employees_classes_ManagementClassId",
+                        column: x => x.ManagementClassId,
+                        principalTable: "classes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_employees_school_grounds_Ground_id",
+                        column: x => x.Ground_id,
+                        principalTable: "school_grounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_employees_schools_school_id",
+                        column: x => x.school_id,
+                        principalTable: "schools",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -487,16 +516,16 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_students", x => x.Id);
                     table.ForeignKey(
                         name: "FK_students_classes_class_id",
                         column: x => x.class_id,
                         principalTable: "classes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_students_school_Grounds_Ground_id",
+                        name: "FK_students_school_grounds_Ground_id",
                         column: x => x.Ground_id,
-                        principalTable: "school_Grounds",
+                        principalTable: "school_grounds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -508,49 +537,30 @@ namespace Store.Db.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ed_books_school_rent_request_conversation_messages",
+                name: "ed_book_employee_rent",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ed_book_rent_request_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    school_ground_sender_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    message = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    status = table.Column<int>(type: "integer", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    viewed_by_receiver = table.Column<bool>(type: "boolean", nullable: false)
+                    employee_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ed_book_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    count = table.Column<int>(type: "integer", nullable: false),
+                    is_archived = table.Column<bool>(type: "boolean", nullable: false),
+                    start_date = table.Column<DateOnly>(type: "date", nullable: false),
+                    end_date = table.Column<DateOnly>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_ed_book_employee_rent", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ed_books_school_rent_request_conversation_messages_ed_book_~",
-                        column: x => x.ed_book_rent_request_id,
-                        principalTable: "ed_book_school_rent_requests",
+                        name: "FK_ed_book_employee_rent_ed_books_in_balance_ed_book_id",
+                        column: x => x.ed_book_id,
+                        principalTable: "ed_books_in_balance",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ed_books_school_rent_request_conversation_messages_school_G~",
-                        column: x => x.school_ground_sender_id,
-                        principalTable: "school_Grounds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "class_subject_chapters",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    class_subject_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_class_subject_chapters_class_subjects_class_subject_id",
-                        column: x => x.class_subject_id,
-                        principalTable: "class_subjects",
+                        name: "FK_ed_book_employee_rent_employees_employee_id",
+                        column: x => x.employee_id,
+                        principalTable: "employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -569,47 +579,17 @@ namespace Store.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("id", x => x.Id);
+                    table.PrimaryKey("PK_ed_book_student_rent", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ed_book_student_rent_EducationalBooks_BookId",
+                        name: "FK_ed_book_student_rent_ed_books_in_balance_BookId",
                         column: x => x.BookId,
-                        principalTable: "EducationalBooks",
+                        principalTable: "ed_books_in_balance",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ed_book_student_rent_students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "students",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "class_subject_chapter_ed_books",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    subject_chapter_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    base_ed_book_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    ed_book_in_balance_id = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_class_subject_chapter_ed_books_EducationalBooks_ed_book_in_~",
-                        column: x => x.ed_book_in_balance_id,
-                        principalTable: "EducationalBooks",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_class_subject_chapter_ed_books_base_ed_books_base_ed_book_id",
-                        column: x => x.base_ed_book_id,
-                        principalTable: "base_ed_books",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_class_subject_chapter_ed_books_class_subject_chapters_subje~",
-                        column: x => x.subject_chapter_id,
-                        principalTable: "class_subject_chapters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -681,9 +661,9 @@ namespace Store.Db.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_classes_school_id",
+                name: "IX_classes_SchoolGroundId",
                 table: "classes",
-                column: "school_id");
+                column: "SchoolGroundId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ed_book_employee_rent_ed_book_id",
@@ -746,6 +726,36 @@ namespace Store.Db.Migrations
                 column: "base_ed_book_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ed_books_in_balance_base_book_id",
+                table: "ed_books_in_balance",
+                column: "base_book_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ed_books_in_balance_base_ed_book_id",
+                table: "ed_books_in_balance",
+                column: "base_ed_book_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ed_books_in_balance_book_owner_school_ground_id",
+                table: "ed_books_in_balance",
+                column: "book_owner_school_ground_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ed_books_in_balance_current_school_ground_id",
+                table: "ed_books_in_balance",
+                column: "current_school_ground_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ed_books_in_balance_SchoolGroundId",
+                table: "ed_books_in_balance",
+                column: "SchoolGroundId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ed_books_in_balance_SchoolId",
+                table: "ed_books_in_balance",
+                column: "SchoolId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ed_books_school_rent_request_conversation_messages_ed_book_~",
                 table: "ed_books_school_rent_request_conversation_messages",
                 column: "ed_book_rent_request_id");
@@ -756,39 +766,14 @@ namespace Store.Db.Migrations
                 column: "school_ground_sender_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EducationalBooks_base_book_id",
-                table: "EducationalBooks",
-                column: "base_book_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EducationalBooks_base_ed_book_id",
-                table: "EducationalBooks",
-                column: "base_ed_book_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EducationalBooks_book_owner_school_ground_id",
-                table: "EducationalBooks",
-                column: "book_owner_school_ground_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EducationalBooks_current_school_ground_id",
-                table: "EducationalBooks",
-                column: "current_school_ground_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EducationalBooks_SchoolGroundId",
-                table: "EducationalBooks",
-                column: "SchoolGroundId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EducationalBooks_SchoolId",
-                table: "EducationalBooks",
-                column: "SchoolId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_employees_Ground_id",
                 table: "employees",
                 column: "Ground_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_employees_ManagementClassId",
+                table: "employees",
+                column: "ManagementClassId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_employees_school_id",
@@ -801,13 +786,13 @@ namespace Store.Db.Migrations
                 column: "Ground_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_librarians_school_id",
+                name: "IX_librarians_SchoolGroundId",
                 table: "librarians",
-                column: "school_id");
+                column: "SchoolGroundId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_school_Grounds_school_id",
-                table: "school_Grounds",
+                name: "IX_school_grounds_school_id",
+                table: "school_grounds",
                 column: "school_id");
 
             migrationBuilder.CreateIndex(
@@ -824,11 +809,47 @@ namespace Store.Db.Migrations
                 name: "IX_students_school_id",
                 table: "students",
                 column: "school_id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_class_subject_chapter_ed_books_class_subject_chapters_subje~",
+                table: "class_subject_chapter_ed_books",
+                column: "subject_chapter_id",
+                principalTable: "class_subject_chapters",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_class_subject_chapters_class_subjects_class_subject_id",
+                table: "class_subject_chapters",
+                column: "class_subject_id",
+                principalTable: "class_subjects",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_class_subjects_classes_school_class_id",
+                table: "class_subjects",
+                column: "school_class_id",
+                principalTable: "classes",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_classes_employees_managing_teacher_id",
+                table: "classes",
+                column: "managing_teacher_id",
+                principalTable: "employees",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_employees_classes_ManagementClassId",
+                table: "employees");
+
             migrationBuilder.DropTable(
                 name: "class_subject_chapter_ed_books");
 
@@ -863,16 +884,10 @@ namespace Store.Db.Migrations
                 name: "class_subjects");
 
             migrationBuilder.DropTable(
-                name: "EducationalBooks");
-
-            migrationBuilder.DropTable(
-                name: "classes");
+                name: "ed_books_in_balance");
 
             migrationBuilder.DropTable(
                 name: "base_ed_books");
-
-            migrationBuilder.DropTable(
-                name: "employees");
 
             migrationBuilder.DropTable(
                 name: "book_authors");
@@ -890,7 +905,13 @@ namespace Store.Db.Migrations
                 name: "subjects");
 
             migrationBuilder.DropTable(
-                name: "school_Grounds");
+                name: "classes");
+
+            migrationBuilder.DropTable(
+                name: "employees");
+
+            migrationBuilder.DropTable(
+                name: "school_grounds");
 
             migrationBuilder.DropTable(
                 name: "schools");

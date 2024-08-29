@@ -1,4 +1,5 @@
 using Application;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Repositories;
 using Store.Cache;
@@ -43,5 +44,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetService<LibraryDbContext>();
+    context.Database.Migrate();
+}
+
 
 app.Run();

@@ -10,8 +10,7 @@ public class EducationalBookEmployeeRentConfiguration : IEntityTypeConfiguration
     {
         builder.ToTable("ed_book_employee_rent");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.HasOne(x => x.Employee)
             .WithMany()

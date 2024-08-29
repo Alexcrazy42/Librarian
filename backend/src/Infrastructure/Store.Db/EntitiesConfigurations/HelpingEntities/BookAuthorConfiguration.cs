@@ -10,8 +10,7 @@ public class BookAuthorConfiguration : IEntityTypeConfiguration<BookAuthor>
     {
         builder.ToTable("book_authors");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);         
 
         builder.Property(x => x.FullName)
             .HasColumnName("full_name")

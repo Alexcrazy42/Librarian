@@ -10,8 +10,7 @@ public class ClassSubjectConfiguration : IEntityTypeConfiguration<ClassSubject>
     {
         builder.ToTable("class_subjects");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.HasOne(x => x.SchoolClass)
             .WithMany(schoolClass => schoolClass.ClassSubjects)

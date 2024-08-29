@@ -8,10 +8,9 @@ public class SchoolGroundConfiguration : IEntityTypeConfiguration<SchoolGround>
 {
     public void Configure(EntityTypeBuilder<SchoolGround> builder)
     {
-        builder.ToTable("school_Grounds");
+        builder.ToTable("school_grounds");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.Property(x => x.Name)
             .HasMaxLength(100)

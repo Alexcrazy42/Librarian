@@ -10,8 +10,7 @@ public class EducationalBookSchoolRentRequestConfiguration : IEntityTypeConfigur
     {
         builder.ToTable("ed_book_school_rent_requests");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.HasOne(x => x.DebtorSchoolGround)
             .WithMany()

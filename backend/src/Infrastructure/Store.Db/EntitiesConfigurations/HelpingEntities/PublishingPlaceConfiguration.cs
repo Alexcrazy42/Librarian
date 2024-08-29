@@ -10,8 +10,7 @@ public class PublishingPlaceConfiguration : IEntityTypeConfiguration<PublishingP
     {
         builder.ToTable("publishing_places");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.Property(x => x.Name)
             .HasColumnName("name")

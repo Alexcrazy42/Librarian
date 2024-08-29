@@ -10,8 +10,7 @@ public class EditorConfiguration : IEntityTypeConfiguration<Editor>
     {
         builder.ToTable("book_editors");
 
-        builder.HasKey(e => e.Id)
-            .HasName("id");
+        builder.HasKey(e => e.Id);
 
         builder.Property(x => x.FullName)
             .HasColumnName("full_name")

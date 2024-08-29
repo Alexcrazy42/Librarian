@@ -10,8 +10,7 @@ internal class EducationalBookSchoolRentRequestConversationMessageConfiguration 
     {
         builder.ToTable("ed_books_school_rent_request_conversation_messages");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.HasOne(x => x.RentRequest)
             .WithMany(rentRequest => rentRequest.Messages)

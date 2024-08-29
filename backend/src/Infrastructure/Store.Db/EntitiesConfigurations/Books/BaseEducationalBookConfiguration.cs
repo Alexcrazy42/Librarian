@@ -11,8 +11,7 @@ public class BaseEducationalBookConfiguration : IEntityTypeConfiguration<BaseEdu
     {
         builder.ToTable("base_ed_books");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);
         
         builder.Property(x => x.Title)
             .HasMaxLength(BaseEducationalBook.TitleMaxLength)

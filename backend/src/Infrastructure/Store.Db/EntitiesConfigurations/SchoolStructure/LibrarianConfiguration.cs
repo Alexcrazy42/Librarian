@@ -10,8 +10,7 @@ public class LibrarianConfiguration : IEntityTypeConfiguration<Librarian>
     {
         builder.ToTable("librarians");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.Property(x => x.Surname)
             .HasMaxLength(100)
@@ -24,16 +23,12 @@ public class LibrarianConfiguration : IEntityTypeConfiguration<Librarian>
             .IsRequired();
 
         builder.Property(x => x.Patronymic)
-            .HasMaxLength(100)
+            .HasMaxLength(100)  
             .HasColumnName("patronymic")
             .IsRequired();
 
-        builder.HasOne(x => x.School)
-            .WithMany(school => school.Librarians)
-            .HasForeignKey("school_id");
-
         builder.HasOne(x => x.Ground)
-            .WithMany(Ground => Ground.Librarians)
+            .WithMany()
             .HasForeignKey("Ground_id");
 
         builder.Property(x => x.IsGeneral)

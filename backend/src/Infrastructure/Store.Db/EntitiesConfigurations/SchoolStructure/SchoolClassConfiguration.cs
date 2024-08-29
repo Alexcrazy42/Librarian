@@ -10,8 +10,7 @@ public class SchoolClassConfiguration : IEntityTypeConfiguration<SchoolClass>
     {
         builder.ToTable("classes");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
 
         builder.Property(x => x.Number)
             .HasColumnName("num");
@@ -20,16 +19,13 @@ public class SchoolClassConfiguration : IEntityTypeConfiguration<SchoolClass>
             .HasColumnName("name")
             .HasMaxLength(1);
 
-        builder.HasOne(x => x.School)
-            .WithMany(school => school.Classes)
-            .HasForeignKey("school_id");
-
         builder.HasOne(x => x.Ground)
-            .WithMany(Ground => Ground.Classes)
+            .WithMany()
             .HasForeignKey("Ground_id");
 
         builder.HasOne(x => x.Manager)
-            .WithOne(emp => emp.ManagementClass)
-            .HasForeignKey<SchoolClass>("managing_teacher_id");
+            .WithOne()
+            .HasForeignKey<SchoolClass>("managing_teacher_id")
+            .IsRequired(false);
     }
 }

@@ -71,8 +71,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("subject_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("author_id");
 
@@ -155,7 +154,7 @@ namespace Store.Db.Migrations
 
                     b.HasIndex("current_school_ground_id");
 
-                    b.ToTable("EducationalBooks");
+                    b.ToTable("ed_books_in_balance", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.RentRequests.EducationalBookSchoolRentRequest", b =>
@@ -216,8 +215,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("owner_school_ground_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("created_by");
 
@@ -260,8 +258,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("school_ground_sender_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("ed_book_rent_request_id");
 
@@ -298,8 +295,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("employee_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("ed_book_id");
 
@@ -332,8 +328,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("BookId");
 
@@ -381,8 +376,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("owner_school_ground_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("deptor_school_ground_id");
 
@@ -403,6 +397,9 @@ namespace Store.Db.Migrations
                         .HasColumnType("integer");
 
                     b.Property<Guid>("Ground_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ManagementClassId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -429,10 +426,11 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("school_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("Ground_id");
+
+                    b.HasIndex("ManagementClassId");
 
                     b.HasIndex("school_id");
 
@@ -463,21 +461,20 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("patronymic");
 
+                    b.Property<Guid?>("SchoolGroundId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("surname");
 
-                    b.Property<Guid>("school_id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("Ground_id");
 
-                    b.HasIndex("school_id");
+                    b.HasIndex("SchoolGroundId");
 
                     b.ToTable("librarians", (string)null);
                 });
@@ -500,8 +497,7 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("short_name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("schools", (string)null);
                 });
@@ -525,24 +521,23 @@ namespace Store.Db.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("num");
 
+                    b.Property<Guid?>("SchoolGroundId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("SubjectCount")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("managing_teacher_id")
+                    b.Property<Guid?>("managing_teacher_id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("school_id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("Ground_id");
 
+                    b.HasIndex("SchoolGroundId");
+
                     b.HasIndex("managing_teacher_id")
                         .IsUnique();
-
-                    b.HasIndex("school_id");
 
                     b.ToTable("classes", (string)null);
                 });
@@ -562,12 +557,11 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("school_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("school_id");
 
-                    b.ToTable("school_Grounds", (string)null);
+                    b.ToTable("school_grounds", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolStructure.Student", b =>
@@ -606,8 +600,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("school_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("Ground_id");
 
@@ -630,8 +623,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("subject_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("school_class_id");
 
@@ -655,8 +647,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("class_subject_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("class_subject_id");
 
@@ -678,8 +669,7 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("subject_chapter_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("base_ed_book_id");
 
@@ -702,8 +692,7 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("full_name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("book_authors", (string)null);
                 });
@@ -720,8 +709,7 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("full_name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("book_editors", (string)null);
                 });
@@ -738,8 +726,7 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("publishing_houses", (string)null);
                 });
@@ -756,8 +743,7 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("publishing_places", (string)null);
                 });
@@ -774,8 +760,7 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("subjects", (string)null);
                 });
@@ -1006,6 +991,10 @@ namespace Store.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.SchoolStructure.SchoolClass", "ManagementClass")
+                        .WithMany()
+                        .HasForeignKey("ManagementClassId");
+
                     b.HasOne("Domain.Entities.SchoolStructure.School", "School")
                         .WithMany("Employees")
                         .HasForeignKey("school_id")
@@ -1014,51 +1003,44 @@ namespace Store.Db.Migrations
 
                     b.Navigation("Ground");
 
+                    b.Navigation("ManagementClass");
+
                     b.Navigation("School");
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolStructure.Librarian", b =>
                 {
                     b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", "Ground")
-                        .WithMany("Librarians")
+                        .WithMany()
                         .HasForeignKey("Ground_id");
 
-                    b.HasOne("Domain.Entities.SchoolStructure.School", "School")
+                    b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", null)
                         .WithMany("Librarians")
-                        .HasForeignKey("school_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SchoolGroundId");
 
                     b.Navigation("Ground");
-
-                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolStructure.SchoolClass", b =>
                 {
                     b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", "Ground")
-                        .WithMany("Classes")
+                        .WithMany()
                         .HasForeignKey("Ground_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.SchoolStructure.Employee", "Manager")
-                        .WithOne("ManagementClass")
-                        .HasForeignKey("Domain.Entities.SchoolStructure.SchoolClass", "managing_teacher_id")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.SchoolStructure.School", "School")
+                    b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", null)
                         .WithMany("Classes")
-                        .HasForeignKey("school_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SchoolGroundId");
+
+                    b.HasOne("Domain.Entities.SchoolStructure.Employee", "Manager")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.SchoolStructure.SchoolClass", "managing_teacher_id")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Ground");
 
                     b.Navigation("Manager");
-
-                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolStructure.SchoolGround", b =>
@@ -1170,22 +1152,13 @@ namespace Store.Db.Migrations
                     b.Navigation("Messages");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SchoolStructure.Employee", b =>
-                {
-                    b.Navigation("ManagementClass");
-                });
-
             modelBuilder.Entity("Domain.Entities.SchoolStructure.School", b =>
                 {
-                    b.Navigation("Classes");
-
                     b.Navigation("EducationalBooks");
 
                     b.Navigation("Employees");
 
                     b.Navigation("Grounds");
-
-                    b.Navigation("Librarians");
 
                     b.Navigation("Students");
                 });

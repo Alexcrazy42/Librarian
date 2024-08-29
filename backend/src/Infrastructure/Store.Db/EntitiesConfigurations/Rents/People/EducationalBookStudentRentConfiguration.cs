@@ -10,7 +10,6 @@ public class EducationalBookStudentRentConfiguration : IEntityTypeConfiguration<
     {
         builder.ToTable("ed_book_student_rent");
 
-        builder.HasKey(x => x.Id)
-            .HasName("id");
+        builder.HasKey(x => x.Id);            
     }
 }
