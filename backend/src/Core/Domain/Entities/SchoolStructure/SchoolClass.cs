@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities.SchoolStructure;
+﻿using Domain.Entities.Subjects;
+
+namespace Domain.Entities.SchoolStructure;
 
 public sealed class SchoolClass
 {
@@ -8,27 +10,33 @@ public sealed class SchoolClass
 
     public string Name { get; private set; }
 
+    public int SubjectCount { get; private set; }
+
     public School School { get; private set; }
 
-    public SchoolPlayground Playground { get; private set; }
+    public SchoolGround Ground { get; private set; }
 
     public Employee Manager { get; private set; }
 
     public IReadOnlyCollection<Student> Students { get; private set; } = new List<Student>();
 
+    public IReadOnlyCollection<ClassSubject> ClassSubjects { get; private set; } = new List<ClassSubject>();
+
     private SchoolClass()
     { }
 
     public SchoolClass(Guid id,
+        int number,
         string name,
+        int subjectCount,
         School school,
-        SchoolPlayground playground,
-        Employee manager)
+        SchoolGround ground)
     {
         Id = id;
+        Number = number;
         Name = name;
+        SubjectCount = subjectCount;
         School = school;
-        Playground = playground;
-        Manager = manager;
+        Ground = ground;
     }
 }

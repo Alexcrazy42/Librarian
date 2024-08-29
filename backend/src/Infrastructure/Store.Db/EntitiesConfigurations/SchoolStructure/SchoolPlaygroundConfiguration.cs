@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Store.Db.EntitiesConfigurations.SchoolStructure;
 
-public class SchoolPlaygroundConfiguration : IEntityTypeConfiguration<SchoolPlayground>
+public class SchoolGroundConfiguration : IEntityTypeConfiguration<SchoolGround>
 {
-    public void Configure(EntityTypeBuilder<SchoolPlayground> builder)
+    public void Configure(EntityTypeBuilder<SchoolGround> builder)
     {
-        builder.ToTable("school_playgrounds");
+        builder.ToTable("school_Grounds");
 
         builder.HasKey(x => x.Id)
             .HasName("id");
@@ -19,7 +19,7 @@ public class SchoolPlaygroundConfiguration : IEntityTypeConfiguration<SchoolPlay
             .IsRequired();
 
         builder.HasOne(x => x.School)
-            .WithMany(school => school.Playgrounds)
+            .WithMany(school => school.Grounds)
             .HasForeignKey("school_id");
     }
 }

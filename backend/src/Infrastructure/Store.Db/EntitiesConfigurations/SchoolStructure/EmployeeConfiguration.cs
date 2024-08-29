@@ -32,9 +32,9 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             .WithMany(school => school.Employees)
             .HasForeignKey("school_id");
 
-        builder.HasOne(x => x.Playground)
-            .WithMany(playground => playground.Employees)
-            .HasForeignKey("playground_id");    
+        builder.HasOne(x => x.Ground)
+            .WithMany(Ground => Ground.Employees)
+            .HasForeignKey("Ground_id");    
 
         builder.Property(x => x.EmployeeStatus)
             .IsRequired();

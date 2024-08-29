@@ -11,7 +11,7 @@ public sealed class Employee : Person
 
     public School School { get; private set; }
 
-    public SchoolPlayground Playground { get; private set; }
+    public SchoolGround Ground { get; private set; }
 
     public SchoolClass? ManagementClass { get; private set; }
 
@@ -24,14 +24,14 @@ public sealed class Employee : Person
         string patronymic,
         EmployeeStatusEnum employeeStatus,
         School school,
-        SchoolPlayground  playground,
+        SchoolGround  Ground,
         SchoolClass? managementClass)
         : base(surname, name, patronymic)
     {
         Id = id;
         EmployeeStatus = employeeStatus;
         School = school;
-        Playground = playground;
+        Ground = Ground;
         ManagementClass = managementClass;
     }
 }

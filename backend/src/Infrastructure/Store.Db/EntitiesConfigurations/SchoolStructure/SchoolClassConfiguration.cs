@@ -24,9 +24,9 @@ public class SchoolClassConfiguration : IEntityTypeConfiguration<SchoolClass>
             .WithMany(school => school.Classes)
             .HasForeignKey("school_id");
 
-        builder.HasOne(x => x.Playground)
-            .WithMany(playground => playground.Classes)
-            .HasForeignKey("playground_id");
+        builder.HasOne(x => x.Ground)
+            .WithMany(Ground => Ground.Classes)
+            .HasForeignKey("Ground_id");
 
         builder.HasOne(x => x.Manager)
             .WithOne(emp => emp.ManagementClass)

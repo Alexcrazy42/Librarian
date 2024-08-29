@@ -9,7 +9,7 @@ public static class DICacheExtension
     {
         services.AddStackExchangeRedisCache(options =>
         {
-            options.InstanceName = "";
+            options.InstanceName = "libr";
             options.Configuration = configuration["Redis_Connection_String"];
         });
         return services;

@@ -8,7 +8,7 @@ public class Librarian : Person
 
     public School School { get; private set; }
 
-    public SchoolPlayground? Playground { get; private set; }
+    public SchoolGround? Ground { get; private set; }
 
     public bool IsGeneral { get; private set; }
 

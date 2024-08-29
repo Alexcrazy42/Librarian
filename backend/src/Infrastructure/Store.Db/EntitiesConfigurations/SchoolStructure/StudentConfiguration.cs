@@ -40,8 +40,8 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
             .WithMany(school => school.Students)
             .HasForeignKey("school_id");
 
-        builder.HasOne(x => x.Playground)
-            .WithMany(playground => playground.Students)
-            .HasForeignKey("playground_id");
+        builder.HasOne(x => x.Ground)
+            .WithMany(Ground => Ground.Students)
+            .HasForeignKey("Ground_id");
     }
 }

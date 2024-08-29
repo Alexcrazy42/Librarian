@@ -9,7 +9,7 @@ public class LibraryDbContext : DbContext
 {
     public DbSet<School> Schools => Set<School>();
 
-    public DbSet<SchoolPlayground> SchoolPlaygrounds => Set<SchoolPlayground>();
+    public DbSet<SchoolGround> SchoolGrounds => Set<SchoolGround>();
 
     public DbSet<Librarian> Librarians => Set<Librarian>();
 

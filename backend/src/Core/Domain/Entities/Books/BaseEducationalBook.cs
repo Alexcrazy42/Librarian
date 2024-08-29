@@ -33,6 +33,8 @@ public class BaseEducationalBook
 
     public int EndClass { get; private set; }
 
+    public DateOnly LeaveFromFederalBooksListAt { get; private set; }
+
     public IReadOnlyCollection<BookAuthor> AnotherAuthors { get; private set; } = new List<BookAuthor>();
 
     private BaseEducationalBook() { }
@@ -50,7 +52,8 @@ public class BaseEducationalBook
         Subject subject,
         int startClass,
         int endClass,
-        IReadOnlyCollection<BookAuthor> anotherAuthors)
+        IReadOnlyCollection<BookAuthor> anotherAuthors,
+        DateOnly leaveFromFederalBooksListAt)
     {
         Id = id;
         Author = author;
@@ -66,5 +69,6 @@ public class BaseEducationalBook
         StartClass = startClass;
         EndClass = endClass;
         AnotherAuthors = anotherAuthors;
+        LeaveFromFederalBooksListAt = leaveFromFederalBooksListAt;
     }
 }

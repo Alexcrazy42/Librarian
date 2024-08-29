@@ -12,7 +12,7 @@ public sealed class School
 
     public IReadOnlyCollection<Librarian> Librarians { get; private set; } = new List<Librarian>();
 
-    public IReadOnlyCollection<SchoolPlayground> Playgrounds { get; private set; } = new List<SchoolPlayground>(); 
+    public IReadOnlyCollection<SchoolGround> Grounds { get; private set; } = new List<SchoolGround>(); 
 
     public IReadOnlyCollection<Employee> Employees { get; private set; } = new List<Employee>();
 
@@ -28,14 +28,14 @@ public sealed class School
         string shortName,
         string officialName,
         IReadOnlyCollection<Librarian> librarians,
-        IReadOnlyCollection<SchoolPlayground> playgrounds,
+        IReadOnlyCollection<SchoolGround> Grounds,
         IReadOnlyCollection<SchoolClass> classes)
     {
         Id = id;
         ShortName = shortName;
         OfficialName = officialName;
         Librarians = librarians;
-        Playgrounds = playgrounds;
+        Grounds = Grounds;
         Classes = classes;
     }
 

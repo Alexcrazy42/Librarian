@@ -5,9 +5,11 @@ namespace Domain.Entities.Books;
 
 public sealed class EducationalBookInBalance
 {
+    public const int NoteMaxLength = 50;
+
     public Guid Id { get; private set; }
 
-    public BaseEducationalBook BaseEducationalBool { get; private set; }
+    public BaseEducationalBook BaseEducationalBook { get; private set; }
 
     public int? Chapter { get; private set; }
 
@@ -23,27 +25,29 @@ public sealed class EducationalBookInBalance
 
     public int TotalCount { get; private set; }
 
-    public School School { get;  }
+    public SchoolGround CurrentSchoolGround { get; private set; }
 
-    public School BookOwner { get; private set; }
+    public SchoolGround BookOwnerGround { get; private set; }
+
+    public EducationalBookInBalance? BaseBook { get; private set; }
 
     private EducationalBookInBalance()
     { }
 
     public EducationalBookInBalance(Guid id, 
-        BaseEducationalBook baseEducationalBool, 
+        BaseEducationalBook baseEducationalBook, 
         int? chapter, 
         decimal price, 
         BookCondition condition, 
         int year, 
         string note, 
         int inPlaceCount, 
-        int totalCount, 
-        School school, 
-        School bookOwner)
+        int totalCount,
+        SchoolGround currentschoolGround,
+        SchoolGround bookOwnerGround)
     {
         Id = id;
-        BaseEducationalBool = baseEducationalBool;
+        BaseEducationalBook = baseEducationalBook;
         Chapter = chapter;
         Price = price;
         Condition = condition;
@@ -51,7 +55,7 @@ public sealed class EducationalBookInBalance
         Note = note;
         InPlaceCount = inPlaceCount;
         TotalCount = totalCount;
-        School = school;
-        BookOwner = bookOwner;
+        CurrentSchoolGround = currentschoolGround;
+        BookOwnerGround = bookOwnerGround;
     }
 }

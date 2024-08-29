@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.SchoolStructure;
 
-public class SchoolPlayground
+public class SchoolGround
 {
     public Guid Id { get; private set; }
 

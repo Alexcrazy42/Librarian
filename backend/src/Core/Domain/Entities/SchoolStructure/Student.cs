@@ -12,7 +12,7 @@ public class Student : Person
 
     public School School { get; private set; }
 
-    public SchoolPlayground Playground { get; private set; }
+    public SchoolGround Ground { get; private set; }
 
     private Student()
     { }
@@ -24,13 +24,13 @@ public class Student : Person
         string patronymic,
         SchoolClass schoolClass,
         School school,
-        SchoolPlayground playground)
+        SchoolGround Ground)
         : base(surname, name, patronymic)
     {
         Id = id;
         SchoolClass = schoolClass;
         School = school;
         IsArchived = isArchived;
-        Playground = playground;
+        Ground = Ground;
     }
 }

@@ -39,6 +39,9 @@ public class BaseEducationalBookConfiguration : IEntityTypeConfiguration<BaseEdu
             .WithMany(subject => subject.Books)
             .HasForeignKey("subject_id");
 
+        builder.Property(x => x.LeaveFromFederalBooksListAt)
+            .HasColumnName("leave_from_federal_books_list_at");
+
 
         builder.HasMany(x => x.AnotherAuthors)
             .WithMany(author => author.NonPrimaryBooks)
@@ -46,7 +49,6 @@ public class BaseEducationalBookConfiguration : IEntityTypeConfiguration<BaseEdu
                 "ed_books_another_authors",
                 j => j.HasOne<BookAuthor>().WithMany().HasForeignKey("author_id"),
                 j => j.HasOne<BaseEducationalBook>().WithMany().HasForeignKey("base_ed_book_id")
-
             );
 
     }

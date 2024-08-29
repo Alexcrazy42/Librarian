@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.Books;
 using Domain.Entities.SchoolStructure;
 
-namespace Domain.Entities.Rents;
+namespace Domain.Entities.Rents.People;
 
 public class EducationalBookStudentRent
 {

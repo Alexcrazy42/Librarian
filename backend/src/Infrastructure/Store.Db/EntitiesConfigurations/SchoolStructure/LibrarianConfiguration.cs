@@ -32,9 +32,9 @@ public class LibrarianConfiguration : IEntityTypeConfiguration<Librarian>
             .WithMany(school => school.Librarians)
             .HasForeignKey("school_id");
 
-        builder.HasOne(x => x.Playground)
-            .WithMany(playground => playground.Librarians)
-            .HasForeignKey("playground_id");
+        builder.HasOne(x => x.Ground)
+            .WithMany(Ground => Ground.Librarians)
+            .HasForeignKey("Ground_id");
 
         builder.Property(x => x.IsGeneral)
             .IsRequired();
