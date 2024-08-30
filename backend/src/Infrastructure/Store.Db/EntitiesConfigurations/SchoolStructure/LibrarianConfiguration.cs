@@ -28,8 +28,12 @@ public class LibrarianConfiguration : IEntityTypeConfiguration<Librarian>
             .IsRequired();
 
         builder.HasOne(x => x.Ground)
-            .WithMany()
-            .HasForeignKey("Ground_id");
+            .WithMany(g => g.Librarians)
+            .HasForeignKey("ground_id");
+
+        builder.HasOne(x => x.School)
+            .WithMany(s => s.Librarians)
+            .HasForeignKey("school_id");
 
         builder.Property(x => x.IsGeneral)
             .IsRequired();

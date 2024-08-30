@@ -40,13 +40,13 @@ public class LibraryDbContext : DbContext
         : base(contextOptions)
     { }
 
-    // TODO: refactor
-    protected override void OnConfiguring(DbContextOptionsBuilder builder)
-    {
-        builder.UseNpgsql(
-                    "Host=localhost; Port = 5432; Database=swipty-companies; Username=postgres; Password=123;",
-                    x => x.MigrationsAssembly(typeof(LibraryDbContext).Assembly.GetName().Name));
-    }
+    //// TODO: refactor
+    //protected override void OnConfiguring(DbContextOptionsBuilder builder)
+    //{
+    //    builder.UseNpgsql(
+    //                "Host=localhost; Port = 5432; Database=swipty-companies; Username=postgres; Password=123;",
+    //                x => x.MigrationsAssembly(typeof(LibraryDbContext).Assembly.GetName().Name));
+    //}
 
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -14,6 +14,8 @@ public sealed class SchoolClass
 
     public SchoolGround Ground { get; private set; }
 
+    public School School { get; private set; }
+
     public Employee? Manager { get; private set; }
 
     public IReadOnlyCollection<Student> Students { get; private set; } = new List<Student>();
@@ -27,12 +29,14 @@ public sealed class SchoolClass
         int number,
         string name,
         int subjectCount,
-        SchoolGround ground)
+        SchoolGround ground,
+        School school)
     {
         Id = id;
         Number = number;
         Name = name;
         SubjectCount = subjectCount;
         Ground = ground;
+        School = school;
     }
 }

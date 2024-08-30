@@ -22,6 +22,43 @@ namespace Store.Db.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Acts.EdBookDecommissioning", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("ApprovedDate")
+                        .HasColumnType("date")
+                        .HasColumnName("approved_date");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer")
+                        .HasColumnName("count");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date")
+                        .HasColumnName("date");
+
+                    b.Property<bool>("InspectorApproved")
+                        .HasColumnType("boolean")
+                        .HasColumnName("inspector_approved");
+
+                    b.Property<int>("Reason")
+                        .HasColumnType("integer")
+                        .HasColumnName("reason");
+
+                    b.Property<Guid>("ed_book_in_balance_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ed_book_in_balance_id")
+                        .IsUnique();
+
+                    b.ToTable("ed_book_decommissionings", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Books.BaseEducationalBook", b =>
                 {
                     b.Property<Guid>("Id")
@@ -29,6 +66,9 @@ namespace Store.Db.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("Appointment")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Chapter")
                         .HasColumnType("integer");
 
                     b.Property<int>("EndClass")
@@ -92,10 +132,6 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("Chapter")
-                        .HasColumnType("integer")
-                        .HasColumnName("chapter");
-
                     b.Property<int>("Condition")
                         .HasColumnType("integer")
                         .HasColumnName("condition");
@@ -140,6 +176,9 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("current_school_ground_id")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("supply_id")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SchoolGroundId");
@@ -153,6 +192,8 @@ namespace Store.Db.Migrations
                     b.HasIndex("book_owner_school_ground_id");
 
                     b.HasIndex("current_school_ground_id");
+
+                    b.HasIndex("supply_id");
 
                     b.ToTable("ed_books_in_balance", (string)null);
                 });
@@ -285,6 +326,9 @@ namespace Store.Db.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_archived");
 
+                    b.Property<Guid>("RentReportId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
                         .HasColumnName("start_date");
@@ -296,6 +340,8 @@ namespace Store.Db.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RentReportId");
 
                     b.HasIndex("ed_book_id");
 
@@ -322,6 +368,9 @@ namespace Store.Db.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid>("RentReportId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
@@ -331,6 +380,8 @@ namespace Store.Db.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("RentReportId");
 
                     b.HasIndex("StudentId");
 
@@ -385,6 +436,73 @@ namespace Store.Db.Migrations
                     b.HasIndex("owner_school_ground_id");
 
                     b.ToTable("ed_book_school_rents", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Reports.PeopleRents.PeopleRentReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AnotherRentCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("another_rent_count");
+
+                    b.Property<int>("EdBookRentCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("ed_book_rent_count");
+
+                    b.Property<int?>("Month")
+                        .HasColumnType("integer")
+                        .HasColumnName("month");
+
+                    b.Property<int>("RentCountForClasses10To11")
+                        .HasColumnType("integer")
+                        .HasColumnName("rent_count_classes_10_11");
+
+                    b.Property<int>("RentCountForClasses1To4")
+                        .HasColumnType("integer")
+                        .HasColumnName("rent_count_classes_1_4");
+
+                    b.Property<int>("RentCountForClasses5To9")
+                        .HasColumnType("integer")
+                        .HasColumnName("rent_count_classes_5_9");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer")
+                        .HasColumnName("year");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("people_rent_reports", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Reports.PeopleRents.PeopleRentReportGenreStatistic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Genre")
+                        .HasColumnType("integer")
+                        .HasColumnName("genre");
+
+                    b.Property<int>("RentCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("rent_count");
+
+                    b.Property<Guid>("people_rent_report_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("people_rent_report_id");
+
+                    b.ToTable("people_rent_report_genre_statistics", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolStructure.Employee", b =>
@@ -443,9 +561,6 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("Ground_id")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsGeneral")
                         .HasColumnType("boolean");
 
@@ -461,20 +576,23 @@ namespace Store.Db.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("patronymic");
 
-                    b.Property<Guid?>("SchoolGroundId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("surname");
 
+                    b.Property<Guid>("ground_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("school_id")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Ground_id");
+                    b.HasIndex("ground_id");
 
-                    b.HasIndex("SchoolGroundId");
+                    b.HasIndex("school_id");
 
                     b.ToTable("librarians", (string)null);
                 });
@@ -530,6 +648,9 @@ namespace Store.Db.Migrations
                     b.Property<Guid?>("managing_teacher_id")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("school_id")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Ground_id");
@@ -538,6 +659,8 @@ namespace Store.Db.Migrations
 
                     b.HasIndex("managing_teacher_id")
                         .IsUnique();
+
+                    b.HasIndex("school_id");
 
                     b.ToTable("classes", (string)null);
                 });
@@ -680,6 +803,33 @@ namespace Store.Db.Migrations
                     b.ToTable("class_subject_chapter_ed_books", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Supplies.BookSupply", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("invoice_number");
+
+                    b.Property<string>("Supplier")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("supplier");
+
+                    b.Property<DateOnly>("SupplyDate")
+                        .HasColumnType("date")
+                        .HasColumnName("supply_date");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("book_supplies", (string)null);
+                });
+
             modelBuilder.Entity("Domain.HelpingEntities.BookAuthor", b =>
                 {
                     b.Property<Guid>("Id")
@@ -780,6 +930,17 @@ namespace Store.Db.Migrations
                     b.ToTable("ed_books_another_authors");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Acts.EdBookDecommissioning", b =>
+                {
+                    b.HasOne("Domain.Entities.Books.EducationalBookInBalance", "EdBook")
+                        .WithOne("Decommissioning")
+                        .HasForeignKey("Domain.Entities.Acts.EdBookDecommissioning", "ed_book_in_balance_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EdBook");
+                });
+
             modelBuilder.Entity("Domain.Entities.Books.BaseEducationalBook", b =>
                 {
                     b.HasOne("Domain.HelpingEntities.BookAuthor", "Author")
@@ -855,6 +1016,12 @@ namespace Store.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Supplies.BookSupply", "Supply")
+                        .WithMany("EdBooks")
+                        .HasForeignKey("supply_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("BaseBook");
 
                     b.Navigation("BaseEducationalBook");
@@ -862,6 +1029,8 @@ namespace Store.Db.Migrations
                     b.Navigation("BookOwnerGround");
 
                     b.Navigation("CurrentSchoolGround");
+
+                    b.Navigation("Supply");
                 });
 
             modelBuilder.Entity("Domain.Entities.RentRequests.EducationalBookSchoolRentRequest", b =>
@@ -920,6 +1089,12 @@ namespace Store.Db.Migrations
 
             modelBuilder.Entity("Domain.Entities.Rents.People.EducationalBookEmployeeRent", b =>
                 {
+                    b.HasOne("Domain.Entities.Reports.PeopleRents.PeopleRentReport", "RentReport")
+                        .WithMany()
+                        .HasForeignKey("RentReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Books.EducationalBookInBalance", "Book")
                         .WithMany()
                         .HasForeignKey("ed_book_id")
@@ -935,6 +1110,8 @@ namespace Store.Db.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Employee");
+
+                    b.Navigation("RentReport");
                 });
 
             modelBuilder.Entity("Domain.Entities.Rents.People.EducationalBookStudentRent", b =>
@@ -945,6 +1122,12 @@ namespace Store.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Reports.PeopleRents.PeopleRentReport", "RentReport")
+                        .WithMany()
+                        .HasForeignKey("RentReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.SchoolStructure.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
@@ -952,6 +1135,8 @@ namespace Store.Db.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
+
+                    b.Navigation("RentReport");
 
                     b.Navigation("Student");
                 });
@@ -983,6 +1168,17 @@ namespace Store.Db.Migrations
                     b.Navigation("OwnerSchoolGround");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Reports.PeopleRents.PeopleRentReportGenreStatistic", b =>
+                {
+                    b.HasOne("Domain.Entities.Reports.PeopleRents.PeopleRentReport", "Report")
+                        .WithMany("StaticsticsToGenres")
+                        .HasForeignKey("people_rent_report_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
             modelBuilder.Entity("Domain.Entities.SchoolStructure.Employee", b =>
                 {
                     b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", "Ground")
@@ -1011,14 +1207,20 @@ namespace Store.Db.Migrations
             modelBuilder.Entity("Domain.Entities.SchoolStructure.Librarian", b =>
                 {
                     b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", "Ground")
-                        .WithMany()
-                        .HasForeignKey("Ground_id");
-
-                    b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", null)
                         .WithMany("Librarians")
-                        .HasForeignKey("SchoolGroundId");
+                        .HasForeignKey("ground_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.SchoolStructure.School", "School")
+                        .WithMany("Librarians")
+                        .HasForeignKey("school_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Ground");
+
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolStructure.SchoolClass", b =>
@@ -1038,9 +1240,17 @@ namespace Store.Db.Migrations
                         .HasForeignKey("Domain.Entities.SchoolStructure.SchoolClass", "managing_teacher_id")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("Domain.Entities.SchoolStructure.School", "School")
+                        .WithMany("Classes")
+                        .HasForeignKey("school_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Ground");
 
                     b.Navigation("Manager");
+
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolStructure.SchoolGround", b =>
@@ -1147,18 +1357,32 @@ namespace Store.Db.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Books.EducationalBookInBalance", b =>
+                {
+                    b.Navigation("Decommissioning");
+                });
+
             modelBuilder.Entity("Domain.Entities.RentRequests.EducationalBookSchoolRentRequest", b =>
                 {
                     b.Navigation("Messages");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Reports.PeopleRents.PeopleRentReport", b =>
+                {
+                    b.Navigation("StaticsticsToGenres");
+                });
+
             modelBuilder.Entity("Domain.Entities.SchoolStructure.School", b =>
                 {
+                    b.Navigation("Classes");
+
                     b.Navigation("EducationalBooks");
 
                     b.Navigation("Employees");
 
                     b.Navigation("Grounds");
+
+                    b.Navigation("Librarians");
 
                     b.Navigation("Students");
                 });
@@ -1189,6 +1413,11 @@ namespace Store.Db.Migrations
                 });
 
             modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapter", b =>
+                {
+                    b.Navigation("EdBooks");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Supplies.BookSupply", b =>
                 {
                     b.Navigation("EdBooks");
                 });

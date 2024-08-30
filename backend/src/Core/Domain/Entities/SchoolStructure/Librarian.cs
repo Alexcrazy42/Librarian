@@ -6,7 +6,9 @@ public class Librarian : Person
 {
     public Guid Id { get; private set; }
 
-    public SchoolGround? Ground { get; private set; }
+    public SchoolGround Ground { get; private set; }
+
+    public School School { get; private set; }
 
     public bool IsGeneral { get; private set; }
 
@@ -17,11 +19,13 @@ public class Librarian : Person
         string name,
         string patronymic,
         bool isGeneral,
-        SchoolGround ground)
+        SchoolGround ground,
+        School school)
         : base(surname, name, patronymic)
     {
         Id = id;
         IsGeneral = isGeneral;
         Ground = ground;
+        School = school;
     }
 }

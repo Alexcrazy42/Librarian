@@ -22,9 +22,10 @@ public class SchoolGround
 
     private SchoolGround() { }
 
-    public SchoolGround(Guid id, string name)
+    public SchoolGround(Guid id, string name, School school)
     {
         Id = id;
         Name = name;
+        School = school;
     }
 }

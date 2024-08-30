@@ -27,6 +27,8 @@ public class BaseEducationalBook
 
     public Appointment Appointment { get; private set; }
 
+    public int? Chapter { get; private set; }
+
     public Subject Subject { get; private set; }
 
     public int StartClass { get; private set; }
@@ -53,7 +55,8 @@ public class BaseEducationalBook
         int startClass,
         int endClass,
         IReadOnlyCollection<BookAuthor> anotherAuthors,
-        DateOnly leaveFromFederalBooksListAt)
+        DateOnly leaveFromFederalBooksListAt,
+        int? chapter)
     {
         Id = id;
         Author = author;
@@ -70,5 +73,6 @@ public class BaseEducationalBook
         EndClass = endClass;
         AnotherAuthors = anotherAuthors;
         LeaveFromFederalBooksListAt = leaveFromFederalBooksListAt;
+        Chapter = chapter;
     }
 }

@@ -12,6 +12,10 @@ public sealed class School
 
     public IReadOnlyCollection<SchoolGround> Grounds { get; set; } = new List<SchoolGround>();
 
+    public IReadOnlyCollection<Librarian> Librarians { get; set; } = new List<Librarian>();
+
+    public IReadOnlyCollection<SchoolClass> Classes { get; set; } = new List<SchoolClass>();
+
     public IReadOnlyCollection<Employee> Employees { get; private set; } = new List<Employee>();
 
     public IReadOnlyCollection<Student> Students { get; private set; } = new List<Student>();

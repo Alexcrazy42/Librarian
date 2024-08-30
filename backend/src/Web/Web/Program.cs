@@ -4,11 +4,15 @@ using Microsoft.OpenApi.Models;
 using Repositories;
 using Store.Cache;
 using Store.Db;
+using Web.Mapper;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAutomapper();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -23,6 +27,8 @@ builder.Services.AddSwaggerGen(options =>
         Format = "date"
     });
 });
+
+
 
 builder.Services.AddStore(builder.Configuration);
 builder.Services.AddCache(builder.Configuration);

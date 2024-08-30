@@ -19,5 +19,14 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
         builder.Property(x => x.OfficialName)
             .HasMaxLength(100)
             .HasColumnName("off_name");
+
+        builder.HasMany(x => x.Grounds)
+            .WithOne(s => s.School);
+
+        builder.HasMany(x => x.Classes)
+            .WithOne(c => c.School);
+
+        builder.HasMany(x => x.Librarians)
+            .WithOne(l => l.School);
     }
 }

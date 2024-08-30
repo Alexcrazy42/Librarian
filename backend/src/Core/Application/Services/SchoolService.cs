@@ -23,12 +23,15 @@ internal class SchoolService : ISchoolService
         );
 
         var grounds = new List<SchoolGround>();
+        var allClasses = new List<SchoolClass>();
+        var allLibrarians = new List<Librarian>();
 
         foreach(var ground in request.Grounds)
         {
             var schoolGround = new SchoolGround(
                 id: Guid.NewGuid(),
-                name: ground.Name
+                name: ground.Name,
+                school: school
             );
 
             var classes = ground.Classes.Select(x => new SchoolClass(
@@ -36,7 +39,8 @@ internal class SchoolService : ISchoolService
                 number: x.Number,
                 name: x.Name,
                 subjectCount: x.SubjectCount,
-                ground: schoolGround
+                ground: schoolGround,
+                school: school
             )).ToList();
 
             var librarians = ground.Librarians.Select(x => new Librarian(
@@ -45,16 +49,21 @@ internal class SchoolService : ISchoolService
                 name: x.Name,
                 patronymic: x.Patronymic,
                 isGeneral: x.IsGeneral,
-                ground: schoolGround
+                ground: schoolGround,
+                school: school
             )).ToList();
 
             schoolGround.Librarians = librarians;
             schoolGround.Classes = classes;
 
             grounds.Add(schoolGround);
+            allClasses.AddRange(classes);
+            allLibrarians.AddRange(librarians);
         }
 
-        //school.Grounds = grounds;
+        school.Grounds = grounds;
+        school.Librarians = allLibrarians;
+        school.Classes = allClasses;
 
         return await schoolRepository.CreateSchoolStructureAsync(school, cancellationToken);
     }

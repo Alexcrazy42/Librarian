@@ -1,4 +1,6 @@
-﻿using Domain.Entities.SchoolStructure;
+﻿using Domain.Entities.Acts;
+using Domain.Entities.SchoolStructure;
+using Domain.Entities.Supplies;
 using Domain.Enums;
 
 namespace Domain.Entities.Books;
@@ -10,8 +12,6 @@ public sealed class EducationalBookInBalance
     public Guid Id { get; private set; }
 
     public BaseEducationalBook BaseEducationalBook { get; private set; }
-
-    public int? Chapter { get; private set; }
 
     public decimal Price { get; private set; }
 
@@ -31,31 +31,37 @@ public sealed class EducationalBookInBalance
 
     public EducationalBookInBalance? BaseBook { get; private set; }
 
+    public BookSupply Supply { get; private set; }
+
+    public EdBookDecommissioning? Decommissioning { get; private set; }
+
     private EducationalBookInBalance()
     { }
 
-    public EducationalBookInBalance(Guid id, 
-        BaseEducationalBook baseEducationalBook, 
-        int? chapter, 
+    public EducationalBookInBalance(
+        Guid id, 
+        BaseEducationalBook baseEducationalBook,
         decimal price, 
-        BookCondition condition, 
-        int year, 
+        BookCondition condition,
+        int year,
         string note, 
         int inPlaceCount, 
         int totalCount,
         SchoolGround currentschoolGround,
-        SchoolGround bookOwnerGround)
+        SchoolGround bookOwnerGround,
+        BookSupply suply
+    )
     {
         Id = id;
         BaseEducationalBook = baseEducationalBook;
-        Chapter = chapter;
         Price = price;
-        Condition = condition;
         Year = year;
+        Condition = condition;
         Note = note;
         InPlaceCount = inPlaceCount;
         TotalCount = totalCount;
         CurrentSchoolGround = currentschoolGround;
         BookOwnerGround = bookOwnerGround;
+        Supply = suply;
     }
 }

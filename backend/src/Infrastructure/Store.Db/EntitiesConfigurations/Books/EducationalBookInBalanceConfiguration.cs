@@ -1,3 +1,4 @@
+using Domain.Entities.Acts;
 using Domain.Entities.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,9 +16,6 @@ public class EducationalBookInBalanceConfiguration : IEntityTypeConfiguration<Ed
         builder.HasOne(x => x.BaseEducationalBook)
             .WithMany()
             .HasForeignKey("base_ed_book_id");
-
-        builder.Property(x => x.Chapter)
-            .HasColumnName("chapter");
 
         builder.Property(x => x.Price)
             .HasColumnName("price");
@@ -51,6 +49,12 @@ public class EducationalBookInBalanceConfiguration : IEntityTypeConfiguration<Ed
             .HasForeignKey("base_book_id")
             .IsRequired(false);
 
+        builder.HasOne(x => x.Supply)
+            .WithMany(s => s.EdBooks)
+            .HasForeignKey("supply_id");
 
+        builder.HasOne(x => x.Decommissioning)
+            .WithOne(d => d.EdBook)
+            .HasForeignKey<EdBookDecommissioning>("ed_book_in_balance_id");
     }
 }
