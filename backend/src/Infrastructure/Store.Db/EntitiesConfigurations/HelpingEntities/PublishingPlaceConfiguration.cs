@@ -16,5 +16,7 @@ public class PublishingPlaceConfiguration : IEntityTypeConfiguration<PublishingP
             .HasColumnName("name")
             .HasMaxLength(PublishingPlace.NameMaxLength)
             .IsRequired();
+
+        builder.HasData(PublishingPlaceHelper.GetPublishingPlaces());
     }
 }

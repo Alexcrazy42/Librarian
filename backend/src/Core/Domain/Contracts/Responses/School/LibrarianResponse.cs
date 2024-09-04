@@ -1,4 +1,4 @@
-﻿namespace Domain.Contracts.Responses;
+﻿namespace Domain.Contracts.Responses.School;
 
 public class LibrarianResponse
 {
@@ -10,9 +10,9 @@ public class LibrarianResponse
 
     public bool IsGeneral { get; private set; }
 
-    public LibrarianResponse(Guid id, 
-        Guid groundId, 
-        Guid schoolId, 
+    public LibrarianResponse(Guid id,
+        Guid groundId,
+        Guid schoolId,
         bool isGeneral)
     {
         Id = id;

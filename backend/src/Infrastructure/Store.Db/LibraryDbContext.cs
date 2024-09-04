@@ -1,5 +1,7 @@
 ﻿using Domain.Entities.Books;
 using Domain.Entities.SchoolStructure;
+using Domain.Entities.Subjects;
+using Domain.Entities.Supplies;
 using Domain.HelpingEntities;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,8 @@ public class LibraryDbContext : DbContext
 
     public DbSet<SchoolClass> Classes => Set<SchoolClass>();
 
+    public DbSet<ClassSubject> ClassSubjects => Set<ClassSubject>();
+
     public DbSet<Student> Students => Set<Student>();
 
     public DbSet<BaseEducationalBook> BaseEducationalBooks => Set<BaseEducationalBook>();
@@ -33,6 +37,8 @@ public class LibraryDbContext : DbContext
 
     public DbSet<Subject> Subjects => Set<Subject>();
 
+    public DbSet<BookSupply> BookSupplies => Set<BookSupply>();
+
     public LibraryDbContext()
     { }
 
@@ -44,7 +50,7 @@ public class LibraryDbContext : DbContext
     //protected override void OnConfiguring(DbContextOptionsBuilder builder)
     //{
     //    builder.UseNpgsql(
-    //                "Host=localhost; Port = 5432; Database=swipty-companies; Username=postgres; Password=123;",
+    //                "Host=localhost; Port = 5432; Database=swipty-companies; Username=postgres; Password=124;",
     //                x => x.MigrationsAssembly(typeof(LibraryDbContext).Assembly.GetName().Name));
     //}
 

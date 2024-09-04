@@ -140,6 +140,9 @@ namespace Store.Db.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("in_place_count");
 
+                    b.Property<bool>("InStock")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -809,6 +812,10 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("FullFilled")
+                        .HasColumnType("boolean")
+                        .HasColumnName("full_filled");
+
                     b.Property<string>("InvoiceNumber")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -825,7 +832,17 @@ namespace Store.Db.Migrations
                         .HasColumnType("date")
                         .HasColumnName("supply_date");
 
+                    b.Property<Guid>("ground_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("school_id")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ground_id");
+
+                    b.HasIndex("school_id");
 
                     b.ToTable("book_supplies", (string)null);
                 });
@@ -845,6 +862,18 @@ namespace Store.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("book_authors", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2b0489f0-33db-4085-b45c-d93bd1517ff1"),
+                            FullName = "Пушкин А.С."
+                        },
+                        new
+                        {
+                            Id = new Guid("01715fbe-af4f-4f19-82d1-7e22201fbd26"),
+                            FullName = "Достоевский Ф.М."
+                        });
                 });
 
             modelBuilder.Entity("Domain.HelpingEntities.Editor", b =>
@@ -862,6 +891,18 @@ namespace Store.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("book_editors", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("10b8b598-e5a4-4633-bb20-056fa10d3863"),
+                            FullName = "Пушкин А.С."
+                        },
+                        new
+                        {
+                            Id = new Guid("1aebd275-e6e3-4697-93e3-963dd25d0050"),
+                            FullName = "Достоевский Ф.М."
+                        });
                 });
 
             modelBuilder.Entity("Domain.HelpingEntities.PublishingHouse", b =>
@@ -879,6 +920,18 @@ namespace Store.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("publishing_houses", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e2b4aea0-72eb-4c15-b8df-a2e3a5e7a2ca"),
+                            Name = "Издательство"
+                        },
+                        new
+                        {
+                            Id = new Guid("4616bbb8-68b7-40b8-ab49-72c7bfae2302"),
+                            Name = "Просвещение"
+                        });
                 });
 
             modelBuilder.Entity("Domain.HelpingEntities.PublishingPlace", b =>
@@ -896,6 +949,18 @@ namespace Store.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("publishing_places", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a654195a-7289-4671-8442-027e2f3e74e0"),
+                            Name = "Москва"
+                        },
+                        new
+                        {
+                            Id = new Guid("c2ebd291-fb56-4068-9be7-965481c737fd"),
+                            Name = "Краснодар"
+                        });
                 });
 
             modelBuilder.Entity("Domain.HelpingEntities.Subject", b =>
@@ -913,6 +978,18 @@ namespace Store.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("subjects", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0e07794f-baf8-48aa-9982-7d0c710ec817"),
+                            Name = "Математика"
+                        },
+                        new
+                        {
+                            Id = new Guid("d421fbe4-3638-4e33-ae93-31e77e063a0f"),
+                            Name = "Русский язык"
+                        });
                 });
 
             modelBuilder.Entity("ed_books_another_authors", b =>
@@ -1340,6 +1417,25 @@ namespace Store.Db.Migrations
                     b.Navigation("EdBookInBalance");
 
                     b.Navigation("SubjectChapter");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Supplies.BookSupply", b =>
+                {
+                    b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", "Ground")
+                        .WithMany()
+                        .HasForeignKey("ground_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.SchoolStructure.School", "School")
+                        .WithMany()
+                        .HasForeignKey("school_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ground");
+
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("ed_books_another_authors", b =>

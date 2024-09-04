@@ -1,4 +1,5 @@
-﻿using Domain.Entities.SchoolStructure;
+﻿using Domain.Common.Exceptions;
+using Domain.Entities.SchoolStructure;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Store.Db;
@@ -14,15 +15,15 @@ internal class SchoolRepository : ISchoolRepository
         this.libraryDbContext = libraryDbContext;
     }
 
-    public async Task<School> CreateSchoolStructureAsync(School school, CancellationToken cancellationToken)
+    public async Task<School> CreateSchoolStructureAsync(School school, CancellationToken ct)
     {
         libraryDbContext.Schools.Add(school);
 
-        await libraryDbContext.SaveChangesAsync(cancellationToken);
+        await libraryDbContext.SaveChangesAsync(ct);
         return school;
     }
 
-    public async Task<School> GetById(Guid schoolId, CancellationToken cancellationToken)
+    public async Task<School> GetById(Guid schoolId, CancellationToken ct)
     {
         var school = await libraryDbContext.Schools
             .AsNoTracking()
@@ -30,8 +31,26 @@ internal class SchoolRepository : ISchoolRepository
                 .ThenInclude(x => x.Classes)
             .Include(x => x.Grounds)
                 .ThenInclude(x => x.Librarians)
-            .FirstOrDefaultAsync(x => x.Id == schoolId, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == schoolId, ct);
 
         return school;
+    }
+
+    public async Task<SchoolGround> GetGroundWithClassesById(Guid groundId, CancellationToken ct)
+    {
+        return await libraryDbContext.SchoolGrounds
+            .Include(x => x.Classes)
+            .FirstOrDefaultAsync(x => x.Id == groundId, ct)
+            ?? throw new NotFoundException("Не найдена площадка!");
+    }
+
+    public async Task<(School School, SchoolGround SchoolGround)> GetSchoolAndGroundByGroundId(Guid groundId, CancellationToken ct)
+    {
+        var schoolGround = await libraryDbContext.SchoolGrounds
+            .Include(x => x.School)
+            .FirstOrDefaultAsync(x => x.Id == groundId, ct)
+            ?? throw new NotFoundException("Площадка не найдена!");
+
+        return (schoolGround.School, schoolGround);
     }
 }

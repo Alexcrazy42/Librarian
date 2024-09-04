@@ -16,5 +16,7 @@ public class PublishingHouseConfiguration : IEntityTypeConfiguration<PublishingH
             .HasColumnName("name")
             .HasMaxLength(PublishingHouse.NameMaxLength)
             .IsRequired();
+
+        builder.HasData(PublishingHouseHelper.GetPublishingHouses());
     }
 }

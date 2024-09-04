@@ -20,7 +20,23 @@ public sealed class SchoolClass
 
     public IReadOnlyCollection<Student> Students { get; private set; } = new List<Student>();
 
-    public IReadOnlyCollection<ClassSubject> ClassSubjects { get; private set; } = new List<ClassSubject>();
+    public IList<ClassSubject> ClassSubjects { get; set; } = new List<ClassSubject>();
+
+    public IList<ClassSubject> AddSubject(ClassSubject classSubject)
+    {
+        ClassSubjects.Add(classSubject);
+        return ClassSubjects;
+    }
+
+    public IList<ClassSubject> AddSubjects(IList<ClassSubject> classSubjects)
+    {
+        foreach (var classSubject in classSubjects)
+        {
+            ClassSubjects.Add(classSubject);
+        }
+        return ClassSubjects;
+
+    }
 
     private SchoolClass()
     { }

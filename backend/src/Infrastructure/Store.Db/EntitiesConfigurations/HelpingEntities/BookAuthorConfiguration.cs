@@ -16,5 +16,7 @@ public class BookAuthorConfiguration : IEntityTypeConfiguration<BookAuthor>
             .HasColumnName("full_name")
             .HasMaxLength(BookAuthor.BookAuthorFullNameMaxLength)
             .IsRequired();
+
+        builder.HasData(BookAuthorHelper.GetBookAuthors());
     }
 }

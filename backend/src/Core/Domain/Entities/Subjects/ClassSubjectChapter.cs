@@ -11,4 +11,13 @@ public class ClassSubjectChapter
     public ClassSubject ClassSubject { get; private set; }
 
     public IReadOnlyCollection<ClassSubjectChapterEdBook> EdBooks { get; private set; } = new List<ClassSubjectChapterEdBook>();
+
+    private ClassSubjectChapter() { }
+
+    public ClassSubjectChapter(Guid id, 
+        string title)
+    {
+        Id = id;
+        Title = title;
+    }
 }

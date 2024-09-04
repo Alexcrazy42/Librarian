@@ -25,6 +25,8 @@ public sealed class EducationalBookInBalance
 
     public int TotalCount { get; private set; }
 
+    public bool InStock { get; set; }
+
     public SchoolGround CurrentSchoolGround { get; private set; }
 
     public SchoolGround BookOwnerGround { get; private set; }

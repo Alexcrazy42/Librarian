@@ -16,5 +16,7 @@ public class EditorConfiguration : IEntityTypeConfiguration<Editor>
             .HasColumnName("full_name")
             .HasMaxLength(Editor.EditorNameMaxLength)
             .IsRequired();
+
+        builder.HasData(EditorHelper.GetEditors());
     }
 }

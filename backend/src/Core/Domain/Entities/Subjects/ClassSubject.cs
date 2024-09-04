@@ -6,7 +6,7 @@ namespace Domain.Entities.Subjects;
 public class ClassSubject
 {
     public Guid Id { get; private set; }
-
+    
     public SchoolClass SchoolClass { get; private set; }
 
     public Subject Subject { get; private set; }

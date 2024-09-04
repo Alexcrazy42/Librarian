@@ -24,13 +24,13 @@ public class Student : Person
         string patronymic,
         SchoolClass schoolClass,
         School school,
-        SchoolGround Ground)
+        SchoolGround ground)
         : base(surname, name, patronymic)
     {
         Id = id;
         SchoolClass = schoolClass;
         School = school;
         IsArchived = isArchived;
-        Ground = Ground;
+        Ground = ground;
     }
 }

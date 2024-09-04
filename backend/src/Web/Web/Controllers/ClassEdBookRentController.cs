@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Contracts.Requests.Rents;
+using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -18,15 +19,15 @@ public class ClassEdBookRentController
         this.mapper = mapper;
     }
 
-    public async Task GetClassRentSituationAsync(Guid classId, CancellationToken cancellationToken)
-    {
+    //public async Task GetClassRentSituationAsync(Guid classId, CancellationToken ct)
+    //{
 
-    }
+    //}
 
-    public async Task<IActionResult> CreateClassRentEdBooksAsync([FromBody] CreateClassRentEdBookRequest request, CancellationToken cancellationToken)
-    {
-        var res = await classRentEdBookService.CreateClassRentEdBooksAsync(request, cancellationToken);
+    //public async Task<IActionResult> CreateClassRentEdBooksAsync([FromBody] CreateClassRentEdBookRequest request, CancellationToken ct)
+    //{
+    //    var res = await classRentEdBookService.CreateClassRentEdBooksAsync(request, ct);
 
-        throw new NotImplementedException();
-    }
+    //    throw new NotImplementedException();
+    //}
 }

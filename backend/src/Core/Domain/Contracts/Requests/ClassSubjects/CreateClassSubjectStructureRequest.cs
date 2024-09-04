@@ -1,15 +1,13 @@
-﻿using System.Dynamic;
-
-namespace Domain.Contracts.Requests.ClassSubjects;
+﻿namespace Domain.Contracts.Requests.ClassSubjects;
 
 public class CreateClassSubjectStructureRequest
 {
     public Guid GroundId { get; set; }
 
-    public IReadOnlyCollection<ClassSubject> ClassSubjects { get; set; } = new List<ClassSubject>();
+    public IReadOnlyCollection<CreateClassSubject> ClassSubjects { get; set; } = new List<CreateClassSubject>();
 }
 
-public class ClassSubject
+public class CreateClassSubject
 {
     public Guid SchoolClassId { get; set; }
 
@@ -21,4 +19,6 @@ public class CreateSubjectRequest
     public Guid? SubjectId { get; set; }
 
     public string? SubjectName { get; set; }
+
+    public IReadOnlyCollection<string> ChapterNames { get; set; } = new List<string>();
 }

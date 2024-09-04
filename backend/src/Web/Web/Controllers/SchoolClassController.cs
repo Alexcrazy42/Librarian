@@ -14,8 +14,8 @@ public class SchoolClassController
 		this.mapper = mapper;
 	}
 
-	public async Task<IActionResult> TransferStudentsToNextYear(Guid groundId, CancellationToken cancellationToken)
-	{
-		throw new NotImplementedException();
-	}
+	//public async Task<IActionResult> TransferStudentsToNextYear(Guid groundId, CancellationToken ct)
+	//{
+	//	throw new NotImplementedException();
+	//}
 }

@@ -5,5 +5,5 @@ namespace Domain.Interfaces.Services;
 
 public interface ISchoolService
 {
-    public Task<School> CreateSchoolStructureAsync(CreateSchoolStructureRequest request, CancellationToken cancellationToken);
+    public Task<School> CreateSchoolStructureAsync(CreateSchoolStructureRequest request, CancellationToken ct);
 }

@@ -1,4 +1,4 @@
-﻿namespace Domain.Contracts.Responses;
+﻿namespace Domain.Contracts.Responses.School;
 
 public class SchoolResponse
 {
@@ -10,8 +10,8 @@ public class SchoolResponse
 
     public IReadOnlyCollection<SchoolGroundResponse> Grounds { get; set; } = new List<SchoolGroundResponse>();
 
-    public SchoolResponse(Guid id, 
-        string shortName, 
+    public SchoolResponse(Guid id,
+        string shortName,
         string officialName)
     {
         Id = id;

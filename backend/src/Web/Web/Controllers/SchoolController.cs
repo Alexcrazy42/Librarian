@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Contracts.Requests.School;
-using Domain.Contracts.Responses;
+using Domain.Contracts.Responses.School;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,17 +25,17 @@ public class SchoolController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<SchoolResponse> GetSchoolAsync(Guid schoolId, CancellationToken cancellationToken)
+	public async Task<SchoolResponse> GetSchoolAsync(Guid schoolId, CancellationToken ct)
 	{
-		var school = await schoolRepository.GetById(schoolId, cancellationToken);
+		var school = await schoolRepository.GetById(schoolId, ct);
 
 		return mapper.Map<SchoolResponse>(school);
 	}
 
 	[HttpPost]
-	public async Task<SchoolResponse> CreateSchoolStructureAsync(CreateSchoolStructureRequest request, CancellationToken cancellationToken)
+	public async Task<SchoolResponse> CreateSchoolStructureAsync(CreateSchoolStructureRequest request, CancellationToken ct)
 	{
-		var school = await schoolService.CreateSchoolStructureAsync(request, cancellationToken);
+		var school = await schoolService.CreateSchoolStructureAsync(request, ct);
 
 		return mapper.Map<SchoolResponse>(school);
 	}

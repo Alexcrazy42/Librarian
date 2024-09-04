@@ -1,4 +1,4 @@
-﻿namespace Domain.Contracts.Responses;
+﻿namespace Domain.Contracts.Responses.School;
 
 public class SchoolGroundResponse
 {
@@ -12,8 +12,8 @@ public class SchoolGroundResponse
 
     public IReadOnlyCollection<LibrarianResponse> Librarians { get; set; } = new List<LibrarianResponse>();
 
-    public SchoolGroundResponse(Guid id, 
-        string name, 
+    public SchoolGroundResponse(Guid id,
+        string name,
         Guid schoolId)
     {
         Id = id;

@@ -21,3 +21,16 @@ public class PublishingHouse
         Name = name;
     }
 }
+
+public static class PublishingHouseHelper
+{
+    public static IReadOnlyCollection<PublishingHouse> GetPublishingHouses()
+    {
+        return new List<PublishingHouse>()
+        {
+            new PublishingHouse(Guid.Parse("e2b4aea0-72eb-4c15-b8df-a2e3a5e7a2ca"), "Издательство"),
+            new PublishingHouse(Guid.Parse("4616bbb8-68b7-40b8-ab49-72c7bfae2302"), "Просвещение")
+        };
+    }
+}
+

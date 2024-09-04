@@ -16,5 +16,7 @@ public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
             .HasColumnName("name")
             .HasMaxLength(Subject.NameMaxLength)
             .IsRequired();
+
+        builder.HasData(SubjectHelper.GetSubjects());
     }
 }

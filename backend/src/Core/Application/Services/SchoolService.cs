@@ -14,7 +14,7 @@ internal class SchoolService : ISchoolService
         this.schoolRepository = schoolRepository;
     }
 
-    public async Task<School> CreateSchoolStructureAsync(CreateSchoolStructureRequest request, CancellationToken cancellationToken)
+    public async Task<School> CreateSchoolStructureAsync(CreateSchoolStructureRequest request, CancellationToken ct)
     {
         var school = new School(
             id: Guid.NewGuid(),
@@ -65,6 +65,6 @@ internal class SchoolService : ISchoolService
         school.Librarians = allLibrarians;
         school.Classes = allClasses;
 
-        return await schoolRepository.CreateSchoolStructureAsync(school, cancellationToken);
+        return await schoolRepository.CreateSchoolStructureAsync(school, ct);
     }
 }

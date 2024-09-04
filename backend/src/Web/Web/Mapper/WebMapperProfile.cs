@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using Domain.Contracts.Responses;
+using Domain.Contracts.Responses.School;
 using Domain.Entities.SchoolStructure;
+using Domain.Entities.Subjects;
 
 namespace Web.Mapper;
 
@@ -20,5 +21,9 @@ public class WebMapperProfile: Profile
         CreateMap<Librarian, LibrarianResponse>()
             .ForMember(dest => dest.GroundId, opt => opt.MapFrom(src => src.Ground != null ? src.Ground.Id : Guid.Empty))
             .ForMember(dest => dest.SchoolId, opt => opt.MapFrom(src => src.School != null ? src.School.Id : Guid.Empty));
+
+		
+
+
     }
 }

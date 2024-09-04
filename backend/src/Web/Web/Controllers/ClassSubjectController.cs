@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Domain.Contracts.Requests.ClassSubject;
-using Domain.Contracts.Responses;
+using Domain.Contracts.Requests.ClassSubjects;
+using Domain.Contracts.Responses.ClassSubject;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,10 +21,30 @@ public class ClassSubjectController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ClassSubjectStructureResponse> CreateClassSubjectStructureAsync([FromBody] CreateClassSubjectStructureRequest request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ClassSubjectDto>> CreateClassSubjectStructureAsync([FromBody] CreateClassSubjectStructureRequest request, CancellationToken ct)
     {
-        var classSubjects = await classSubjectService.CreateClassSubjectStructureAsync(request, cancellationToken);
+        var classSubjects = await classSubjectService.CreateClassSubjectStructureAsync(request, ct);
 
-        return mapper.Map<ClassSubjectStructureResponse>(classSubjects);
+        var classSubjectsDtos = classSubjects
+            .GroupBy(x => x.SchoolClass)
+            .Select(group => new ClassSubjectDto()
+            {
+                SchoolClassId = group.Key.Id,
+                Number = group.Key.Number,
+                Name = group.Key.Name,
+                Subjects = group.Select(x => new ClassSubjectResponse()
+                {
+                    Id = x.Id,
+                    SubjectId = x.Subject.Id,
+                    Name = x.Subject.Name,
+                    Chapters = x.Chapters.Select(x => new ClassSubjectChapterDto()
+                    {
+                        Id = x.Id,
+                        Title = x.Title
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+        return classSubjectsDtos;
     }
 }

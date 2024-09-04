@@ -12,6 +12,14 @@ public class BookSupplyConfiguration : IEntityTypeConfiguration<BookSupply>
 
         builder.HasKey(x => x.Id);
 
+        builder.HasOne(x => x.Ground)
+            .WithMany()
+            .HasForeignKey("ground_id");
+
+        builder.HasOne(x => x.School)
+            .WithMany()
+            .HasForeignKey("school_id");
+
         builder.Property(x => x.SupplyDate)
             .HasColumnName("supply_date");
 
@@ -22,6 +30,9 @@ public class BookSupplyConfiguration : IEntityTypeConfiguration<BookSupply>
         builder.Property(x => x.InvoiceNumber)
             .HasMaxLength(BookSupply.InvoiceNumberMaxLength)
             .HasColumnName("invoice_number");
+
+        builder.Property(x => x.FullFilled)
+            .HasColumnName("full_filled");
 
         builder.HasMany(x => x.EdBooks)
             .WithOne(e => e.Supply);

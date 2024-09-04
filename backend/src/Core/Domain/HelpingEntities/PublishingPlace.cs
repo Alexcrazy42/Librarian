@@ -22,3 +22,15 @@ public class PublishingPlace
         Name = name;
     }
 }
+
+public static class PublishingPlaceHelper
+{
+    public static IReadOnlyCollection<PublishingPlace> GetPublishingPlaces()
+    {
+        return new List<PublishingPlace>()
+        {
+            new PublishingPlace(Guid.Parse("a654195a-7289-4671-8442-027e2f3e74e0"), "Москва"),
+            new PublishingPlace(Guid.Parse("c2ebd291-fb56-4068-9be7-965481c737fd"), "Краснодар")
+        };
+    }
+}

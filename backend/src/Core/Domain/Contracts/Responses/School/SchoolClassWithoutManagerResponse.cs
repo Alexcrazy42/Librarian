@@ -1,4 +1,4 @@
-﻿namespace Domain.Contracts.Responses;
+﻿namespace Domain.Contracts.Responses.School;
 
 public class SchoolClassWithoutManagerResponse
 {
@@ -14,11 +14,11 @@ public class SchoolClassWithoutManagerResponse
 
     public Guid SchoolId { get; private set; }
 
-    public SchoolClassWithoutManagerResponse(Guid id, 
-        int number, 
-        string name, 
-        int subjectCount, 
-        Guid groundId, 
+    public SchoolClassWithoutManagerResponse(Guid id,
+        int number,
+        string name,
+        int subjectCount,
+        Guid groundId,
         Guid schoolId)
     {
         Id = id;

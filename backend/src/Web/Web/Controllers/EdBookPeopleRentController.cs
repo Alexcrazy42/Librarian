@@ -14,13 +14,13 @@ public class EdBookPeopleRentController
 		this.mapper = mapper;
 	}
 
-	public async Task GiveEdBookToStudentAsync()
-	{
-		throw new NotImplementedException();
-	}
+	//public async Task GiveEdBookToStudentAsync()
+	//{
+	//	throw new NotImplementedException();
+	//}
 
-    public async Task GiveEdBookToEmployeeAsync()
-    {
-        throw new NotImplementedException();
-    }
+ //   public async Task GiveEdBookToEmployeeAsync()
+ //   {
+ //       throw new NotImplementedException();
+ //   }
 }

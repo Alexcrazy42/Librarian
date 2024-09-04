@@ -21,3 +21,16 @@ public class Subject
         Name = name;
     }
 }
+
+public static class SubjectHelper
+{
+    public static IReadOnlyCollection<Subject> GetSubjects()
+    {
+        return new List<Subject>()
+        {
+            new Subject(Guid.Parse("0e07794f-baf8-48aa-9982-7d0c710ec817"), "Математика"),
+            new Subject(Guid.Parse("d421fbe4-3638-4e33-ae93-31e77e063a0f"), "Русский язык")
+        };
+    }
+}
+
