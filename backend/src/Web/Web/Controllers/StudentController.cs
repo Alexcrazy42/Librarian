@@ -55,4 +55,10 @@ public class StudentController : ControllerBase
 			ClassId = x.SchoolClass?.Id ?? null
 		}).ToList();
 	}
+
+	[HttpPost("transfer-next-year")]
+	public async Task TransferStudentsToYearUpAsync(Guid groundId, CancellationToken ct)
+	{
+		throw new NotImplementedException();
+	}
 }

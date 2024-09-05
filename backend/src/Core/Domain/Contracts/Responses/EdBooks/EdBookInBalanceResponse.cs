@@ -20,9 +20,9 @@ public class EdBookInBalanceResponse
 
     public int TotalCount { get; set; }
 
-    public Guid SupplyId { get; set; }
+    public Guid? SupplyId { get; set; }
 
-    public Guid GroundId { get; set; }
+    public Guid? GroundId { get; set; }
 
     public bool InStock { get; set; }
 }

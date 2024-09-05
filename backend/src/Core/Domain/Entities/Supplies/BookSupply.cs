@@ -24,6 +24,11 @@ public class BookSupply
 
     public IReadOnlyCollection<EducationalBookInBalance> EdBooks { get; private set; } = new List<EducationalBookInBalance>();
 
+    public void EndFilling()
+    {
+        FullFilled = true;
+    }
+
     private BookSupply() { }
 
     public BookSupply(Guid id, 

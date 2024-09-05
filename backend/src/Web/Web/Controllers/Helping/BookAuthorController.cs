@@ -2,7 +2,7 @@
 using Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Controllers;
+namespace Web.Controllers.Helping;
 
 [ApiController]
 [Route("api/authoers")]
@@ -18,7 +18,7 @@ public class BookAuthorController : ControllerBase
     [HttpGet]
     public async Task<IReadOnlyCollection<BookAuthorResponse>> GetBookAuthorAsync(string partName, CancellationToken ct)
     {
-        var bookAuthors =  await bookRepository.GetBookAuthorsAsync(partName, ct);
+        var bookAuthors = await bookRepository.GetBookAuthorsAsync(partName, ct);
 
 
         return bookAuthors.Select(bookAuthor => new BookAuthorResponse()

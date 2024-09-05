@@ -24,6 +24,17 @@ internal class SupplyRepository : ISupplyRepository
         return supply.Id;
     }
 
+    public async Task EndFillingSupplyAsync(Guid supplyId, CancellationToken ct)
+    {
+        var supply = await libraryDbContext.BookSupplies
+            .FirstOrDefaultAsync(x => x.Id == supplyId, ct)
+            ?? throw new NotFoundException("Поставка не найдена!");
+
+        supply.EndFilling();
+
+        await libraryDbContext.SaveChangesAsync();
+    }
+
     public async Task<BookSupply> GetBookSupplyAsync(Guid id, CancellationToken ct)
     {
         return await libraryDbContext.BookSupplies

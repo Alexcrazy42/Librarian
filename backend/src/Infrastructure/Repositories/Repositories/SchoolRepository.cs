@@ -17,23 +17,21 @@ internal class SchoolRepository : ISchoolRepository
 
     public async Task<School> CreateSchoolStructureAsync(School school, CancellationToken ct)
     {
-        libraryDbContext.Schools.Add(school);
+        await libraryDbContext.Schools.AddAsync(school, ct);
 
-        await libraryDbContext.SaveChangesAsync(ct);
         return school;
     }
 
     public async Task<School> GetById(Guid schoolId, CancellationToken ct)
     {
-        var school = await libraryDbContext.Schools
+        return await libraryDbContext.Schools
             .AsNoTracking()
             .Include(x => x.Grounds)
                 .ThenInclude(x => x.Classes)
             .Include(x => x.Grounds)
                 .ThenInclude(x => x.Librarians)
-            .FirstOrDefaultAsync(x => x.Id == schoolId, ct);
-
-        return school;
+            .FirstOrDefaultAsync(x => x.Id == schoolId, ct)
+            ?? throw new NotFoundException("Школа не найдена!");
     }
 
     public async Task<SchoolGround> GetGroundWithClassesById(Guid groundId, CancellationToken ct)

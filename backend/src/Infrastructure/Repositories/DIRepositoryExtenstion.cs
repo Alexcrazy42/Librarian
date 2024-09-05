@@ -17,6 +17,8 @@ public static class DIRepositoryExtenstion
         services.AddScoped<IBookAuthorRepository, BookAuthorRepository>();
         services.AddScoped<IEditorRepository, EditorRepository>();
         services.AddScoped<IPublishingRepository, PublishingRepository>();
+        services.AddScoped<IBaseEdBookRepository, BaseEdBookRepository>();
+        services.AddScoped<IEdBookRepository, EdBookRepository>();
         return services;
     }
 }

@@ -65,4 +65,10 @@ public class SupplyController : ControllerBase
     {
         return await supplyService.CreateSupplyAsync(request, ct);
     }
+
+    [HttpPut("fullfill-supply")]
+    public async Task EndSupplyFillingAsync(Guid supplyId, CancellationToken ct)
+    {
+        await supplyRepository.EndFillingSupplyAsync(supplyId, ct);
+    }
 }
