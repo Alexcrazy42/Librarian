@@ -2,6 +2,8 @@
 
 public enum EdBookDecommissioningReason
 {
+    Unknown = 0,
+
     Dilapidation,
 
     LeaveFromFederalBooksList

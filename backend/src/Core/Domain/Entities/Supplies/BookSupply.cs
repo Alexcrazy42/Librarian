@@ -31,6 +31,11 @@ public class BookSupply
 
     private BookSupply() { }
 
+    public BookSupply(Guid id)
+    {
+        Id = id;
+    }
+
     public BookSupply(Guid id, 
         SchoolGround ground,
         School school,

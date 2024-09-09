@@ -5,7 +5,7 @@ namespace Domain.Interfaces.Repositories;
 
 public interface IBaseEdBookRepository
 {
-    public Task<IReadOnlyCollection<BaseEducationalBook>> GetOrCreateBaseEdBookAsync(CreateBaseEdBookRequest request, CancellationToken ct);
+    public Task<IReadOnlyCollection<BaseEducationalBook>> GetSimilarBookAsync(GetSimilarBaseEdBookRequest request, CancellationToken ct);
 
     public Task<Guid> CreateBookAfterUserSureWhatAnotherVariantsNotSuitAsync(CreateBaseEdBookRequest request, CancellationToken ct);
 }

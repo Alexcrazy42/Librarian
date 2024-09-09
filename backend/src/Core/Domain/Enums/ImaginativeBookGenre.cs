@@ -2,6 +2,8 @@
 
 public enum ImaginativeBookGenre
 {
+    Unknown = 0,
+
     Dramaturgy,
 
     ClassicPoetry,

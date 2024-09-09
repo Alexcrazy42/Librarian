@@ -49,9 +49,10 @@ public sealed class EducationalBookInBalance
         string note, 
         int inPlaceCount, 
         int totalCount,
+        bool inStock,
         SchoolGround currentschoolGround,
         SchoolGround bookOwnerGround,
-        BookSupply suply
+        BookSupply supply
     )
     {
         Id = id;
@@ -64,6 +65,7 @@ public sealed class EducationalBookInBalance
         TotalCount = totalCount;
         CurrentSchoolGround = currentschoolGround;
         BookOwnerGround = bookOwnerGround;
-        Supply = suply;
+        Supply = supply;
+        InStock = inStock;
     }
 }

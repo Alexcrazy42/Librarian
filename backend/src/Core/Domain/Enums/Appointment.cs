@@ -5,6 +5,8 @@
 /// </summary>
 public enum Appointment
 {
+    Unknown = 0,
+
     /// <summary>
     /// Учебник
     /// </summary>

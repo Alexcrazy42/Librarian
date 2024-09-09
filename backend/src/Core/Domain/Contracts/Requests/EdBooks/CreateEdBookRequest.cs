@@ -14,9 +14,7 @@ public class CreateEdBookRequest
 
     public string Note { get; set; }
 
-    public int InPlaceCount { get; set; }
-
-    public int TotalCount { get; set; }
+    public int Count { get; set; }
 
     public Guid GroundId { get; set; }
 

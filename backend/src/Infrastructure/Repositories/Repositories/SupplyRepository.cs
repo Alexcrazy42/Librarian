@@ -39,6 +39,7 @@ internal class SupplyRepository : ISupplyRepository
     {
         return await libraryDbContext.BookSupplies
             .Include(x => x.EdBooks)
+                .ThenInclude(edBook => edBook.BaseEducationalBook)
             .FirstOrDefaultAsync(x => x.Id == id, ct)
             ?? throw new NotFoundException("Поставка не найдена!");
     }

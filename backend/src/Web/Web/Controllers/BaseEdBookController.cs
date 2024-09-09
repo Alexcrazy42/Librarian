@@ -17,9 +17,9 @@ public class BaseEdBookController : ControllerBase
     }
 
     [HttpPost("get-familiar")]
-    public async Task<IReadOnlyCollection<BaseEdBookResponse>> GetOrCreateBaseEdBookAsync([FromBody] CreateBaseEdBookRequest request, CancellationToken ct)
+    public async Task<IReadOnlyCollection<BaseEdBookResponse>> GetSimilarBookAsync([FromBody] GetSimilarBaseEdBookRequest request, CancellationToken ct)
     {
-        var baseEdBooks = await baseEdBookRepository.GetOrCreateBaseEdBookAsync(request, ct);
+        var baseEdBooks = await baseEdBookRepository.GetSimilarBookAsync(request, ct);
 
         return baseEdBooks.Select(x => new BaseEdBookResponse()
         {

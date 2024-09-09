@@ -38,7 +38,7 @@ public class SupplyController : ControllerBase
                 Id = x.Id, 
                 BaseEdBook = new BaseEdBookResponse()
                 {
-                    Id = x.BaseBook.Id,
+                    Id = x.BaseEducationalBook.Id,
                     Title = x.BaseEducationalBook.Title,
                     PublishingSeries = x.BaseEducationalBook.PublishingSeries,
                     Language = x.BaseEducationalBook.Language,

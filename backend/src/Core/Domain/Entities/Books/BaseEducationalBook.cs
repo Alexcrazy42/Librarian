@@ -41,6 +41,11 @@ public class BaseEducationalBook
 
     private BaseEducationalBook() { }
 
+    public BaseEducationalBook(Guid id)
+    {
+        Id = id;
+    }
+
     public BaseEducationalBook(Guid id,
         BookAuthor author,
         Editor editor,
