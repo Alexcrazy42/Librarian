@@ -1,5 +1,7 @@
-﻿using Domain.Entities.Subjects;
+﻿using Domain.Common.Exceptions;
+using Domain.Entities.Subjects;
 using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Store.Db;
 
 namespace Repositories.Repositories;
@@ -21,5 +23,41 @@ internal class ClassSubjectRepository : IClassSubjectRepository
         await libraryDbContext.SaveChangesAsync();
 
         return classSubjects;
+    }
+
+    public async Task<ClassSubjectChapterEdBook> GetSubjectChapterEdBookWithDetailsAsync(Guid chapterId, CancellationToken ct)
+    {
+        return await libraryDbContext.ClassSubjectChapterEdBooks
+            .Include(x => x.EdBookInBalance)
+            .FirstOrDefaultAsync(x => x.Id == chapterId, ct)
+            ?? throw new NotFoundException("Не была найдена часть этого предмета!");
+    }
+
+    public async Task<IReadOnlyCollection<ClassSubjectChapterEdBook>> SetEdBookToSubjectChaptersAsync(
+        IReadOnlyCollection<ClassSubjectChapterEdBook> classSubjectChapterEdBooks, CancellationToken ct)
+    {
+        foreach (var i in classSubjectChapterEdBooks)
+        {
+            libraryDbContext.Attach(i.EdBookInBalance);
+            libraryDbContext.Attach(i.SubjectChapter);
+        }
+
+        libraryDbContext.ClassSubjectChapterEdBooks.AddRange(classSubjectChapterEdBooks);
+
+        await libraryDbContext.SaveChangesAsync(ct);
+
+        foreach (var i in classSubjectChapterEdBooks)
+        {
+            libraryDbContext.Entry(i.EdBookInBalance).State = EntityState.Detached;
+            libraryDbContext.Entry(i.SubjectChapter).State = EntityState.Detached;
+        }
+
+
+        return await libraryDbContext.ClassSubjectChapterEdBooks
+            .Include(x => x.SubjectChapter)
+            .Include(x => x.EdBookInBalance)
+                .ThenInclude(edBookInBalance => edBookInBalance.BaseEducationalBook)
+            .Where(x => classSubjectChapterEdBooks.Select(x => x.Id).Contains(x.Id))
+            .ToListAsync(ct);
     }
 }

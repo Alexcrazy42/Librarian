@@ -21,4 +21,26 @@ public class EducationalBookStudentRent
     public DateOnly StartDate { get; private set; }
 
     public DateOnly EndDate { get; private set; }
+
+    private EducationalBookStudentRent() { }
+
+    public EducationalBookStudentRent(Guid id)
+    {
+        Id = id;
+    }
+
+    public EducationalBookStudentRent(Guid id, 
+        Student student, 
+        EducationalBookInBalance book, 
+        int count,
+        DateOnly startDate, 
+        DateOnly endDate)
+    {
+        Id = id;
+        Student = student;
+        Book = book;
+        Count = count;
+        StartDate = startDate;
+        EndDate = endDate;
+    }
 }

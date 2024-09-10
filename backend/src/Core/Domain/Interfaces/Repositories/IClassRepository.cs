@@ -5,4 +5,6 @@ namespace Domain.Interfaces.Repositories;
 public interface IClassRepository
 {
     public Task<(School School, SchoolGround SchoolGround, SchoolClass Class)> GetSchoolDetailsAsyncByClassIdAsync(Guid classId, CancellationToken ct);
+
+    public Task<SchoolClass> GetSchoolClassWithStudentsAsync(Guid classId, CancellationToken ct);
 }

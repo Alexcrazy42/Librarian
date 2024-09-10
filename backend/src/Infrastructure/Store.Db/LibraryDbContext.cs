@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Books;
+using Domain.Entities.Rents.People;
 using Domain.Entities.SchoolStructure;
 using Domain.Entities.Subjects;
 using Domain.Entities.Supplies;
@@ -38,6 +39,10 @@ public class LibraryDbContext : DbContext
     public DbSet<Subject> Subjects => Set<Subject>();
 
     public DbSet<BookSupply> BookSupplies => Set<BookSupply>();
+   
+    public DbSet<ClassSubjectChapterEdBook> ClassSubjectChapterEdBooks => Set<ClassSubjectChapterEdBook>();
+
+    public DbSet<EducationalBookStudentRent> EdBooksStudentsRents => Set<EducationalBookStudentRent>();
 
     public LibraryDbContext()
     { }

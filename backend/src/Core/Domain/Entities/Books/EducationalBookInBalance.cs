@@ -37,8 +37,18 @@ public sealed class EducationalBookInBalance
 
     public EdBookDecommissioning? Decommissioning { get; private set; }
 
+    public void DecreaseInPlaceCount()
+    {
+        InPlaceCount--;
+    }
+
     private EducationalBookInBalance()
     { }
+    
+    public EducationalBookInBalance(Guid id)
+    {
+        Id = id;
+    }
 
     public EducationalBookInBalance(
         Guid id, 

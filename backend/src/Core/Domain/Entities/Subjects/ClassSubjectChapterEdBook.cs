@@ -8,19 +8,15 @@ public class ClassSubjectChapterEdBook
 
     public ClassSubjectChapter SubjectChapter { get; private set; }
 
-    public BaseEducationalBook? BaseEdBook { get; private set; }
-
     public EducationalBookInBalance? EdBookInBalance { get; private set; }
 
     private ClassSubjectChapterEdBook() { }
 
     public ClassSubjectChapterEdBook(Guid id, 
-        ClassSubjectChapter subjectChapter, 
-        BaseEducationalBook baseEdBook)
+        ClassSubjectChapter subjectChapter)
     {
         Id = id;
         SubjectChapter = subjectChapter;
-        BaseEdBook = baseEdBook;
     }
 
     public ClassSubjectChapterEdBook(Guid id, 

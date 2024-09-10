@@ -14,6 +14,11 @@ public class ClassSubjectChapter
 
     private ClassSubjectChapter() { }
 
+    public ClassSubjectChapter(Guid id)
+    {
+        Id = id;
+    }
+
     public ClassSubjectChapter(Guid id, 
         string title)
     {

@@ -1,4 +1,6 @@
 ﻿using Domain.Common;
+using Domain.Entities.Rents.People;
+using System.Net.Http.Headers;
 
 namespace Domain.Entities.SchoolStructure;
 
@@ -13,6 +15,13 @@ public class Student : Person
     public School School { get; private set; }
 
     public SchoolGround Ground { get; private set; }
+
+    public IList<EducationalBookStudentRent> EdBookRents { get; private set; } = new List<EducationalBookStudentRent>();
+
+    public void AddEdBookRent(EducationalBookStudentRent rent)
+    {
+        EdBookRents.Add(rent);
+    }
 
     private Student()
     { }

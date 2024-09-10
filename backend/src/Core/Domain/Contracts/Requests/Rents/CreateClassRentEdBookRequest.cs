@@ -2,7 +2,5 @@
 
 public class CreateClassRentEdBookRequest
 {
-    public Guid ClassSubjectId { get; set; }
-
     public Guid ClassSubjectChapterId { get; set; }
 }

@@ -10,16 +10,11 @@ public class ClassSubjectChapterEdBookConfiguration : IEntityTypeConfiguration<C
     {
         builder.ToTable("class_subject_chapter_ed_books");
 
-        builder.HasKey(x => x.Id);            
+        builder.HasKey(x => x.Id);  
 
         builder.HasOne(x => x.SubjectChapter)
             .WithMany(e => e.EdBooks)
             .HasForeignKey("subject_chapter_id");
-
-        builder.HasOne(x => x.BaseEdBook)
-            .WithMany()
-            .HasForeignKey("base_ed_book_id")
-            .IsRequired(false);
 
         builder.HasOne(x => x.EdBookInBalance)
             .WithMany()

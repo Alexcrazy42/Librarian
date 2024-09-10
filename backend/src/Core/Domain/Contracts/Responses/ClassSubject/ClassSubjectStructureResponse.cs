@@ -1,4 +1,6 @@
-﻿namespace Domain.Contracts.Responses.ClassSubject;
+﻿using Domain.Contracts.Responses.EdBooks;
+
+namespace Domain.Contracts.Responses.ClassSubject;
 
 public class ClassSubjectDto
 {
@@ -19,12 +21,14 @@ public class ClassSubjectResponse
 
     public string Name { get; set; }
 
-    public IReadOnlyCollection<ClassSubjectChapterDto> Chapters { get; set; } = new List<ClassSubjectChapterDto>();
+    public IReadOnlyCollection<ClassSubjectChapterWithBookDto> Chapters { get; set; } = new List<ClassSubjectChapterWithBookDto>();
 }
 
-public class ClassSubjectChapterDto
+public class ClassSubjectChapterWithBookDto
 {
     public Guid Id { get; set; }
 
     public string Title { get; set; }
+
+    public EdBookInBalanceResponse? EdBook { get; set; }
 }

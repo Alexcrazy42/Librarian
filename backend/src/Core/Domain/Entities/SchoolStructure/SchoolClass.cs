@@ -18,7 +18,7 @@ public sealed class SchoolClass
 
     public Employee? Manager { get; private set; }
 
-    public IReadOnlyCollection<Student> Students { get; private set; } = new List<Student>();
+    public IList<Student> Students { get; private set; } = new List<Student>();
 
     public IList<ClassSubject> ClassSubjects { get; set; } = new List<ClassSubject>();
 

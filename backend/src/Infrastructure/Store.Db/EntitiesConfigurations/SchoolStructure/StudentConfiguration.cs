@@ -40,7 +40,10 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
             .HasForeignKey("school_id");
 
         builder.HasOne(x => x.Ground)
-            .WithMany(Ground => Ground.Students)
-            .HasForeignKey("Ground_id");
+            .WithMany(ground => ground.Students)
+            .HasForeignKey("ground_id");
+
+        builder.HasMany(x => x.EdBookRents)
+            .WithOne(e => e.Student);
     }
 }
