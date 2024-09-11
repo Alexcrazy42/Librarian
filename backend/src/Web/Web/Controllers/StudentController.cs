@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Domain.Common.Exceptions;
 using Domain.Contracts.Requests.Students;
 using Domain.Contracts.Responses.Students;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Web.Controllers;
 
@@ -57,8 +60,36 @@ public class StudentController : ControllerBase
 	}
 
 	[HttpPost("transfer-next-year")]
-	public async Task TransferStudentsToYearUpAsync(Guid groundId, CancellationToken ct)
+	public async Task<ActionResult> TransferStudentsToYearUpAsync([FromBody] IReadOnlyCollection<TransferStudentsFromOneClassToAnotherRequest> request, CancellationToken ct)
+	{
+		var (requestValid, errorMessage) = IsClassTransfersHaveValidDependences(request);
+
+		if (!requestValid)
+		{
+			return BadRequest(errorMessage);
+		}
+
+		try
+		{
+			await studentRepository.TransferStudentsToYearUpAsync(request, ct);
+			return Ok("Успешно!");
+		}
+		catch(CommonException ex)
+		{
+			return BadRequest(ex.Message);
+		}
+
+	}
+
+	[HttpPut("transter-students/{classId}")]
+	public async Task TransferStudentsToAnotherClassAsync([FromRoute] Guid classId, [FromBody] IReadOnlyCollection<Guid> studentsIds, CancellationToken ct)
 	{
 		throw new NotImplementedException();
+	}
+
+	private (bool Valid, string Error) IsClassTransfersHaveValidDependences(IReadOnlyCollection<TransferStudentsFromOneClassToAnotherRequest> request)
+	{
+		// TODO
+		return (true, "");
 	}
 }

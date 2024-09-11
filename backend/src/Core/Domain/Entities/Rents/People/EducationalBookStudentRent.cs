@@ -16,7 +16,9 @@ public class EducationalBookStudentRent
 
     public bool IsArchived { get; private set; }
 
-    public PeopleRentReport RentReport { get; private set; }
+    public PeopleRentReport? RentReport { get; private set; }
+
+    public bool IsOverdue { get; set; }
 
     public DateOnly StartDate { get; private set; }
 
@@ -33,6 +35,8 @@ public class EducationalBookStudentRent
         Student student, 
         EducationalBookInBalance book, 
         int count,
+        bool isArchived,
+        bool isOverdue,
         DateOnly startDate, 
         DateOnly endDate)
     {
@@ -40,6 +44,8 @@ public class EducationalBookStudentRent
         Student = student;
         Book = book;
         Count = count;
+        IsArchived = isArchived;
+        IsOverdue = isOverdue;
         StartDate = startDate;
         EndDate = endDate;
     }

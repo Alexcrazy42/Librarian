@@ -18,10 +18,6 @@ public class EdBookDecommissioningConfiguration : IEntityTypeConfiguration<EdBoo
         builder.Property(x => x.Date)
             .HasColumnName("date");
 
-        //builder.HasOne(x => x.EdBook)
-        //    .WithOne(e => e.Decommissioning)
-        //    .HasForeignKey("ed_book_in_balance_id");
-
         builder.Property(x => x.Count)
             .HasColumnName("count");
 

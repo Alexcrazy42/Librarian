@@ -4,7 +4,7 @@ using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Store.Db;
 
-namespace Repositories.Repositories;
+namespace Repositories.Repositories.Helping;
 
 internal class EditorRepository : IEditorRepository
 {
@@ -24,7 +24,8 @@ internal class EditorRepository : IEditorRepository
         {
             var newEditor = new Editor(Guid.NewGuid(), fullName);
 
-            await libraryDbContext.Editors.AddAsync(newEditor, ct);
+            libraryDbContext.Editors.Add(newEditor);
+            await libraryDbContext.SaveChangesAsync(ct);
 
             return newEditor;
         }
@@ -32,8 +33,10 @@ internal class EditorRepository : IEditorRepository
         return editor;
     }
 
-    public Task<IReadOnlyCollection<Editor>> GetBookEditorsAsync(string partName, CancellationToken ct)
+    public async Task<IReadOnlyCollection<Editor>> GetBookEditorsAsync(string partName, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        return await libraryDbContext.Editors
+            .Where(x => x.FullName.ToUpper().Contains(partName.ToUpper()))
+            .ToListAsync(ct);
     }
-}    
+}

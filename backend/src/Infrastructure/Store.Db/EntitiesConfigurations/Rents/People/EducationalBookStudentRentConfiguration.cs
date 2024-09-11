@@ -15,5 +15,10 @@ public class EducationalBookStudentRentConfiguration : IEntityTypeConfiguration<
         builder.HasOne(x => x.Student)
             .WithMany(s => s.EdBookRents)
             .HasForeignKey("student_id");
+
+        builder.HasOne(x => x.RentReport)
+            .WithMany()
+            .HasForeignKey("rent_report_id")
+            .IsRequired(false);
     }
 }

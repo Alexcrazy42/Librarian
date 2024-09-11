@@ -17,6 +17,8 @@ internal class EdBookForClassRentRepository : IEdBookForClassRentRepository
     {
         libraryDbContext.EdBooksStudentsRents.AddRange(edBooksStudentsRents);
 
+        var entries = libraryDbContext.ChangeTracker.Entries();
+
         await libraryDbContext.SaveChangesAsync(ct);
 
         return edBooksStudentsRents;

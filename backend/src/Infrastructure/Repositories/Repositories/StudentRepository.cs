@@ -1,8 +1,10 @@
-﻿using Domain.Entities.SchoolStructure;
+﻿using Domain.Common.Exceptions;
+using Domain.Contracts.Requests.Students;
+using Domain.Entities.SchoolStructure;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Store.Db;
-using System.Collections.Immutable;
+using System.Text;
 
 namespace Repositories.Repositories;
 
@@ -26,11 +28,31 @@ internal class StudentRepository : IStudentRepository
 
     public async Task<IReadOnlyCollection<Student>> GetStudentsFromClassAsync(Guid classId, CancellationToken ct)
     {
-        // TODO: из-за отсутствия навигационных полей мы делаем JOIN на другую таблицу, чтобы это избежать захардкодил sql
+        // TODO: из-за отсутствия навигационных полей мы делаем JOIN на другую таблицу
         return await libraryDbContext.Students
-            .FromSqlRaw($"SELECT s.\"Id\", s.\"Ground_id\", s.\"IsArchived\", s.name, s.patronymic, s.surname, s.class_id, s.school_id\r\n " +
-                        $"FROM students AS s " +
-                        $"WHERE s.class_id = '{classId}'")
+            .Where(x => x.SchoolClass.Id == classId)
+            .Include(x => x.SchoolClass)
             .ToListAsync(ct);
+    }
+
+    public async Task TransferStudentsToYearUpAsync(IReadOnlyCollection<TransferStudentsFromOneClassToAnotherRequest> request, CancellationToken ct)
+    {
+        var sqlBuilder = new StringBuilder("UPDATE public.students SET class_id = CASE class_id\n");
+
+        foreach (var transfer in request)
+        {
+            sqlBuilder.AppendLine($"WHEN '{transfer.OldClass}' THEN '{transfer.NewClass}'");
+        }
+
+        sqlBuilder.AppendLine("ELSE class_id END;");
+
+        try
+        {
+            await libraryDbContext.Database.ExecuteSqlRawAsync(sqlBuilder.ToString(), ct);
+        }
+        catch (OperationCanceledException)
+        {
+            throw new CommonException("Что-то пошло не так!");
+        }
     }
 }

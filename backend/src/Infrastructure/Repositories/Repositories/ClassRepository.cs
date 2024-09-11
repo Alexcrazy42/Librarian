@@ -15,10 +15,12 @@ internal class ClassRepository : IClassRepository
         this.libraryDbContext = libraryDbContext;
     }
 
-    public async Task<SchoolClass> GetSchoolClassWithStudentsAsync(Guid classId, CancellationToken ct)
+    public async Task<SchoolClass> GetSchoolClassWithStudentsAndClassSubjectsChaptersAsync(Guid classId, CancellationToken ct)
     {
         return await libraryDbContext.Classes
             .Include(x => x.Students)
+            .Include(x => x.ClassSubjects)
+                .ThenInclude(classSubject => classSubject.Chapters)
             .FirstOrDefaultAsync(x => x.Id == classId, ct)
             ?? throw new NotFoundException("Класс не найден!");
     }

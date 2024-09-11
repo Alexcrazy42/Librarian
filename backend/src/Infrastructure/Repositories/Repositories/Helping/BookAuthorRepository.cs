@@ -1,10 +1,9 @@
-﻿using Domain.Common.Exceptions;
-using Domain.HelpingEntities;
+﻿using Domain.HelpingEntities;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Store.Db;
 
-namespace Repositories.Repositories;
+namespace Repositories.Repositories.Helping;
 
 internal class BookAuthorRepository : IBookAuthorRepository
 {
@@ -18,13 +17,14 @@ internal class BookAuthorRepository : IBookAuthorRepository
     public async Task<BookAuthor> CreateBookAuthorIfNotExistsAsync(string fullName, CancellationToken ct)
     {
         var bookAuthor = await libraryDbContext.BookAuthors
-            .FirstOrDefaultAsync(x => x.FullName == fullName, ct);
+            .FirstOrDefaultAsync(x => x.FullName.ToUpper() == fullName.ToUpper(), ct);
 
         if (bookAuthor == null)
         {
             var newBookAuthor = new BookAuthor(Guid.NewGuid(), fullName);
 
-            await libraryDbContext.BookAuthors.AddAsync(newBookAuthor, ct);
+            libraryDbContext.BookAuthors.Add(newBookAuthor);
+            await libraryDbContext.SaveChangesAsync(ct);
 
             return newBookAuthor;
         }
@@ -32,8 +32,10 @@ internal class BookAuthorRepository : IBookAuthorRepository
         return bookAuthor;
     }
 
-    public Task<IReadOnlyCollection<BookAuthor>> GetBookAuthorsAsync(string partName, CancellationToken ct)
+    public async Task<IReadOnlyCollection<BookAuthor>> GetBookAuthorsAsync(string partName, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        return await libraryDbContext.BookAuthors
+            .Where(x => x.FullName.ToUpper().Contains(partName.ToUpper()))
+            .ToListAsync(ct);
     }
 }

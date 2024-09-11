@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Store.Db;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Repositories.Repositories;
+namespace Repositories.Repositories.Helping;
 
 internal class SubjectRepository : ISubjectRepository
 {
@@ -25,7 +25,8 @@ internal class SubjectRepository : ISubjectRepository
         {
             var newSubject = new Subject(Guid.NewGuid(), name);
 
-            await libraryDbContext.Subjects.AddAsync(newSubject, ct);
+            libraryDbContext.Subjects.Add(newSubject);
+            await libraryDbContext.SaveChangesAsync(ct);
 
             return newSubject;
         }
@@ -41,7 +42,11 @@ internal class SubjectRepository : ISubjectRepository
 
     public async Task<IReadOnlyCollection<Subject>> GetOrCreateSubjectsAsync(IReadOnlyCollection<CreateSubjectRequest> subjects, CancellationToken ct)
     {
-        var ids = subjects.Where(r => r.SubjectId.HasValue).Select(r => r.SubjectId.Value).ToList();
+        var ids = subjects.Where(r => r.SubjectId.HasValue)
+            .Select(r => r.SubjectId.Value)
+            .ToList();
+
+
         var names = subjects.Where(r => !string.IsNullOrEmpty(r.SubjectName)).Select(r => r.SubjectName).ToList();
 
         var existingSubjectsQuery = libraryDbContext.Subjects.AsQueryable();

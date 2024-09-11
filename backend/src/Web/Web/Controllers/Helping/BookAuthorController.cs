@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers.Helping;
 
 [ApiController]
-[Route("api/authoers")]
+[Route("api/authors")]
 public class BookAuthorController : ControllerBase
 {
     private readonly IBookAuthorRepository bookRepository;
@@ -19,7 +19,6 @@ public class BookAuthorController : ControllerBase
     public async Task<IReadOnlyCollection<BookAuthorResponse>> GetBookAuthorAsync(string partName, CancellationToken ct)
     {
         var bookAuthors = await bookRepository.GetBookAuthorsAsync(partName, ct);
-
 
         return bookAuthors.Select(bookAuthor => new BookAuthorResponse()
         {

@@ -1,6 +1,7 @@
 ﻿using Domain.Interfaces.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Repositories.Repositories;
+using Repositories.Repositories.Helping;
 
 namespace Repositories;
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Store.Db;
@@ -11,9 +12,11 @@ using Store.Db;
 namespace Store.Db.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911085553_ChangeRelationshipBetweenSubjectChapterAndEdBook")]
+    partial class ChangeRelationshipBetweenSubjectChapterAndEdBook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace Store.Db.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ClassSubjectChapterEdBookEducationalBookInBalance", b =>
+                {
+                    b.Property<Guid>("ClassSubjectChapterEdBookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("EdBooksId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ClassSubjectChapterEdBookId", "EdBooksId");
+
+                    b.HasIndex("EdBooksId");
+
+                    b.ToTable("ClassSubjectChapterEdBookEducationalBookInBalance");
+                });
 
             modelBuilder.Entity("Domain.Entities.Acts.EdBookDecommissioning", b =>
                 {
@@ -369,9 +387,6 @@ namespace Store.Db.Migrations
                         .HasColumnType("date");
 
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsOverdue")
                         .HasColumnType("boolean");
 
                     b.Property<DateOnly>("StartDate")
@@ -789,15 +804,10 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ed_book_in_balance_id")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("subject_chapter_id")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ed_book_in_balance_id");
 
                     b.HasIndex("subject_chapter_id");
 
@@ -1003,6 +1013,21 @@ namespace Store.Db.Migrations
                     b.HasIndex("base_ed_book_id");
 
                     b.ToTable("ed_books_another_authors");
+                });
+
+            modelBuilder.Entity("ClassSubjectChapterEdBookEducationalBookInBalance", b =>
+                {
+                    b.HasOne("Domain.Entities.Subjects.ClassSubjectChapterEdBook", null)
+                        .WithMany()
+                        .HasForeignKey("ClassSubjectChapterEdBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Books.EducationalBookInBalance", null)
+                        .WithMany()
+                        .HasForeignKey("EdBooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Acts.EdBookDecommissioning", b =>
@@ -1394,17 +1419,11 @@ namespace Store.Db.Migrations
 
             modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapterEdBook", b =>
                 {
-                    b.HasOne("Domain.Entities.Books.EducationalBookInBalance", "EdBookInBalance")
-                        .WithMany()
-                        .HasForeignKey("ed_book_in_balance_id");
-
                     b.HasOne("Domain.Entities.Subjects.ClassSubjectChapter", "SubjectChapter")
                         .WithMany("EdBooks")
                         .HasForeignKey("subject_chapter_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("EdBookInBalance");
 
                     b.Navigation("SubjectChapter");
                 });

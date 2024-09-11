@@ -58,7 +58,8 @@ public class ClassSubjectController : ControllerBase
 
         return classSubjectChapterEdBooks.Select(x => new ClassSubjectChapterResponse()
         {
-            Id = x.SubjectChapter.Id,
+            Id = x.Id,
+            ChapterId = x.SubjectChapter.Id,
             Title = x.SubjectChapter.Title,
             EdBookInBalance = new EdBookInBalanceResponse()
             {

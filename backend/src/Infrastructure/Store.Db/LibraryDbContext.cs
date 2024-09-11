@@ -39,6 +39,8 @@ public class LibraryDbContext : DbContext
     public DbSet<Subject> Subjects => Set<Subject>();
 
     public DbSet<BookSupply> BookSupplies => Set<BookSupply>();
+
+    public DbSet<ClassSubjectChapter> ClassSubjectChapters => Set<ClassSubjectChapter>();
    
     public DbSet<ClassSubjectChapterEdBook> ClassSubjectChapterEdBooks => Set<ClassSubjectChapterEdBook>();
 
@@ -55,7 +57,7 @@ public class LibraryDbContext : DbContext
     //protected override void OnConfiguring(DbContextOptionsBuilder builder)
     //{
     //    builder.UseNpgsql(
-    //                "Host=localhost; Port = 5432; Database=swipty-companies; Username=postgres; Password=124;",
+    //                "Host=localhost; Port = 5432; Database=swipty-companies; Username=postgres; Password=123;",
     //                x => x.MigrationsAssembly(typeof(LibraryDbContext).Assembly.GetName().Name));
     //}
 

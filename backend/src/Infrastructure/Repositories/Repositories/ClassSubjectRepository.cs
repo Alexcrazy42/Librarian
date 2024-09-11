@@ -25,12 +25,13 @@ internal class ClassSubjectRepository : IClassSubjectRepository
         return classSubjects;
     }
 
-    public async Task<ClassSubjectChapterEdBook> GetSubjectChapterEdBookWithDetailsAsync(Guid chapterId, CancellationToken ct)
+    public async Task<ClassSubjectChapter> GetSubjectChapterWithEdBooksAsync(Guid chapterId, CancellationToken ct)
     {
-        return await libraryDbContext.ClassSubjectChapterEdBooks
-            .Include(x => x.EdBookInBalance)
+        return await libraryDbContext.ClassSubjectChapters
+            .Include(x => x.EdBooks)
+                .ThenInclude(edBook => edBook.EdBookInBalance)
             .FirstOrDefaultAsync(x => x.Id == chapterId, ct)
-            ?? throw new NotFoundException("Не была найдена часть этого предмета!");
+            ?? throw new NotFoundException("Такая часть предмета не найдена!");
     }
 
     public async Task<IReadOnlyCollection<ClassSubjectChapterEdBook>> SetEdBookToSubjectChaptersAsync(

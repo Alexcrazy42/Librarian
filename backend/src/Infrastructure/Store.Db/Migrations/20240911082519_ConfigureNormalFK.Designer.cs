@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Store.Db;
@@ -11,9 +12,11 @@ using Store.Db;
 namespace Store.Db.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911082519_ConfigureNormalFK")]
+    partial class ConfigureNormalFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,14 +374,11 @@ namespace Store.Db.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsOverdue")
-                        .HasColumnType("boolean");
+                    b.Property<Guid>("RentReportId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
-
-                    b.Property<Guid?>("rent_report_id")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("student_id")
                         .HasColumnType("uuid");
@@ -387,7 +387,7 @@ namespace Store.Db.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("rent_report_id");
+                    b.HasIndex("RentReportId");
 
                     b.HasIndex("student_id");
 
@@ -1199,7 +1199,9 @@ namespace Store.Db.Migrations
 
                     b.HasOne("Domain.Entities.Reports.PeopleRents.PeopleRentReport", "RentReport")
                         .WithMany()
-                        .HasForeignKey("rent_report_id");
+                        .HasForeignKey("RentReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.SchoolStructure.Student", "Student")
                         .WithMany("EdBookRents")

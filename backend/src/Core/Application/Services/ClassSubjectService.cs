@@ -69,6 +69,8 @@ internal class ClassSubjectService : IClassSubjectService
 
     public async Task<IReadOnlyCollection<ClassSubjectChapterEdBook>> SetEdBookToClassSubjectChaptersAsync(IReadOnlyCollection<SetEdBookToClassSubjectChapterRequest> request, CancellationToken ct)
     {
+        // TODO: нельзя поставить книгу на часть предмета, если она уже стоит на другой части
+
         var allClassSubjectChapters = new List<ClassSubjectChapterEdBook>();
 
 
