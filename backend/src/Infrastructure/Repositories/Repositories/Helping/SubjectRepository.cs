@@ -1,6 +1,6 @@
 ﻿using Domain.Contracts.Requests.ClassSubjects;
 using Domain.HelpingEntities;
-using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Helping;
 using Microsoft.EntityFrameworkCore;
 using Store.Db;
 using System.Security.Cryptography.X509Certificates;

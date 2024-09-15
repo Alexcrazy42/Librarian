@@ -2,6 +2,7 @@
 using Domain.Entities.Books;
 using Domain.Entities.Subjects;
 using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Helping;
 using Domain.Interfaces.Services;
 
 namespace Application.Services;

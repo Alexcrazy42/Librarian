@@ -10,7 +10,7 @@ public class EducationalBookStudentRent
 
     public Student Student { get; private set; }
 
-    public EducationalBookInBalance Book { get; private set; }
+    public EducationalBookInBalance Book { get; set; }
 
     public int Count { get; private set; }
 
@@ -20,9 +20,28 @@ public class EducationalBookStudentRent
 
     public bool IsOverdue { get; set; }
 
-    public DateOnly StartDate { get; private set; }
+    public DateOnly StartDate { get; set; }
 
-    public DateOnly EndDate { get; private set; }
+    public DateOnly EndDate { get; set; }
+
+    public void SetBook(EducationalBookInBalance book)
+    {
+        Book = book;
+    }
+
+    public void PlusCount(int count)
+    {
+        Count += count;
+    }
+
+    public void MinusCount(int count)
+    {
+        Count -= count;
+        if (Count == 0)
+        {
+            IsArchived = true;
+        }
+    }
 
     private EducationalBookStudentRent() { }
 

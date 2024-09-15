@@ -4,11 +4,40 @@ namespace Domain.Entities.SchoolStructure;
 
 public sealed class School
 {
+    private string _shortName;
+    private string _offName;
+
     public Guid Id { get; private set; }
 
-    public string ShortName { get; private set; }
+    public string ShortName
+    {
+        get
+        {
+            return _shortName;
+        }
+        set
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                _shortName = value;
+            }
+        }
+    }
 
-    public string OfficialName { get; private set; }
+    public string OfficialName
+    {
+        get
+        {
+            return _offName;
+        }
+        set
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                _offName = value;
+            }
+        }
+    }
 
     public IReadOnlyCollection<SchoolGround> Grounds { get; set; } = new List<SchoolGround>();
 
@@ -24,6 +53,10 @@ public sealed class School
 
     private School() { }
 
+    public School(Guid id)
+    {
+        Id = id;
+    }
     public School(Guid id,
         string shortName,
         string officialName)

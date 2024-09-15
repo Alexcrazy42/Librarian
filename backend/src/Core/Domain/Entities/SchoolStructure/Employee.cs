@@ -15,23 +15,35 @@ public sealed class Employee : Person
 
     public SchoolClass? ManagementClass { get; private set; }
 
+    public void SetManagementClass(SchoolClass mClass)
+    {
+        ManagementClass = mClass;
+    }
+
+    public void RemoveFromClassManager()
+    {
+        ManagementClass = null;
+    }
+
     private Employee()
     { }
 
+    public Employee(Guid id)
+    {
+        Id = id;
+    }
     public Employee(Guid id,
         string surname,
         string name,
         string patronymic,
         EmployeeStatusEnum employeeStatus,
         School school,
-        SchoolGround  Ground,
-        SchoolClass? managementClass)
+        SchoolGround  ground)
         : base(surname, name, patronymic)
     {
         Id = id;
         EmployeeStatus = employeeStatus;
         School = school;
-        Ground = Ground;
-        ManagementClass = managementClass;
+        Ground = ground;
     }
 }

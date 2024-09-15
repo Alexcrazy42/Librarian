@@ -9,5 +9,7 @@ public interface IStudentRepository
 
     public Task<IReadOnlyCollection<Student>> GetStudentsFromClassAsync(Guid classId, CancellationToken ct);
 
+    public Task<Student> GetStudentAsync(Guid id, CancellationToken ct);
+
     public Task TransferStudentsToYearUpAsync(IReadOnlyCollection<TransferStudentsFromOneClassToAnotherRequest> request, CancellationToken ct);
 }

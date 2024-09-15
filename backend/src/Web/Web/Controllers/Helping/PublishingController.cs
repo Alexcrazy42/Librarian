@@ -1,6 +1,6 @@
-﻿using Domain.Contracts.Responses.Publishing;
+﻿using Domain.Contracts.Responses.Helping.Publishing;
 using Domain.HelpingEntities;
-using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Helping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.Helping;

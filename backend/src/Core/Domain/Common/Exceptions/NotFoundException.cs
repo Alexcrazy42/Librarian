@@ -1,6 +1,6 @@
 ﻿namespace Domain.Common.Exceptions;
 
-public class NotFoundException : Exception
+public class NotFoundException : CommonException
 {
     public NotFoundException()
     {

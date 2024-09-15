@@ -1,8 +1,8 @@
 ﻿using Domain.Common.Exceptions;
+using Domain.Contracts.Requests.Rents;
 using Domain.Entities.Books;
 using Domain.Entities.Rents.People;
 using Domain.Entities.SchoolStructure;
-using Domain.Entities.Subjects;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
 
@@ -11,16 +11,23 @@ namespace Application.Services;
 internal class EdBookForClassRentService : IEdBookForClassRentService
 {
     private readonly IClassRepository classRepository;
+    private readonly IStudentRepository studentRepository;
     private readonly IClassSubjectRepository classSubjectRepository;
     private readonly IEdBookForClassRentRepository edBookForClassRentRepository;
+    private readonly IEdBookInBalanceRepository edBookInBalanceRepository;
 
-    public EdBookForClassRentService(IClassRepository classRepository,
+    public EdBookForClassRentService(
+        IClassRepository classRepository,
         IClassSubjectRepository classSubjectRepository,
-        IEdBookForClassRentRepository edBookForClassRentRepository)
+        IStudentRepository studentRepository,
+        IEdBookForClassRentRepository edBookForClassRentRepository,
+        IEdBookInBalanceRepository edBookInBalanceRepository)
     {
         this.classRepository = classRepository;
         this.classSubjectRepository = classSubjectRepository;
+        this.studentRepository = studentRepository;
         this.edBookForClassRentRepository = edBookForClassRentRepository;
+        this.edBookInBalanceRepository = edBookInBalanceRepository;
     }
 
     public async Task<IReadOnlyCollection<EducationalBookStudentRent>> IssueEdBooksToClassBySubjectChapterAsync(Guid classId, Guid subjectChapterId, 
@@ -69,16 +76,18 @@ internal class EdBookForClassRentService : IEdBookForClassRentService
             );
 
             student.AddEdBookRent(edBookStudentRent);
-            edBooksInBalance[edBookIndex].DecreaseInPlaceCount();
+            edBooksInBalance[edBookIndex].InPlaceCount--;
             edBookStudentRents.Add(edBookStudentRent);
         }
 
         return await edBookForClassRentRepository.CreateEdBooksStudentsRentsAsync(edBookStudentRents, ct);
     }
 
+    
+
+
     private bool IsClassHasThisSubjectChapter(Guid subjectChapterId, SchoolClass schoolClass)
     {
-
         foreach (var classSubject in schoolClass.ClassSubjects)
         {
 
@@ -105,4 +114,16 @@ internal class EdBookForClassRentService : IEdBookForClassRentService
 
         return -1;
     }
+
+    private (bool canIssue, string errorMessage) CanIssueEdBookInBalance(EducationalBookInBalance edBookInBalance)
+    {
+        if (edBookInBalance.InPlaceCount > 0)
+        {
+            return (true, "");
+        }
+
+        return (false, "Нет книжек!");
+    }
+
+    
 }

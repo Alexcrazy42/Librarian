@@ -1,4 +1,6 @@
-﻿using Domain.Entities.Acts;
+﻿using Domain.Common.Exceptions;
+using Domain.Contracts.Responses.EdBooks;
+using Domain.Entities.Acts;
 using Domain.Entities.SchoolStructure;
 using Domain.Entities.Supplies;
 using Domain.Enums;
@@ -8,24 +10,137 @@ namespace Domain.Entities.Books;
 public sealed class EducationalBookInBalance
 {
     public const int NoteMaxLength = 50;
+    private decimal _price;
+    private BookCondition _condition;
+    private int _year;
+    private string _note;
+    private int _inPlaceCount;
+    private int _totalCount;
+    private bool _inStock;
+    private BaseEducationalBook _baseEdBook;
 
     public Guid Id { get; private set; }
 
-    public BaseEducationalBook BaseEducationalBook { get; private set; }
+    public BaseEducationalBook BaseEducationalBook
+    {
+        get
+        {
+            return _baseEdBook;
+        }
+        set
+        {
+            if (value != null)
+            {
+                _baseEdBook = value;
+            }
+        }
+    }
 
-    public decimal Price { get; private set; }
+    public decimal Price
+    {
+        get
+        {
+            return _price;
+        }
+        set
+        {
+            if (value <= 0) throw new CommonException("Значение должно быть больше 0");
+            
+            _price = value;   
+        }
+    }
 
-    public BookCondition Condition { get; private set; }
+    public BookCondition Condition
+    {
+        get
+        {
+            return _condition;
+        }
+        set
+        {
+            if (value != BookCondition.Unknown)
+            {
+                _condition = value;
+            }
+        }
+    }
 
-    public int Year { get; private set; }
+    public int Year
+    {
+        get
+        {
+            return _year;
+        }
+        set
+        {
+            if (_year != 0)
+            {
+                _year = value;
+            }
+            
+        }
+    }
 
-    public string Note { get; private set; }
+    public string Note
+    {
+        get
+        {
+            return _note;
+        }
+        set
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                _note = value;
+            }
+            
+        }
+    }
 
-    public int InPlaceCount { get; private set; }
 
-    public int TotalCount { get; private set; }
+    public int InPlaceCount
+    {
+        get
+        {
+            return _inPlaceCount;
+        }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new CommonException("Значение должно быть больше 0!");
+            }
+            _inPlaceCount = value;
+        }
+    }
 
-    public bool InStock { get; set; }
+    public int TotalCount
+    {
+        get
+        {
+            return _totalCount;
+        }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new CommonException("Значение должно быть больше 0!");
+            }
+            _totalCount = value;
+        }
+    }
+
+    public bool InStock
+    {
+        get
+        {
+            return _inStock;
+        }
+        init
+        {
+            _inStock = value;
+        }
+    }
 
     public SchoolGround CurrentSchoolGround { get; private set; }
 
@@ -37,9 +152,28 @@ public sealed class EducationalBookInBalance
 
     public EdBookDecommissioning? Decommissioning { get; private set; }
 
-    public void DecreaseInPlaceCount()
+    public void MinusInPlaceCount(int count)
     {
-        InPlaceCount--;
+        _inPlaceCount -= count;
+    }
+
+    public void PlusInPlaceCount(int count)
+    {
+        _inPlaceCount += count;
+    }
+
+    public void SetBaseEdBook(BaseEducationalBook book)
+    {
+        BaseEducationalBook = book;
+    }
+
+    public CanIssueEdBookInBalanceResponse CanIssue(int count)
+    {
+        if (InPlaceCount >= count)
+        {
+            return new CanIssueEdBookInBalanceResponse(true);
+        }
+        return new CanIssueEdBookInBalanceResponse(false, "Нет книг на балансе!");
     }
 
     private EducationalBookInBalance()

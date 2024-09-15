@@ -1,6 +1,8 @@
-﻿namespace Domain.Contracts.Responses.School;
+﻿using Domain.Common;
 
-public class LibrarianResponse
+namespace Domain.Contracts.Responses.School;
+
+public class LibrarianResponse : Person
 {
     public Guid Id { get; private set; }
 

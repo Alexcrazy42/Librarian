@@ -1,4 +1,4 @@
-﻿using Domain.Contracts.Requests.Rents;
+﻿using Domain.Contracts.Requests.Rents.Classes;
 
 namespace Domain.Interfaces.Services;
 

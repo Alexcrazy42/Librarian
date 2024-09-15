@@ -1,5 +1,5 @@
-﻿using Domain.Contracts.Responses.BookAuthors;
-using Domain.Interfaces.Repositories;
+﻿using Domain.Contracts.Responses.Helping.BookAuthors;
+using Domain.Interfaces.Repositories.Helping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.Helping;

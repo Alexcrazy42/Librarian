@@ -4,9 +4,7 @@ using Domain.Contracts.Requests.Students;
 using Domain.Contracts.Responses.Students;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Web.Controllers;
 

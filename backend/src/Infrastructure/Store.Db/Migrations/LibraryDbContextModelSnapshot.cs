@@ -329,6 +329,9 @@ namespace Store.Db.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_archived");
 
+                    b.Property<bool>("IsOverdue")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid>("RentReportId")
                         .HasColumnType("uuid");
 

@@ -13,6 +13,9 @@ public static class DIApplicationExtension
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<ISupplyService, SupplyService>();
         services.AddScoped<IEdBookForClassRentService, EdBookForClassRentService>();
+        services.AddScoped<IEdBookForStudentRentService, EdBookForStudentService>();
+        services.AddScoped<IEdBookForEmployeeRentService, EdBookForEmployeeRentService>();
+        services.AddScoped<IEmployeeService, EmployeeService>();
         return services;
     }
 }

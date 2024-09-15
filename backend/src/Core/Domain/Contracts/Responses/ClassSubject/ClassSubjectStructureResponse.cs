@@ -30,5 +30,5 @@ public class ClassSubjectChapterWithBookDto
 
     public string Title { get; set; }
 
-    public EdBookInBalanceResponse? EdBook { get; set; }
+    public IReadOnlyCollection<EdBookInBalanceResponse> EdBooks { get; set; }
 }

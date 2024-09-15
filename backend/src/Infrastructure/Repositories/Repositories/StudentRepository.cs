@@ -26,6 +26,12 @@ internal class StudentRepository : IStudentRepository
         return students;
     }
 
+    public async Task<Student> GetStudentAsync(Guid id, CancellationToken ct)
+    {
+        return await libraryDbContext.Students.SingleOrDefaultAsync(x => x.Id == id, ct)
+            ?? throw new CommonException("Студент не найден!");
+    }
+
     public async Task<IReadOnlyCollection<Student>> GetStudentsFromClassAsync(Guid classId, CancellationToken ct)
     {
         // TODO: из-за отсутствия навигационных полей мы делаем JOIN на другую таблицу

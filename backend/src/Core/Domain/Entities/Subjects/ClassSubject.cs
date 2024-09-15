@@ -13,7 +13,17 @@ public class ClassSubject
 
     public IReadOnlyCollection<ClassSubjectChapter> Chapters { get; private set; } = new List<ClassSubjectChapter>();
 
+    public void SetSubject(Subject subject)
+    {
+        Subject = subject;
+    }
+
     private ClassSubject() { }
+
+    public ClassSubject(Guid id)
+    {
+        Id = id;
+    }
 
     public ClassSubject(
         Guid id,

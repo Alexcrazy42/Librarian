@@ -4,9 +4,21 @@ namespace Domain.Entities.SchoolStructure;
 
 public class SchoolGround
 {
+    private string _name;
+
     public Guid Id { get; private set; }
 
-    public string Name { get; private set; }
+    public string Name
+    {
+        get
+        {
+            return _name;
+        }
+        set
+        {
+            _name = value;
+        }
+    }
 
     public School School { get; set; }
 

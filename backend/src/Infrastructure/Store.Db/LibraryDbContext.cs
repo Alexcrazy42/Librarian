@@ -26,7 +26,7 @@ public class LibraryDbContext : DbContext
 
     public DbSet<BaseEducationalBook> BaseEducationalBooks => Set<BaseEducationalBook>();
 
-    public DbSet<EducationalBookInBalance> EducationalBooks => Set<EducationalBookInBalance>();
+    public DbSet<EducationalBookInBalance> EducationalBooksInBalance => Set<EducationalBookInBalance>();
 
     public DbSet<Editor> Editors => Set<Editor>();
 
@@ -45,6 +45,8 @@ public class LibraryDbContext : DbContext
     public DbSet<ClassSubjectChapterEdBook> ClassSubjectChapterEdBooks => Set<ClassSubjectChapterEdBook>();
 
     public DbSet<EducationalBookStudentRent> EdBooksStudentsRents => Set<EducationalBookStudentRent>();
+
+    public DbSet<EducationalBookEmployeeRent> EdBookEmployeeRents => Set<EducationalBookEmployeeRent>();
 
     public LibraryDbContext()
     { }

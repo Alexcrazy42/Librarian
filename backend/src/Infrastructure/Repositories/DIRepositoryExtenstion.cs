@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Helping;
 using Microsoft.Extensions.DependencyInjection;
 using Repositories.Repositories;
 using Repositories.Repositories.Helping;
@@ -19,8 +20,11 @@ public static class DIRepositoryExtenstion
         services.AddScoped<IEditorRepository, EditorRepository>();
         services.AddScoped<IPublishingRepository, PublishingRepository>();
         services.AddScoped<IBaseEdBookRepository, BaseEdBookRepository>();
-        services.AddScoped<IEdBookRepository, EdBookRepository>();
+        services.AddScoped<IEdBookInBalanceRepository, EdBookInBalanceRepository>();
         services.AddScoped<IEdBookForClassRentRepository, EdBookForClassRentRepository>();
+        services.AddScoped<IEdBookForStudentRentRepository, EdBookForStudentRentRepository>();
+        services.AddScoped<IEdBookForEmployeeRentRepository, EdBookForEmployeeRentRepository>();
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         return services;
     }
 }

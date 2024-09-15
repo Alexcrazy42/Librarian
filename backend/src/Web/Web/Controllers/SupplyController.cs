@@ -21,6 +21,45 @@ public class SupplyController : ControllerBase
         this.supplyRepository = supplyRepository;
     }
 
+    [HttpGet("active-not-fullfilled")]
+    public async Task<IReadOnlyCollection<BookSupplyResponse>> GetNotFullfilledSupplies(Guid groundId, CancellationToken ct)
+    {
+        var supplies = await supplyRepository.GetNotFillfilledSuppliesAsync(groundId, ct);
+
+        return supplies.Select(supply => new BookSupplyResponse()
+        {
+            Id = supply.Id,
+            SupplyDate = supply.SupplyDate,
+            Supplier = supply.Supplier,
+            InvoiceNumber = supply.InvoiceNumber,
+            FullFilled = supply.FullFilled,
+            EdBooks = supply.EdBooks.Select(x => new EdBookInBalanceResponse()
+            {
+                Id = x.Id,
+                BaseEdBook = new BaseEdBookResponse()
+                {
+                    Id = x.BaseEducationalBook.Id,
+                    Title = x.BaseEducationalBook.Title,
+                    PublishingSeries = x.BaseEducationalBook.PublishingSeries,
+                    Language = x.BaseEducationalBook.Language,
+                    Level = x.BaseEducationalBook.Level,
+                    Appointment = x.BaseEducationalBook.Appointment,
+                    Chapter = x.BaseEducationalBook.Chapter,
+                    StartClass = x.BaseEducationalBook.StartClass,
+                    EndClass = x.BaseEducationalBook.EndClass
+                },
+                Price = x.Price,
+                Condition = x.Condition,
+                Year = x.Year,
+                InPlaceCount = x.InPlaceCount,
+                TotalCount = x.TotalCount,
+                SupplyId = supply.Id,
+                GroundId = x.CurrentSchoolGround.Id,
+                InStock = x.InStock
+            }).ToList()
+        }).ToList();
+    }
+
     [HttpGet]
     public async Task<BookSupplyResponse> GetBookSupplyAsync(Guid id, CancellationToken ct)
     {

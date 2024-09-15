@@ -1,5 +1,5 @@
 ﻿using Domain.HelpingEntities;
-using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories.Helping;
 using Microsoft.EntityFrameworkCore;
 using Store.Db;
 

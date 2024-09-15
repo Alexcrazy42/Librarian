@@ -2,6 +2,8 @@
 
 public enum BookCondition
 {
+    Unknown,
+
     /// <summary>
     /// Новая
     /// </summary>

@@ -35,11 +35,15 @@ public sealed class SchoolClass
             ClassSubjects.Add(classSubject);
         }
         return ClassSubjects;
-
     }
 
     private SchoolClass()
     { }
+
+    public SchoolClass(Guid id)
+    {
+        Id = id;
+    }
 
     public SchoolClass(Guid id,
         int number,

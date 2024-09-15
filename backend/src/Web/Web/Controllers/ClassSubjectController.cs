@@ -4,6 +4,8 @@ using Domain.Contracts.Responses.ClassSubject;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Contracts.Responses.EdBooks;
+using Domain.Interfaces.Repositories;
+using Domain.Contracts.Responses.Subjects;
 
 namespace Web.Controllers;
 
@@ -12,13 +14,69 @@ namespace Web.Controllers;
 public class ClassSubjectController : ControllerBase
 {
     private readonly IClassSubjectService classSubjectService;
+    private readonly IClassSubjectRepository classSubjectRepository;
     private readonly IMapper mapper;
 
     public ClassSubjectController(IClassSubjectService classSubjectService,
+        IClassSubjectRepository classSubjectRepository,
         IMapper mapper)
     {
         this.classSubjectService = classSubjectService;
+        this.classSubjectRepository = classSubjectRepository;
         this.mapper = mapper;
+    }
+
+    [HttpGet("/{classId}")]
+    public async Task<IReadOnlyCollection<ClassSubjectDto>> GetSchoolSubjectStructureForClassAsync([FromRoute] Guid classId, CancellationToken ct)
+    {
+        var classSubjects = await classSubjectRepository.GetClassSubjectStructureForClassAsync(classId, ct);
+
+        return classSubjects
+            .GroupBy(x => x.SchoolClass)
+            .Select(schoolClass => new ClassSubjectDto()
+            {
+                SchoolClassId = schoolClass.Key.Id,
+                Number = schoolClass.Key.Number,
+                Name = schoolClass.Key.Name,
+                Subjects = schoolClass.Select(subject => new ClassSubjectResponse()
+                {
+                    Id = subject.Id,
+                    SubjectId = subject.Subject.Id,
+                    Name = subject.Subject.Name,
+                    Chapters = subject.Chapters.Select(chapter => new ClassSubjectChapterWithBookDto()
+                    {
+                        Id = chapter.Id,
+                        Title = chapter.Title,
+                        EdBooks = chapter.EdBooks
+                            .Where(edBook => edBook != null)
+                            .Select(edBook => new EdBookInBalanceResponse()
+                            {
+                                Id = edBook.EdBookInBalance.Id,
+                                BaseEdBook = new BaseEdBookResponse()
+                                {
+                                    Id = edBook.EdBookInBalance.BaseEducationalBook.Id,
+                                    Title = edBook.EdBookInBalance.BaseEducationalBook.Title,
+                                    PublishingSeries = edBook.EdBookInBalance.BaseEducationalBook.PublishingSeries,
+                                    Language = edBook.EdBookInBalance.BaseEducationalBook.Language,
+                                    Level = edBook.EdBookInBalance.BaseEducationalBook.Level,
+                                    Appointment = edBook.EdBookInBalance.BaseEducationalBook.Appointment,
+                                    Chapter = edBook.EdBookInBalance.BaseEducationalBook.Chapter,
+                                    StartClass = edBook.EdBookInBalance.BaseEducationalBook.StartClass,
+                                    EndClass = edBook.EdBookInBalance.BaseEducationalBook.EndClass
+                                },
+                                Price = edBook.EdBookInBalance.Price,
+                                Condition = edBook.EdBookInBalance.Condition,
+                                Year = edBook.EdBookInBalance.Year,
+                                Note = edBook.EdBookInBalance.Note,
+                                InPlaceCount = edBook.EdBookInBalance.TotalCount,
+                                TotalCount = edBook.EdBookInBalance.TotalCount,
+                                InStock = edBook.EdBookInBalance.InStock
+                            })
+                            .ToList()
+                    }).ToList()
+                }).ToList()
+            })
+            .ToList();
     }
 
     [HttpPost]
@@ -42,7 +100,7 @@ public class ClassSubjectController : ControllerBase
                     {
                         Id = x.Id,
                         Title = x.Title,
-                        EdBook = null
+                        EdBooks = null
                     }).ToList()
                 }).ToList()
             }).ToList();
@@ -61,6 +119,71 @@ public class ClassSubjectController : ControllerBase
             Id = x.Id,
             ChapterId = x.SubjectChapter.Id,
             Title = x.SubjectChapter.Title,
+            EdBookInBalance = new EdBookInBalanceResponse()
+            {
+                Id = x.EdBookInBalance.Id,
+                BaseEdBook = new BaseEdBookResponse()
+                {
+                    Id = x.EdBookInBalance.BaseEducationalBook.Id,
+                    Title = x.EdBookInBalance.BaseEducationalBook.Title,
+                    PublishingSeries = x.EdBookInBalance.BaseEducationalBook.PublishingSeries,
+                    Language = x.EdBookInBalance.BaseEducationalBook.Language,
+                    Level = x.EdBookInBalance.BaseEducationalBook.Level,
+                    Appointment = x.EdBookInBalance.BaseEducationalBook.Appointment,
+                    Chapter = x.EdBookInBalance.BaseEducationalBook.Chapter,
+                    StartClass = x.EdBookInBalance.BaseEducationalBook.StartClass,
+                    EndClass = x.EdBookInBalance.BaseEducationalBook.EndClass
+                },
+                Price = x.EdBookInBalance.Price,
+                Condition = x.EdBookInBalance.Condition,
+                Year = x.EdBookInBalance.Year,
+                Note = x.EdBookInBalance.Note,
+                InPlaceCount = x.EdBookInBalance.InPlaceCount,
+                TotalCount = x.EdBookInBalance.TotalCount,
+                SupplyId = x.EdBookInBalance.Supply?.Id,
+                GroundId = x.EdBookInBalance.BookOwnerGround?.Id,
+                InStock = x.EdBookInBalance.InStock
+            }
+        }).ToList();
+    }
+
+    [HttpPut("class-subjects")]
+    public async Task<IReadOnlyCollection<UpdateClassSubjectResponse>> UpdateClassSubjectsAsync([FromBody] IReadOnlyCollection<UpdateClassSubjectRequest> requests, CancellationToken ct)
+    {
+        var updates = await classSubjectRepository.UpdateClassSubjectsAsync(requests, ct);
+
+        return updates
+            .Select(x => new UpdateClassSubjectResponse()
+            {
+                Id = x.Id,
+                Subject = new SubjectResponse()
+                {
+                    Id = x.Subject.Id,
+                    Name = x.Subject.Name
+                }
+            }).ToList();
+    }
+
+    [HttpPut("subject-chapters")]
+    public async Task<IReadOnlyCollection<UpdateSubjectChapterResponse>> UpdateSubjectChaptersAsync([FromBody] IReadOnlyCollection<UpdateSubjectChapterRequest> requests, CancellationToken ct)
+    {
+        var updates = await classSubjectRepository.UpdateClassSubjectChaptersAsync(requests, ct);
+
+        return updates.Select(x => new UpdateSubjectChapterResponse()
+        {
+            Id = x.Id,
+            Title = x.Title
+        }).ToList();
+    }
+
+    [HttpPut("subject-chapter-ed-book")]
+    public async Task<IReadOnlyCollection<UpdateSubjectChapterEdBookResponse>> UpdateSubjectChapterEdBooksAsync([FromBody] IReadOnlyCollection<UpdateSubjectChapterEdBookRequest> requests, CancellationToken ct)
+    {
+        var updates = await classSubjectRepository.UpdateSubjectChapterEdBookAsync(requests, ct);
+
+        return updates.Select(x => new UpdateSubjectChapterEdBookResponse()
+        {
+            Id = x.Id,
             EdBookInBalance = new EdBookInBalanceResponse()
             {
                 Id = x.EdBookInBalance.Id,

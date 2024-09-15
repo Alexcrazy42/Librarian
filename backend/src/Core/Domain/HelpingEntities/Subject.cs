@@ -15,6 +15,11 @@ public class Subject
     private Subject() 
     { }
 
+    public Subject(Guid id)
+    {
+        Id = id;
+    }
+
     public Subject(Guid id, string name)
     {
         Id = id;

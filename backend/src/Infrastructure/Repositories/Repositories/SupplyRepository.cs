@@ -45,4 +45,15 @@ internal class SupplyRepository : ISupplyRepository
             .FirstOrDefaultAsync(x => x.Id == id, ct)
             ?? throw new NotFoundException("Поставка не найдена!");
     }
+
+    public async Task<IReadOnlyCollection<BookSupply>> GetNotFillfilledSuppliesAsync(Guid groundId, CancellationToken ct)
+    {
+        return await libraryDbContext.BookSupplies
+            .Include(x => x.EdBooks)
+                .ThenInclude(edBook => edBook.BaseEducationalBook)
+             .Include(x => x.EdBooks)
+                .ThenInclude(edBook => edBook.CurrentSchoolGround)
+            .Where(x => x.Ground.Id == groundId)
+            .ToListAsync();
+    }
 }

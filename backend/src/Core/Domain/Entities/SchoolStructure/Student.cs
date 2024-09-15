@@ -23,8 +23,18 @@ public class Student : Person
         EdBookRents.Add(rent);
     }
 
+    public void RemoveEdBookRent(EducationalBookStudentRent rent)
+    {
+        EdBookRents.Remove(rent);
+    }
+
     private Student()
     { }
+
+    public Student(Guid id)
+    {
+        Id = id;
+    }
 
     public Student(Guid id,
         bool isArchived,

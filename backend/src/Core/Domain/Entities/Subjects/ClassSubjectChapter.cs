@@ -6,7 +6,7 @@ public class ClassSubjectChapter
 
     public Guid Id { get; private set; }
 
-    public string Title { get; private set; }
+    public string Title { get; set; }
 
     public ClassSubject ClassSubject { get; private set; }
 
