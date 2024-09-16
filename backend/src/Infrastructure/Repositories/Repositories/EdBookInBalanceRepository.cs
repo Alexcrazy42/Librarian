@@ -1,6 +1,5 @@
 ﻿using Domain.Common.Exceptions;
 using Domain.Contracts.Requests.EdBooks;
-using Domain.Contracts.Responses.EdBooks;
 using Domain.Entities.Books;
 using Domain.Entities.SchoolStructure;
 using Domain.Entities.Supplies;
@@ -70,6 +69,16 @@ internal class EdBookInBalanceRepository : IEdBookInBalanceRepository
             .Include(x => x.BaseEducationalBook)
             .FirstOrDefaultAsync(x => x.Id == id, ct)
             ?? throw new CommonException("Книга не найдена!");
+    }
+
+    public async Task<IReadOnlyCollection<EducationalBookInBalance>> GetEdBooksInBalanceByBaseEdBookIdAsync(Guid baseEdBookId, CancellationToken ct)
+    {
+        return await libraryDbContext.EducationalBooksInBalance
+            .AsNoTracking()
+            .Include(x => x.BookOwnerGround)
+            .Include(x => x.BaseEducationalBook)
+            .Where(x => x.BaseEducationalBook.Id == baseEdBookId)
+            .ToListAsync(ct);
     }
 
     public async Task<EducationalBookInBalance> UpdateEdBookInBalanceAsync(EducationalBookInBalance edBookInBalance, CancellationToken ct)

@@ -20,6 +20,8 @@ internal class SchoolRepository : ISchoolRepository
     {
         await libraryDbContext.Schools.AddAsync(school, ct);
 
+        await libraryDbContext.SaveChangesAsync(ct);
+
         return school;
     }
 

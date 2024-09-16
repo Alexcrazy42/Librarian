@@ -12,6 +12,12 @@ public class SchoolGroundResponse
 
     public IReadOnlyCollection<LibrarianResponse> Librarians { get; set; } = new List<LibrarianResponse>();
 
+    public SchoolGroundResponse(Guid id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+
     public SchoolGroundResponse(Guid id,
         string name,
         Guid schoolId)

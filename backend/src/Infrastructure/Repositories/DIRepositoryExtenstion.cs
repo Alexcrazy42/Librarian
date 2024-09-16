@@ -25,6 +25,7 @@ public static class DIRepositoryExtenstion
         services.AddScoped<IEdBookForStudentRentRepository, EdBookForStudentRentRepository>();
         services.AddScoped<IEdBookForEmployeeRentRepository, EdBookForEmployeeRentRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<ISchoolBookRentRepository, SchoolBookRentRepository>();
         return services;
     }
 }
