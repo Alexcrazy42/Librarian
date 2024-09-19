@@ -44,10 +44,9 @@ public class EducationalBookInBalanceConfiguration : IEntityTypeConfiguration<Ed
             .WithMany()
             .HasForeignKey("book_owner_school_ground_id");
 
-        builder.HasOne(x => x.BaseBook)
+        builder.HasOne(x => x.DebtorSchoolGround)
             .WithMany()
-            .HasForeignKey("base_book_id")
-            .IsRequired(false);
+            .HasForeignKey("book_debtor_school_ground_id");
 
         builder.HasOne(x => x.Supply)
             .WithMany(s => s.EdBooks)

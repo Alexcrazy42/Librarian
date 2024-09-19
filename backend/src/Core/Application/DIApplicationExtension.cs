@@ -17,6 +17,7 @@ public static class DIApplicationExtension
         services.AddScoped<IEdBookForEmployeeRentService, EdBookForEmployeeRentService>();
         services.AddScoped<IEmployeeService, EmployeeService>();
         services.AddScoped<ISchoolBookRentService, SchoolBookRentService>();
+        services.AddScoped<ISchoolBookRentMessageService, SchoolBookRentMessageService>();
         return services;
     }
 }

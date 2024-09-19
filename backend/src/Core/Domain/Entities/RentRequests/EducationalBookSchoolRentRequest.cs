@@ -14,31 +14,38 @@ public class EducationalBookSchoolRentRequest
 
     public EducationalBookInBalance Book { get; private set; }
 
-    public int RequestingBookCount { get; private set; }
+    public int RequestingBookCount { get; set; }
 
-    public int? OwnerReadyGiveBookCount { get; private set; }
+    public int? OwnerReadyGiveBookCount { get; set; }
 
-    public RentRequestStatus RequestStatus { get; private set; }
+    public RentRequestStatus RequestStatus { get; set; }
 
     public DateTime CreatedAt { get; private set; }
 
     public SchoolGround CreatedBy { get; private set; }
 
-    public bool ViewedUpdatesByRequestedSide { get; private set; }
+    public bool ViewedUpdatesByRequestedSide { get; set; }
 
-    public bool ViewedUpdatesByRequestingSide { get; private set; }
+    public bool ViewedUpdatesByRequestingSide { get; set; }
 
-    public bool ResolvedByRequestingSide { get; private set; }
+    public bool ResolvedByRequestingSide { get; set; }
 
-    public bool ResolvedByRequestedSide { get; private set; }
+    public bool ResolvedByRequestedSide { get; set; }
 
-    public bool SendByOwner { get; private set; }
+    public bool SendByOwner { get; set; }
 
-    public bool ReceivedByDebtor { get; private set; }
+    public bool ReceivedByDebtor { get; set; }
+
+    public bool IsArchived { get; set; }
 
     public IReadOnlyCollection<EducationalBookSchoolRentRequestConversationMessage> Messages { get; private set; } = new List<EducationalBookSchoolRentRequestConversationMessage>();
 
     private EducationalBookSchoolRentRequest() { }
+
+    public EducationalBookSchoolRentRequest(Guid id)
+    {
+        Id = id;
+    }
 
     public EducationalBookSchoolRentRequest(Guid id, 
         SchoolGround debtorSchoolGround, 
@@ -54,7 +61,8 @@ public class EducationalBookSchoolRentRequest
         bool resolvedByRequestingSide, 
         bool resolvedByRequestedSide, 
         bool sendByOwner, 
-        bool receivedByDebtor)
+        bool receivedByDebtor, 
+        bool isArchived)
     {
         Id = id;
         DebtorSchoolGround = debtorSchoolGround;
@@ -71,5 +79,6 @@ public class EducationalBookSchoolRentRequest
         ResolvedByRequestedSide = resolvedByRequestedSide;
         SendByOwner = sendByOwner;
         ReceivedByDebtor = receivedByDebtor;
+        IsArchived = isArchived;
     }
 }

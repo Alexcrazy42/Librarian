@@ -21,12 +21,21 @@ public class EducationalBookSchoolRentRequestConversationMessage
 
     public SchoolRentConversationMessageStatus Status { get; private set; }
 
+    public int? OwnerReadyGiveBook { get; set; }
+
+    public int? ChangeRequestedBookCount { get; set; }
+
     public DateTime CreatedAt { get; private set; }
 
-    public bool ViewedByReveiver { get; private set; }
+    public bool ViewedByReveiver { get; set; }
 
     private EducationalBookSchoolRentRequestConversationMessage()
     { }
+
+    public EducationalBookSchoolRentRequestConversationMessage(Guid id)
+    {
+        Id = id;
+    }
 
     public EducationalBookSchoolRentRequestConversationMessage(Guid id, 
         EducationalBookSchoolRentRequest rentRequest, 

@@ -3,6 +3,8 @@ using Domain.Contracts.Requests.SchoolRentsRequests;
 using Domain.Contracts.Responses.EdBooks;
 using Domain.Contracts.Responses.School;
 using Domain.Contracts.Responses.SchoolRentRequests;
+using Domain.Entities.RentRequests;
+using Domain.Enums;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -68,5 +70,42 @@ public class SchoolBookRentController : ControllerBase
         var rentRequest = await schoolBookRentService.CreateSchoolRentAsync(request, ct);
 
         return mapper.Map<EducationalBookSchoolRentRequestResponse>(rentRequest);
+    }
+
+
+    [HttpPut("close-request-by-debtor/{requestId}")]
+    public async Task CloseRequestByDebtorAsync([FromRoute] Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentService.CloseRequestByDebtorAsync(requestId, ct);
+    }
+
+    [HttpPut("close-by-owner/{requestId}")]
+    public async Task CloseRequestByOwnerAsync([FromRoute] Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentService.CloseRequestByOwnerAsync(requestId, ct);
+    }
+
+    [HttpPut("send-by-owner/{requestId}")]
+    public async Task SendBooksByOwnerAsync([FromRoute] Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentService.SendBooksByOwnerAsync(requestId, ct);
+    }
+
+    [HttpPut("received-by-debtor/{requestId}")]
+    public async Task ReceivedBooksByDebtorAsync([FromRoute] Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentService.ReceiveBooksByDebtorAsync(requestId, ct);
+    }
+
+    [HttpPut("visible-request/{requestId}")]
+    public async Task SetVisibleOfRequestAsync([FromRoute] Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentService.SetVisibleOfRequestAsync(requestId, ct);
+    }
+
+    [HttpPut("visible-response/{requestId}")]
+    public async Task SetVisibleOfResponseAsync([FromRoute] Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentService.SetVisibleOfResponseAsync(requestId, ct);
     }
 }

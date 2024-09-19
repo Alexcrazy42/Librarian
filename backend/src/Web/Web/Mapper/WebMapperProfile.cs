@@ -15,15 +15,20 @@ public class WebMapperProfile: Profile
 		CreateMap<School, SchoolResponse>();
 
 		CreateMap<SchoolGround, SchoolGroundResponse>()
-			.ForMember(dest => dest.SchoolId, opt => opt.MapFrom(src => src.School != null ? src.School.Id : Guid.Empty));
+			.ForMember(dest => dest.SchoolId, 
+                opt => opt.MapFrom(src => src.School != null ? src.School.Id : Guid.Empty));
 
 		CreateMap<SchoolClass, SchoolClassWithoutManagerResponse>()
-			.ForMember(dest => dest.GroundId, opt => opt.MapFrom(src => src.Ground != null ? src.Ground.Id : Guid.Empty))
-			.ForMember(dest => dest.SchoolId, opt => opt.MapFrom(src => src.School != null ? src.School.Id : Guid.Empty));
+			.ForMember(dest => dest.GroundId, 
+                opt => opt.MapFrom(src => src.Ground != null ? src.Ground.Id : Guid.Empty))
+			.ForMember(dest => dest.SchoolId, 
+                opt => opt.MapFrom(src => src.School != null ? src.School.Id : Guid.Empty));
 
         CreateMap<Librarian, LibrarianResponse>()
-            .ForMember(dest => dest.GroundId, opt => opt.MapFrom(src => src.Ground != null ? src.Ground.Id : Guid.Empty))
-            .ForMember(dest => dest.SchoolId, opt => opt.MapFrom(src => src.School != null ? src.School.Id : Guid.Empty));
+            .ForMember(dest => dest.GroundId, 
+                opt => opt.MapFrom(src => src.Ground != null ? src.Ground.Id : Guid.Empty))
+            .ForMember(dest => dest.SchoolId, 
+                opt => opt.MapFrom(src => src.School != null ? src.School.Id : Guid.Empty));
 
 
 		CreateMap<EducationalBookSchoolRentRequest, EducationalBookSchoolRentRequestResponse>()
@@ -65,5 +70,11 @@ public class WebMapperProfile: Profile
                     TotalCount = src.TotalCount
                 }
             ));
+
+        CreateMap<EducationalBookSchoolRentRequestConversationMessage, EducationalBookSchoolRentRequestConversationMessageResponse>()
+            .ForMember(dest => dest.GroundSenderId, 
+                opt => opt.MapFrom(src => src.MessageSender != null ? src.MessageSender.Id : Guid.Empty))
+            .ForMember(dest => dest.RentRequest, 
+                opt => opt.MapFrom(src => src.RentRequest));
     }
 }

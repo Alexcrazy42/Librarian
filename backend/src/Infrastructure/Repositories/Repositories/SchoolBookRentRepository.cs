@@ -1,5 +1,7 @@
 ﻿using Domain.Common.Exceptions;
+using Domain.Entities.Books;
 using Domain.Entities.RentRequests;
+using Domain.Entities.SchoolStructure;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Store.Db;
@@ -13,6 +15,75 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
     public SchoolBookRentRepository(LibraryDbContext libraryDbContext)
     {
         this.libraryDbContext = libraryDbContext;
+    }
+
+    public async Task CloseRequestByDebtorAsync(Guid requestId, CancellationToken ct)
+    {
+        var request = new EducationalBookSchoolRentRequest(requestId);
+
+        request.ResolvedByRequestingSide = true;
+
+        libraryDbContext.Attach(request);
+        libraryDbContext.Entry(request).Property(x => x.ResolvedByRequestingSide).IsModified = true;
+
+        await libraryDbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task CloseRequestByOwnerAsync(Guid requestId, CancellationToken ct)
+    {
+        var request = new EducationalBookSchoolRentRequest(requestId);
+
+        request.ResolvedByRequestedSide = true;
+
+        libraryDbContext.Attach(request);
+        libraryDbContext.Entry(request).Property(x => x.ResolvedByRequestedSide).IsModified = true;
+
+        await libraryDbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task ReceiveBooksByDebtorAsync(EducationalBookSchoolRentRequest request, CancellationToken ct)
+    {
+        libraryDbContext.Attach(request);
+        libraryDbContext.Entry(request).Property(x => x.ReceivedByDebtor).IsModified = true;
+        libraryDbContext.Entry(request).Property(x => x.IsArchived).IsModified = true;
+
+        await libraryDbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task SendBooksByOwnerAsync(Guid requestId, CancellationToken ct)
+    {
+        var request = new EducationalBookSchoolRentRequest(requestId);
+
+        request.SendByOwner = true;
+
+        libraryDbContext.Attach(request);
+        libraryDbContext.Entry(request).Property(x => x.SendByOwner).IsModified = true;
+
+        await libraryDbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task SetVisibleOfRequestAsync(Guid requestId, CancellationToken ct)
+    {
+        var request = new EducationalBookSchoolRentRequest(requestId);
+
+        request.ViewedUpdatesByRequestedSide = true;
+
+        libraryDbContext.Attach(request);
+        libraryDbContext.Entry(request).Property(x => x.ViewedUpdatesByRequestedSide).IsModified = true;
+
+        await libraryDbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task SetVisibleOfResponseAsync(Guid requestId, CancellationToken ct)
+    {
+        var request = new EducationalBookSchoolRentRequest(requestId);
+
+        request.ViewedUpdatesByRequestingSide = true;
+
+        libraryDbContext.Attach(request);
+        libraryDbContext.Entry(request).Property(x => x.ViewedUpdatesByRequestingSide).IsModified = true;
+
+        await libraryDbContext.SaveChangesAsync(ct);
     }
 
     public async Task<EducationalBookSchoolRentRequest> CreateAsync(EducationalBookSchoolRentRequest entity, CancellationToken ct)
@@ -71,5 +142,72 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
             .Include(x => x.CreatedBy)
             .FirstOrDefaultAsync(x => x.Id == id, ct)
             ?? throw new NotFoundException("Запрос не найден!");
+    }
+
+    
+
+    public async Task<EducationalBookSchoolRentRequestConversationMessage> SendMessageToDebtorRequestAsync(EducationalBookSchoolRentRequestConversationMessage message, CancellationToken ct)
+    {
+        libraryDbContext.RentRequestMessages.Add(message);
+        libraryDbContext.Attach(message.RentRequest);
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.RequestStatus).IsModified = true;
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.ResolvedByRequestedSide).IsModified = true;
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.ResolvedByRequestingSide).IsModified = true;
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.OwnerReadyGiveBookCount).IsModified = true;
+
+        libraryDbContext.Attach(message.MessageSender);
+
+        await libraryDbContext.SaveChangesAsync(ct);
+
+        return await libraryDbContext.RentRequestMessages
+            .Include(x => x.MessageSender)
+            .Include(x => x.RentRequest)
+            .FirstOrDefaultAsync(x => x.Id == message.Id, ct)
+            ?? throw new NotFoundException("Сообщение не найдено!");
+    }
+
+    public async Task<EducationalBookSchoolRentRequestConversationMessage> SendMessageToOwnerResponseAsync(EducationalBookSchoolRentRequestConversationMessage message, CancellationToken ct)
+    {
+        libraryDbContext.RentRequestMessages.Add(message);
+        libraryDbContext.Attach(message.RentRequest);
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.RequestingBookCount).IsModified = true;
+        libraryDbContext.Attach(message.MessageSender);
+
+        await libraryDbContext.SaveChangesAsync(ct);
+
+        return await libraryDbContext.RentRequestMessages
+            .Include(x => x.MessageSender)
+            .Include(x => x.RentRequest)
+            .FirstOrDefaultAsync(x => x.Id == message.Id, ct)
+            ?? throw new NotFoundException("Сообщение не найдено!");
+    }
+
+    public async Task<EducationalBookInBalance> GetEdBookInBalanceAsync(Guid requestId, CancellationToken ct)
+    {
+        var rentRequest = await libraryDbContext.EdBookSchoolRentRequests
+            .Include(x => x.Book)
+            .FirstOrDefaultAsync(x => x.Id == requestId, ct)
+            ?? throw new NotFoundException("Запрос не найден!");
+
+        return rentRequest.Book;
+    }
+
+    public async Task<SchoolGround> GetDebtorGroundAsync(Guid requestId, CancellationToken ct)
+    {
+        var rentRequest = await libraryDbContext.EdBookSchoolRentRequests
+            .Include(x => x.DebtorSchoolGround)
+            .FirstOrDefaultAsync(x => x.Id == requestId, ct)
+            ?? throw new NotFoundException("Запрос не найден!");
+
+        return rentRequest.DebtorSchoolGround;
+    }
+
+    public async Task ChangeBookCountAsync(EducationalBookSchoolRentRequest request, CancellationToken ct)
+    {
+        libraryDbContext.Attach(request);
+
+        libraryDbContext.Entry(request).Property(x => x.RequestingBookCount).IsModified = true;
+
+        await libraryDbContext.SaveChangesAsync(ct);
     }
 }

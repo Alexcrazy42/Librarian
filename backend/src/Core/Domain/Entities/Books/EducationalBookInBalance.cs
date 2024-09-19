@@ -18,6 +18,7 @@ public sealed class EducationalBookInBalance
     private int _totalCount;
     private bool _inStock;
     private BaseEducationalBook _baseEdBook;
+    private SchoolGround _debtorGround;
 
     public Guid Id { get; private set; }
 
@@ -146,7 +147,20 @@ public sealed class EducationalBookInBalance
 
     public SchoolGround BookOwnerGround { get; private set; }
 
-    public EducationalBookInBalance? BaseBook { get; private set; }
+    public SchoolGround? DebtorSchoolGround
+    {
+        get
+        {
+            return _debtorGround;
+        }
+        set
+        {
+            if (value != null)
+            {
+                _debtorGround = value;
+            }
+        }
+    }
 
     public BookSupply Supply { get; private set; }
 

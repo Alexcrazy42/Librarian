@@ -51,6 +51,8 @@ public class LibraryDbContext : DbContext
 
     public DbSet<EducationalBookSchoolRentRequest> EdBookSchoolRentRequests => Set<EducationalBookSchoolRentRequest>();
 
+    public DbSet<EducationalBookSchoolRentRequestConversationMessage> RentRequestMessages => Set<EducationalBookSchoolRentRequestConversationMessage>();
+
     public LibraryDbContext()
     { }
 
