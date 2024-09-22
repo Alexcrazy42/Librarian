@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.Books;
 using Domain.Entities.SchoolStructure;
 using Domain.Enums;
+using Microsoft.VisualBasic;
 
 namespace Domain.Entities.RentRequests;
 
@@ -16,7 +17,11 @@ public class EducationalBookSchoolRentRequest
 
     public int RequestingBookCount { get; set; }
 
+    public DateOnly EndRentAt { get; set; }
+
     public int? OwnerReadyGiveBookCount { get; set; }
+
+    public DateOnly? OwnerReadyToEndRentAt { get; set; }
 
     public RentRequestStatus RequestStatus { get; set; }
 
@@ -47,22 +52,23 @@ public class EducationalBookSchoolRentRequest
         Id = id;
     }
 
-    public EducationalBookSchoolRentRequest(Guid id, 
-        SchoolGround debtorSchoolGround, 
-        SchoolGround ownerSchool, 
-        EducationalBookInBalance book, 
-        int requestingBookCount, 
+    public EducationalBookSchoolRentRequest(Guid id,
+        SchoolGround debtorSchoolGround,
+        SchoolGround ownerSchool,
+        EducationalBookInBalance book,
+        int requestingBookCount,
         int? ownerReadyGiveBookCount,
         RentRequestStatus requestStatus,
         DateTime createdAt,
-        SchoolGround createdBy, 
-        bool viewedUpdatesByRequestedSide, 
-        bool viewedUpdatesByRequestingSide, 
-        bool resolvedByRequestingSide, 
-        bool resolvedByRequestedSide, 
-        bool sendByOwner, 
-        bool receivedByDebtor, 
-        bool isArchived)
+        SchoolGround createdBy,
+        bool viewedUpdatesByRequestedSide,
+        bool viewedUpdatesByRequestingSide,
+        bool resolvedByRequestingSide,
+        bool resolvedByRequestedSide,
+        bool sendByOwner,
+        bool receivedByDebtor,
+        bool isArchived,
+        DateOnly endRentAt)
     {
         Id = id;
         DebtorSchoolGround = debtorSchoolGround;
@@ -80,5 +86,6 @@ public class EducationalBookSchoolRentRequest
         SendByOwner = sendByOwner;
         ReceivedByDebtor = receivedByDebtor;
         IsArchived = isArchived;
+        EndRentAt = endRentAt;
     }
 }

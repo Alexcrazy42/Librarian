@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.Books;
 using Domain.Entities.RentRequests;
 using Domain.Entities.Rents.People;
+using Domain.Entities.Rents.School;
 using Domain.Entities.SchoolStructure;
 using Domain.Entities.Subjects;
 using Domain.Entities.Supplies;
@@ -52,6 +53,8 @@ public class LibraryDbContext : DbContext
     public DbSet<EducationalBookSchoolRentRequest> EdBookSchoolRentRequests => Set<EducationalBookSchoolRentRequest>();
 
     public DbSet<EducationalBookSchoolRentRequestConversationMessage> RentRequestMessages => Set<EducationalBookSchoolRentRequestConversationMessage>();
+
+    public DbSet<EducationalBookSchoolRent> EdBookSchoolRents => Set<EducationalBookSchoolRent>();
 
     public LibraryDbContext()
     { }

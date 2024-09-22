@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Store.Db;
@@ -11,9 +12,11 @@ using Store.Db;
 namespace Store.Db.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922143057_MakeSupplyFKInEdBookNotRequired")]
+    partial class MakeSupplyFKInEdBookNotRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,20 +214,12 @@ namespace Store.Db.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<DateOnly>("EndRentAt")
-                        .HasColumnType("date")
-                        .HasColumnName("end_rent_at");
-
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
 
                     b.Property<int?>("OwnerReadyGiveBookCount")
                         .HasColumnType("integer")
                         .HasColumnName("owner_ready_give_book_count");
-
-                    b.Property<DateOnly?>("OwnerReadyToEndRentAt")
-                        .HasColumnType("date")
-                        .HasColumnName("owner_ready_to_end_rent_at");
 
                     b.Property<bool>("ReceivedByDebtor")
                         .HasColumnType("boolean")
@@ -289,9 +284,6 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateOnly?>("ChangeDebtorEndRentAt")
-                        .HasColumnType("date");
-
                     b.Property<int?>("ChangeRequestedBookCount")
                         .HasColumnType("integer");
 
@@ -307,9 +299,6 @@ namespace Store.Db.Migrations
 
                     b.Property<int?>("OwnerReadyGiveBook")
                         .HasColumnType("integer");
-
-                    b.Property<DateOnly?>("OwnerReadyToEndRentAt")
-                        .HasColumnType("date");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer")
@@ -426,33 +415,34 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("CloseByDebtor")
+                        .HasColumnType("boolean")
+                        .HasColumnName("closed_by_debtor");
+
+                    b.Property<bool>("CloseByOwner")
+                        .HasColumnType("boolean")
+                        .HasColumnName("closed_by_owner");
+
                     b.Property<int>("Count")
                         .HasColumnType("integer")
                         .HasColumnName("count");
-
-                    b.Property<DateOnly>("EndRentAt")
-                        .HasColumnType("date")
-                        .HasColumnName("end_rent_at");
 
                     b.Property<bool>("IsOverdue")
                         .HasColumnType("boolean")
                         .HasColumnName("overdue");
 
-                    b.Property<bool>("ReceivedByOwner")
-                        .HasColumnType("boolean")
-                        .HasColumnName("received_by_owner");
+                    b.Property<DateOnly>("ReturnDate")
+                        .HasColumnType("date")
+                        .HasColumnName("return_date");
 
-                    b.Property<bool>("SendByDebtor")
-                        .HasColumnType("boolean")
-                        .HasColumnName("send_by_debtor");
-
-                    b.Property<Guid>("debtor_ed_book_id")
-                        .HasColumnType("uuid");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date")
+                        .HasColumnName("start_date");
 
                     b.Property<Guid>("deptor_school_ground_id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("owner_ed_book_id")
+                    b.Property<Guid>("ed_book_id")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("owner_school_ground_id")
@@ -460,11 +450,9 @@ namespace Store.Db.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("debtor_ed_book_id");
-
                     b.HasIndex("deptor_school_ground_id");
 
-                    b.HasIndex("owner_ed_book_id");
+                    b.HasIndex("ed_book_id");
 
                     b.HasIndex("owner_school_ground_id");
 
@@ -1241,21 +1229,15 @@ namespace Store.Db.Migrations
 
             modelBuilder.Entity("Domain.Entities.Rents.School.EducationalBookSchoolRent", b =>
                 {
-                    b.HasOne("Domain.Entities.Books.EducationalBookInBalance", "DebtorBook")
-                        .WithMany()
-                        .HasForeignKey("debtor_ed_book_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", "DeptorSchoolGround")
                         .WithMany()
                         .HasForeignKey("deptor_school_ground_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Books.EducationalBookInBalance", "OwnerBook")
+                    b.HasOne("Domain.Entities.Books.EducationalBookInBalance", "Book")
                         .WithMany()
-                        .HasForeignKey("owner_ed_book_id")
+                        .HasForeignKey("ed_book_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1265,11 +1247,9 @@ namespace Store.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DebtorBook");
+                    b.Navigation("Book");
 
                     b.Navigation("DeptorSchoolGround");
-
-                    b.Navigation("OwnerBook");
 
                     b.Navigation("OwnerSchoolGround");
                 });

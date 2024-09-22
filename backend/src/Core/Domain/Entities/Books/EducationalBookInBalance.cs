@@ -162,7 +162,7 @@ public sealed class EducationalBookInBalance
         }
     }
 
-    public BookSupply Supply { get; private set; }
+    public BookSupply? Supply { get; private set; }
 
     public EdBookDecommissioning? Decommissioning { get; private set; }
 
@@ -224,6 +224,33 @@ public sealed class EducationalBookInBalance
         CurrentSchoolGround = currentschoolGround;
         BookOwnerGround = bookOwnerGround;
         Supply = supply;
+        InStock = inStock;
+    }
+
+    public EducationalBookInBalance(
+        Guid id,
+        BaseEducationalBook baseEducationalBook,
+        decimal price,
+        BookCondition condition,
+        int year,
+        string note,
+        int inPlaceCount,
+        int totalCount,
+        bool inStock,
+        SchoolGround currentschoolGround,
+        SchoolGround bookOwnerGround
+    )
+    {
+        Id = id;
+        BaseEducationalBook = baseEducationalBook;
+        Price = price;
+        Year = year;
+        Condition = condition;
+        Note = note;
+        InPlaceCount = inPlaceCount;
+        TotalCount = totalCount;
+        CurrentSchoolGround = currentschoolGround;
+        BookOwnerGround = bookOwnerGround;
         InStock = inStock;
     }
 }

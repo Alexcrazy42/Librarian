@@ -1,6 +1,7 @@
 ﻿using Domain.Common.Exceptions;
 using Domain.Entities.Books;
 using Domain.Entities.RentRequests;
+using Domain.Entities.Rents.School;
 using Domain.Entities.SchoolStructure;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -39,13 +40,21 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
         libraryDbContext.Entry(request).Property(x => x.ResolvedByRequestedSide).IsModified = true;
 
         await libraryDbContext.SaveChangesAsync(ct);
+
+        libraryDbContext.Entry(request).State = EntityState.Detached;
     }
 
-    public async Task ReceiveBooksByDebtorAsync(EducationalBookSchoolRentRequest request, CancellationToken ct)
+    public async Task ReceiveBooksByDebtorAsync(EducationalBookSchoolRentRequest request, EducationalBookInBalance newEdbook, 
+        EducationalBookSchoolRent schoolRent, CancellationToken ct)
     {
         libraryDbContext.Attach(request);
+        
         libraryDbContext.Entry(request).Property(x => x.ReceivedByDebtor).IsModified = true;
         libraryDbContext.Entry(request).Property(x => x.IsArchived).IsModified = true;
+        libraryDbContext.Entry(request.Book).Property(x => x.InPlaceCount).IsModified = true;
+
+        libraryDbContext.EducationalBooksInBalance.Add(newEdbook);
+        libraryDbContext.EdBookSchoolRents.Add(schoolRent);
 
         await libraryDbContext.SaveChangesAsync(ct);
     }
@@ -128,6 +137,9 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
             .Include(x => x.DebtorSchoolGround)
             .Include(x => x.OwnerSchoolGround)
             .Include(x => x.Book)
+                .ThenInclude(book => book.BaseEducationalBook)
+            .Include(x => x.Book)
+                .ThenInclude(book => book.Supply)
             .Include(x => x.CreatedBy)
             .Where(x => x.DebtorSchoolGround.Id == groundId)
             .ToListAsync(ct);
@@ -153,7 +165,17 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
         libraryDbContext.Entry(message.RentRequest).Property(x => x.RequestStatus).IsModified = true;
         libraryDbContext.Entry(message.RentRequest).Property(x => x.ResolvedByRequestedSide).IsModified = true;
         libraryDbContext.Entry(message.RentRequest).Property(x => x.ResolvedByRequestingSide).IsModified = true;
-        libraryDbContext.Entry(message.RentRequest).Property(x => x.OwnerReadyGiveBookCount).IsModified = true;
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.ViewedUpdatesByRequestingSide).IsModified = true;
+
+        if (message.RentRequest.OwnerReadyGiveBookCount != null)
+        {
+            libraryDbContext.Entry(message.RentRequest).Property(x => x.OwnerReadyGiveBookCount).IsModified = true;
+        }
+        if (message.RentRequest.OwnerReadyToEndRentAt != null)
+        {
+            libraryDbContext.Entry(message.RentRequest).Property(x => x.OwnerReadyToEndRentAt).IsModified = true;
+        }
+        
 
         libraryDbContext.Attach(message.MessageSender);
 
@@ -170,7 +192,14 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
     {
         libraryDbContext.RentRequestMessages.Add(message);
         libraryDbContext.Attach(message.RentRequest);
+        if (message.RentRequest.RequestingBookCount != 0)
+        {
+
+        }
+
         libraryDbContext.Entry(message.RentRequest).Property(x => x.RequestingBookCount).IsModified = true;
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.EndRentAt).IsModified = true;
+        libraryDbContext.Entry(message.RentRequest).Property(x => x.ViewedUpdatesByRequestedSide).IsModified = true;
         libraryDbContext.Attach(message.MessageSender);
 
         await libraryDbContext.SaveChangesAsync(ct);
@@ -186,8 +215,11 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
     {
         var rentRequest = await libraryDbContext.EdBookSchoolRentRequests
             .Include(x => x.Book)
+                .ThenInclude(book => book.BaseEducationalBook)
             .FirstOrDefaultAsync(x => x.Id == requestId, ct)
             ?? throw new NotFoundException("Запрос не найден!");
+
+        libraryDbContext.Entry(rentRequest).State = EntityState.Detached;
 
         return rentRequest.Book;
     }
@@ -198,6 +230,8 @@ internal class SchoolBookRentRepository : ISchoolBookRentRepository
             .Include(x => x.DebtorSchoolGround)
             .FirstOrDefaultAsync(x => x.Id == requestId, ct)
             ?? throw new NotFoundException("Запрос не найден!");
+
+        libraryDbContext.Entry(rentRequest).State = EntityState.Detached;
 
         return rentRequest.DebtorSchoolGround;
     }

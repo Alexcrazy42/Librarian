@@ -30,6 +30,12 @@ public class EducationalBookSchoolRentRequestConfiguration : IEntityTypeConfigur
         builder.Property(x => x.OwnerReadyGiveBookCount)
             .HasColumnName("owner_ready_give_book_count");
 
+        builder.Property(x => x.EndRentAt)
+            .HasColumnName("end_rent_at");
+
+        builder.Property(x => x.OwnerReadyToEndRentAt)
+            .HasColumnName("owner_ready_to_end_rent_at");
+
         builder.Property(x => x.RequestStatus)
             .HasColumnName("request_status");
 

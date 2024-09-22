@@ -25,6 +25,10 @@ public class EducationalBookSchoolRentRequestConversationMessage
 
     public int? ChangeRequestedBookCount { get; set; }
 
+    public DateOnly? OwnerReadyToEndRentAt { get; set; }
+
+    public DateOnly? ChangeDebtorEndRentAt { get; set; }
+
     public DateTime CreatedAt { get; private set; }
 
     public bool ViewedByReveiver { get; set; }

@@ -5,11 +5,7 @@ namespace Domain.Interfaces.Services;
 
 public interface ISchoolBookRentService
 {
-    public Task<EducationalBookSchoolRentRequest> CreateSchoolRentAsync(CreateSchoolRentRequest request, CancellationToken ct);
-
-    public Task SetVisibleOfRequestAsync(Guid requestId, CancellationToken ct);
-
-    public Task SetVisibleOfResponseAsync(Guid requestId, CancellationToken ct);
+    public Task<EducationalBookSchoolRentRequest> CreateSchoolRentAsync(CreateEdBookSchoolRentRequest request, CancellationToken ct);
 
     public Task<EducationalBookSchoolRentRequestConversationMessage> SendMessageToDebtorRequestAsync(SendMessageToRentRequestRequest request, CancellationToken ct);
 
@@ -22,4 +18,8 @@ public interface ISchoolBookRentService
     public Task SendBooksByOwnerAsync(Guid requestId, CancellationToken ct);
 
     public Task CloseRequestByDebtorAsync(Guid requestId, CancellationToken ct);
+
+    public Task SetVisibleOfRequestAsync(Guid requestId, CancellationToken ct);
+
+    public Task SetVisibleOfResponseAsync(Guid requestId, CancellationToken ct);
 }

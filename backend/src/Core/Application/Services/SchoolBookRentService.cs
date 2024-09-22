@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts.Requests.SchoolRentsRequests;
 using Domain.Entities.Books;
 using Domain.Entities.RentRequests;
+using Domain.Entities.Rents.School;
 using Domain.Entities.SchoolStructure;
 using Domain.Enums;
 using Domain.Interfaces.Repositories;
@@ -37,27 +38,43 @@ internal class SchoolBookRentService : ISchoolBookRentService
         var book = await schoolBookRentRepository.GetEdBookInBalanceAsync(requestId, ct);
         var debtorGround = await schoolBookRentRepository.GetDebtorGroundAsync(requestId, ct);
 
-        book.DebtorSchoolGround = debtorGround;
+        var request = await schoolBookRentRepository.GetAsync(requestId, ct);
 
-        var request = new EducationalBookSchoolRentRequest(requestId);
+        book.InPlaceCount -= request.RequestingBookCount;
+
+        var newEdBookInBalance = new EducationalBookInBalance(
+            Guid.NewGuid(),
+            book.BaseEducationalBook,
+            book.Price,
+            book.Condition,
+            book.Year,
+            book.Note,
+            request.RequestingBookCount,
+            request.RequestingBookCount,
+            true,
+            request.DebtorSchoolGround,
+            request.OwnerSchoolGround
+        );
+
+        var newEdBookRent = new EducationalBookSchoolRent(
+            Guid.NewGuid(),
+            book,
+            newEdBookInBalance,
+            request.OwnerSchoolGround,
+            request.DebtorSchoolGround,
+            false,
+            false,
+            false,
+            request.RequestingBookCount,
+            request.EndRentAt);
 
         request.ReceivedByDebtor = true;
         request.IsArchived = true;
 
-        await schoolBookRentRepository.ReceiveBooksByDebtorAsync(request, ct);
+        await schoolBookRentRepository.ReceiveBooksByDebtorAsync(request, newEdBookInBalance, newEdBookRent, ct);
     }
 
-    public async Task SetVisibleOfRequestAsync(Guid requestId, CancellationToken ct)
-    {
-        await schoolBookRentRepository.SetVisibleOfRequestAsync(requestId, ct);
-    }
-
-    public async Task SetVisibleOfResponseAsync(Guid requestId, CancellationToken ct)
-    {
-        await schoolBookRentRepository.SetVisibleOfResponseAsync(requestId, ct);
-    }
-
-    public async Task<EducationalBookSchoolRentRequest> CreateSchoolRentAsync(CreateSchoolRentRequest request, CancellationToken ct)
+    public async Task<EducationalBookSchoolRentRequest> CreateSchoolRentAsync(CreateEdBookSchoolRentRequest request, CancellationToken ct)
     {
         var debtor = new SchoolGround(request.DebtorSchoolGroundId);
 
@@ -77,7 +94,8 @@ internal class SchoolBookRentService : ISchoolBookRentService
             resolvedByRequestedSide: false,
             sendByOwner: false,
             receivedByDebtor: false,
-            isArchived: false
+            isArchived: false,
+            endRentAt: request.EndRentAt
         );
 
         return await schoolBookRentRepository.CreateAsync(edBookSchoolRentRequest, ct);
@@ -87,16 +105,13 @@ internal class SchoolBookRentService : ISchoolBookRentService
     {
         var rentRequest = new EducationalBookSchoolRentRequest(request.RentRequestId);
 
-        if (request.ReadyGiveBookCount != 0)
-        {
-            rentRequest.OwnerReadyGiveBookCount = request.ReadyGiveBookCount;
-        }
-
-        if (rentRequest.RequestStatus == RentRequestStatus.Accept)
+        if (request.Status == SchoolRentConversationMessageStatus.Accept)
         {
             rentRequest.ResolvedByRequestedSide = true;
             rentRequest.ResolvedByRequestingSide = true;
         }
+
+        rentRequest.ViewedUpdatesByRequestingSide = false;
 
         rentRequest.RequestStatus = GetRequestStatusBySendedMessage(request.Status);
 
@@ -110,6 +125,18 @@ internal class SchoolBookRentService : ISchoolBookRentService
             viewedByReveiver: false
         );
 
+        if (request.ReadyGiveBookCount != null)
+        {
+            rentRequest.OwnerReadyGiveBookCount = request.ReadyGiveBookCount;
+            message.OwnerReadyGiveBook = request.ReadyGiveBookCount;
+        }
+
+        if (request.ReadyEndRentAt != null)
+        {
+            rentRequest.OwnerReadyToEndRentAt = request.ReadyEndRentAt;
+            message.OwnerReadyToEndRentAt = request.ReadyEndRentAt;
+        }
+        
         return await schoolBookRentRepository.SendMessageToDebtorRequestAsync(message, ct);
     }
 
@@ -117,10 +144,7 @@ internal class SchoolBookRentService : ISchoolBookRentService
     {
         var rentRequest = new EducationalBookSchoolRentRequest(request.RentRequestId);
 
-        if (request.ChangeRequestedBookCount != 0)
-        {
-            rentRequest.RequestingBookCount = (int)request.ChangeRequestedBookCount;
-        }
+        rentRequest.ViewedUpdatesByRequestedSide = false;
 
         var message = new EducationalBookSchoolRentRequestConversationMessage(
             Guid.NewGuid(),
@@ -132,7 +156,29 @@ internal class SchoolBookRentService : ISchoolBookRentService
             viewedByReveiver: false
         );
 
+        if (request.ChangeRequestedBookCount != null)
+        {
+            rentRequest.RequestingBookCount = (int)request.ChangeRequestedBookCount;
+            message.ChangeRequestedBookCount = request.ChangeRequestedBookCount;
+        }
+
+        if (request.ChangeEndRentAt != null)
+        {
+            rentRequest.EndRentAt = (DateOnly)request.ChangeEndRentAt;
+            message.ChangeDebtorEndRentAt = request.ChangeEndRentAt;
+        }
+
         return await schoolBookRentRepository.SendMessageToOwnerResponseAsync(message, ct);
+    }
+
+    public async Task SetVisibleOfRequestAsync(Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentRepository.SetVisibleOfRequestAsync(requestId, ct);
+    }
+
+    public async Task SetVisibleOfResponseAsync(Guid requestId, CancellationToken ct)
+    {
+        await schoolBookRentRepository.SetVisibleOfResponseAsync(requestId, ct);
     }
 
     private RentRequestStatus GetRequestStatusBySendedMessage(SchoolRentConversationMessageStatus messageStatus)

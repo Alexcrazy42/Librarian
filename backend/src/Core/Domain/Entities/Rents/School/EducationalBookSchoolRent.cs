@@ -7,46 +7,46 @@ public class EducationalBookSchoolRent
 {
     public Guid Id { get; private set; }
 
-    public EducationalBookInBalance Book { get; private set; }
+    public EducationalBookInBalance DebtorBook { get; private set; }
+
+    public EducationalBookInBalance OwnerBook { get; private set; }
 
     public SchoolGround OwnerSchoolGround { get; private set; }
 
     public SchoolGround DeptorSchoolGround { get; private set; }
 
-    public bool CloseByDebtor { get; private set; }
+    public bool SendByDebtor { get; private set; }
 
-    public bool CloseByOwner { get; private set; }
+    public bool ReceivedByOwner { get; private set; }
 
     public bool IsOverdue { get; private set; }
 
     public int Count { get; private set; }
 
-    public DateOnly StartDate { get; private set; }
-
-    public DateOnly ReturnDate { get; private set; }
+    public DateOnly EndRentAt { get; private set; }
 
     private EducationalBookSchoolRent() { }
 
     public EducationalBookSchoolRent(Guid id, 
-        EducationalBookInBalance book, 
+        EducationalBookInBalance debtorBook, 
+        EducationalBookInBalance ownerBook,
         SchoolGround ownerSchoolGround, 
         SchoolGround deptorSchoolGround, 
-        bool closeByDebtor, 
-        bool closeByOwner, 
+        bool sendByDebtor, 
+        bool receivedByOwner, 
         bool isOverdue, 
-        int count, 
-        DateOnly startDate, 
-        DateOnly returnDate)
+        int count,
+        DateOnly endRentAt)
     {
         Id = id;
-        Book = book;
+        DebtorBook = debtorBook;
+        OwnerBook = ownerBook;
         OwnerSchoolGround = ownerSchoolGround;
         DeptorSchoolGround = deptorSchoolGround;
-        CloseByDebtor = closeByDebtor;
-        CloseByOwner = closeByOwner;
+        SendByDebtor = sendByDebtor;
+        ReceivedByOwner = receivedByOwner;
         IsOverdue = isOverdue;
         Count = count;
-        StartDate = startDate;
-        ReturnDate = returnDate;
+        EndRentAt = endRentAt;
     }
 }

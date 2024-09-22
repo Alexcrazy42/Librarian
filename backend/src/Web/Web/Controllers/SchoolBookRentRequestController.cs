@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Contracts.Requests.SchoolRentsRequests;
-using Domain.Contracts.Responses.EdBooks;
-using Domain.Contracts.Responses.School;
 using Domain.Contracts.Responses.SchoolRentRequests;
-using Domain.Entities.RentRequests;
-using Domain.Enums;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [ApiController]
-[Route("api/school-rents")]
-public class SchoolBookRentController : ControllerBase
+[Route("api/school-rents-requests")]
+public class SchoolBookRentRequestController : ControllerBase
 {
     private readonly IEdBookInBalanceRepository edBookInBalanceRepository;
     private readonly ISchoolBookRentService schoolBookRentService;
     private readonly ISchoolBookRentRepository schoolBookRentRepository;
     private readonly IMapper mapper;
 
-    public SchoolBookRentController(IEdBookInBalanceRepository edBookInBalanceRepository,
+    public SchoolBookRentRequestController(IEdBookInBalanceRepository edBookInBalanceRepository,
         ISchoolBookRentService schoolBookRentService,
         ISchoolBookRentRepository schoolBookRentRepository,
         IMapper mapper)
@@ -65,7 +61,7 @@ public class SchoolBookRentController : ControllerBase
 
 
     [HttpPost]
-    public async Task<EducationalBookSchoolRentRequestResponse> CreateSchoolRentRequestAsync([FromBody] CreateSchoolRentRequest request, CancellationToken ct)
+    public async Task<EducationalBookSchoolRentRequestResponse> CreateSchoolRentRequestAsync([FromBody] CreateEdBookSchoolRentRequest request, CancellationToken ct)
     {
         var rentRequest = await schoolBookRentService.CreateSchoolRentAsync(request, ct);
 
@@ -96,6 +92,7 @@ public class SchoolBookRentController : ControllerBase
     {
         await schoolBookRentService.ReceiveBooksByDebtorAsync(requestId, ct);
     }
+
 
     [HttpPut("visible-request/{requestId}")]
     public async Task SetVisibleOfRequestAsync([FromRoute] Guid requestId, CancellationToken ct)

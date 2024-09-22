@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Books;
 using Domain.Entities.RentRequests;
+using Domain.Entities.Rents.School;
 using Domain.Entities.SchoolStructure;
 
 namespace Domain.Interfaces.Repositories;
@@ -24,14 +25,14 @@ public interface ISchoolBookRentRepository
 
     public Task SendBooksByOwnerAsync(Guid requestId, CancellationToken ct);
 
-    public Task ReceiveBooksByDebtorAsync(EducationalBookSchoolRentRequest request, CancellationToken ct);
-
-    public Task SetVisibleOfRequestAsync(Guid requestId, CancellationToken ct);
-
-    public Task SetVisibleOfResponseAsync(Guid requestId, CancellationToken ct);
+    public Task ReceiveBooksByDebtorAsync(EducationalBookSchoolRentRequest request, EducationalBookInBalance newEdBook, EducationalBookSchoolRent newEdBookRent, CancellationToken ct);
 
     public Task<EducationalBookInBalance> GetEdBookInBalanceAsync(Guid requestId, CancellationToken ct);
     
     public Task<SchoolGround> GetDebtorGroundAsync(Guid requestId, CancellationToken ct);
-    Task ChangeBookCountAsync(EducationalBookSchoolRentRequest request, CancellationToken ct);
+    public Task ChangeBookCountAsync(EducationalBookSchoolRentRequest request, CancellationToken ct);
+    
+    public Task SetVisibleOfRequestAsync(Guid requestId, CancellationToken ct);
+
+    public Task SetVisibleOfResponseAsync(Guid requestId, CancellationToken ct);
 }

@@ -50,9 +50,8 @@ public class EducationalBookInBalanceConfiguration : IEntityTypeConfiguration<Ed
 
         builder.HasOne(x => x.Supply)
             .WithMany(s => s.EdBooks)
-            .HasForeignKey("supply_id");
-
-
+            .HasForeignKey("supply_id")
+            .IsRequired(false);
 
         builder.HasOne(x => x.Decommissioning)
             .WithOne(d => d.EdBook)

@@ -13,4 +13,6 @@ public class SendMessageToRentRequestRequest
     public SchoolRentConversationMessageStatus Status { get; set; }
 
     public int? ReadyGiveBookCount { get; set; }
+
+    public DateOnly? ReadyEndRentAt { get; set; }
 }

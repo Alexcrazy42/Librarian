@@ -8,15 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [ApiController]
-[Route("school-rent-chats")]
-public class SchoolBookRentChatController : ControllerBase
+[Route("school-rent-request-chats")]
+public class SchoolBookRentRequestChatController : ControllerBase
 {
     private readonly ISchoolBookRentService schoolBookRentService;
     private readonly ISchoolBookRentMessageRepository schoolBookRentMessageRepository;
     private readonly ISchoolBookRentMessageService schoolBookRentMessageService;
     private readonly IMapper mapper;
 
-    public SchoolBookRentChatController(ISchoolBookRentService schoolBookRentService,
+    public SchoolBookRentRequestChatController(ISchoolBookRentService schoolBookRentService,
         IMapper mapper,
         ISchoolBookRentMessageRepository schoolBookRentMessageRepository,
         ISchoolBookRentMessageService schoolBookRentMessageService)

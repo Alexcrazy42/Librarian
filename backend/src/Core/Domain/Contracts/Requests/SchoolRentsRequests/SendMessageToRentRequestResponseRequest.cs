@@ -9,4 +9,6 @@ public class SendMessageToRentRequestResponseRequest
     public string Message { get; set; }
 
     public int? ChangeRequestedBookCount { get; set; }
+
+    public DateOnly? ChangeEndRentAt { get; set; }
 }
