@@ -107,7 +107,7 @@ public sealed class EducationalBookInBalance
         }
         set
         {
-            if (value <= 0)
+            if (value < 0)
             {
                 throw new CommonException("Значение должно быть больше 0!");
             }

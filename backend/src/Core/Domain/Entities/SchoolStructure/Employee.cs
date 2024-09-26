@@ -35,7 +35,7 @@ public sealed class Employee : Person
     public Employee(Guid id,
         string surname,
         string name,
-        string patronymic,
+        string? patronymic,
         EmployeeStatusEnum employeeStatus,
         School school,
         SchoolGround  ground)

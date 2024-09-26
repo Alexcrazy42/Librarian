@@ -1,12 +1,19 @@
 {
-  // "files": [],
-  // "references": [
-  //   { "path": "./tsconfig.app.json" },
-  //   { "path": "./tsconfig.node.json" }
-  // ],
-
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "include": [
+      "src/**/*"
+    ],
   "compilerOptions": {
-      "baseUrl": "."
-    },
-    "include": ["src"]
+    "strict": true,
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["src/pages/*"],
+      "@state/*": ["src/state/*"]
+    }
+  }
 }

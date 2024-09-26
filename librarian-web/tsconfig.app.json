@@ -8,10 +8,10 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    // "noEmit": true,
     "jsx": "react-jsx",
 
     /* Linting */
@@ -20,5 +20,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*"
+  ]
 }
