@@ -1,0 +1,9 @@
+﻿const Student: React.FC = () => {
+    return(
+        <div>
+            <h1>student</h1>
+        </div>
+    )
+}
+
+export default Student;
