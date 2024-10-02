@@ -15,7 +15,7 @@ const initialState: AppState = {
 };
 
 
-const appSlice = createSlice({
+const authSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
@@ -34,5 +34,5 @@ const appSlice = createSlice({
     },
 });
   
-export const { setGroundId, setSchoolId, setLibrarianId, setIsMainLibrarian } = appSlice.actions;
-export default appSlice.reducer;
+export const { setGroundId, setSchoolId, setLibrarianId, setIsMainLibrarian } = authSlice.actions;
+export default authSlice.reducer;

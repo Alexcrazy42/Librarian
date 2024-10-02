@@ -5,79 +5,71 @@ import { RootState } from '@state/appStore';
 import { Button, Card, CardContent, Typography, 
   TextField, FormControlLabel, Checkbox, Radio, 
   Select, MenuItem, Dialog, DialogTitle, 
-  DialogContent, DialogActions } 
+  DialogContent, DialogActions, 
+  Grid} 
 from '@mui/material';
+import Sidebar from '@components/left_side_bar_with_classes';
+import Employee from '@pages/peoples/employee';
+
+interface Classroom {
+  id: number;
+  number: string;
+  name: string;
+}
+
+interface Employee {
+  id: number;
+  fullName: string;
+}
 
 const Main: React.FC = () => {
-  const enumMapping = {
-    0: 'Внебюджетный',
-    1: 'Общегородской'
+  const [classrooms, setClassrooms] = useState<Classroom[]>([
+    { id: 1, number: '1', name: 'A' },
+    { id: 2, number: '2', name: 'Б' },
+    { id: 3, number: '3', name: 'В' },
+    { id: 4, number: '4', name: 'Г' },
+    { id: 5, number: '5', name: 'Д' },
+    { id: 6, number: '6', name: 'Е' },
+    { id: 7, number: '7', name: 'Ё' },
+    { id: 8, number: '8', name: 'Ж' },
+    { id: 9, number: '9', name: 'З' },
+    { id: 10, number: '10', name: 'И' },
+    { id: 11, number: '11', name: 'К' },
+  ]);
+
+  const [employees, setEmployees] = useState<Employee[]>([
+    { id: 1, fullName: 'Иван Иванов' },
+    { id: 2, fullName: 'Мария Петрова' },
+    { id: 3, fullName: 'Сергей Сидоров' },
+    { id: 4, fullName: 'Анна Кузнецова' },
+    { id: 5, fullName: 'Дмитрий Смирнов' },
+    { id: 6, fullName: 'Екатерина Федорова' },
+    { id: 7, fullName: 'Алексей Попов' },
+    { id: 8, fullName: 'Ольга Васильева' },
+    { id: 9, fullName: 'Николай Николаев' },
+    { id: 10, fullName: 'Татьяна Романова' },
+  ]);
+
+  const handleSelectClassroom = (classroom: Classroom) => {
+    console.log('Выбранный класс:', classroom);
   };
 
-  const [selectedValue, setSelectedValue] = useState('');
+  const handleSelectEmployee = (employee: Employee) => {
+    
+  }
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-
-  const handleSubmit = () => {
-    const numericValue = parseInt(selectedValue, 10);
-    // Здесь отправьте numericValue на бэкенд
-    console.log('Отправка значения:', numericValue);
-  };
 
   return (
-    <div>
-      
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <Card className="w-96 shadow-lg">
-          <CardContent>
-
-            <Button 
-              className="bg-blue-100 hover:bg-blue-700 mb-4"
-              variant="outlined"
-              color="primary"
-            >
-              Нажми меня
-            </Button>
-
-            <TextField className='mb-4' label="Фамилия:" variant="outlined" fullWidth />
-
-            <FormControlLabel
-              control={<Checkbox color="primary" />}
-              label="Сдана книга"
-              className='mb-4'
-            />
-
-            <FormControlLabel
-              control={<Radio />}
-              label="Опция"
-              className='mb-4'
-            />
-
-            <Select
-              labelId="select-label"
-              value={selectedValue}
-              onChange={handleChange}
-              autoWidth
-              className='mb-4'
-            >
-            {Object.entries(enumMapping).map(([key, value]) => (
-              <MenuItem key={key} value={key}>
-                {value}
-              </MenuItem>
-            ))}
-            </Select>
-
-          <Button onClick={handleSubmit} color="primary" variant="contained">
-            Отправить
-          </Button>
-
-            {/* <MyDialog open={isModalOpen} onClose={() => setIsModalOpen(false)} ></MyDialog> */}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <Grid container>
+      <Grid item xs={1}>
+        <Sidebar classrooms={classrooms} employees={employees} onClassSelect={handleSelectClassroom} onEmployeeSelect={handleSelectEmployee} />
+      </Grid>
+      <Grid item xs={9}>
+        <div className="p-4">
+          
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 
