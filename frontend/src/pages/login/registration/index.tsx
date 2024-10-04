@@ -17,31 +17,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import { School, Venue } from '@interfaces/interfaces';
 
-interface Librarian {
-  id: number;
-  name: string;
-}
 
-interface Classroom {
-  id: number;
-  number: string;
-  name: string;
-  subjectsCount: number;
-}
 
-interface Venue {
-  id: number;
-  name: string;
-  librarians: Librarian[];
-  classrooms: Classroom[];
-}
-
-interface School {
-  id: number;
-  name: string;
-  venues: Venue[];
-}
 
 const Registration: React.FC = () => {
   const [schoolName, setSchoolName] = useState<string>('');

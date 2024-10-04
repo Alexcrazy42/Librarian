@@ -24,6 +24,7 @@
         "@state/*": ["./state/*"],
         "@styles/*": ["./styles/*"],
         "@components/*": ["./components/*"],
+        "@services/*": ["./services/*"],
       }
   }
 }

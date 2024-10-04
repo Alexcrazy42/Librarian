@@ -1,7 +1,11 @@
-﻿const Employee: React.FC = () => {
+﻿import { useParams } from "react-router-dom";
+
+const Employee: React.FC = () => {
+    const { id } = useParams();
+    
     return(
         <div>
-            <h1>employee</h1>
+            <h1>Работник с ID: {id}</h1>
         </div>
     )
 }

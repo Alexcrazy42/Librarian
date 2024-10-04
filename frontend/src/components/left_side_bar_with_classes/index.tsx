@@ -1,18 +1,9 @@
-﻿import React, { useState } from 'react';
+﻿import React, { Suspense, useState } from 'react';
 import { List, ListItem, ListItemText, Typography, Collapse, Button } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-
-interface Classroom {
-  id: number;
-  number: string;
-  name: string;
-}
-
-interface Employee {
-  id: number;
-  fullName: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { Classroom, Employee } from '@pages/school/main';
 
 interface SidebarProps {
   classrooms: Classroom[];
@@ -33,20 +24,21 @@ const Sidebar: React.FC<SidebarProps> = ({ classrooms, employees, onClassSelect,
     setEmployeeOpen(!employeeOpen);
   }
 
+
   return (
-    <div className="h-full w-40 bg-gray-200 border-l-4 border-blue-500 p-4 shadow-md">
+    <div className="h-full w- bg-gray-200 border-l-4 border-blue-500 p-4 shadow-md">
       <Button onClick={handleClassroomToggle} className="flex items-center">
         {classOpen ? <ExpandLess /> : <ExpandMore />}
         <span className="ml-2">Классы</span>
       </Button>
       <Collapse in={classOpen} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {classrooms.map((classroom) => (
-            <ListItem button key={classroom.id} onClick={() => onClassSelect(classroom)}>
-              <ListItemText primary={`${classroom.number} ${classroom.name}`} />
-            </ListItem>
-          ))}
-        </List>
+          <List component="div" disablePadding>
+            {classrooms.map((classroom) => (
+              <ListItem button key={classroom.id} onClick={() => onClassSelect(classroom)}>
+                <ListItemText primary={`${classroom.number} ${classroom.name}`} />
+              </ListItem>
+            ))}
+          </List>
       </Collapse>
 
 

@@ -12,6 +12,7 @@ export default defineConfig({
       '@state': resolve(__dirname, 'src/state'),
       '@styles': resolve(__dirname, 'src/styles'),
       '@components': resolve(__dirname, 'src/components'),
+      '@services': resolve(__dirname, 'src/services'),
     },
   },
 })
