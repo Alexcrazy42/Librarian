@@ -8,6 +8,7 @@ import {
     TableHead,
     TableRow,
     Paper,
+    Skeleton,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,22 +35,38 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {students.map((student, index) => (
-                        <TableRow 
-                            key={index}
-                            onClick={() => onRowClick(student)}
-                            sx={{
-                                cursor: 'pointer',
-                                '&:hover': {
-                                    backgroundColor: '#f5f5f5'
-                                },
-                            }}
-                        >
-                            <TableCell>{student.surname}</TableCell>
-                            <TableCell>{student.name}</TableCell>
-                            <TableCell>{student.patronymic}</TableCell>
-                        </TableRow>
-                    ))}
+                    {students.length == 0 ? (
+                        Array.from({ length: 5 }).map((_, index) => (
+                            <TableRow key={index}>
+                                <TableCell>
+                                    <Skeleton variant="text" width="100%" />
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton variant="text" width="100%" />
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton variant="text" width="100%" />
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    ) : (
+                        students.map((student, index) => (
+                            <TableRow
+                                key={index}
+                                onClick={() => onRowClick(student)}
+                                sx={{
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        backgroundColor: '#f5f5f5',
+                                    },
+                                }}
+                            >
+                                <TableCell>{student.surname}</TableCell>
+                                <TableCell>{student.name}</TableCell>
+                                <TableCell>{student.patronymic}</TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>

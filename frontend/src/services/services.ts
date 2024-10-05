@@ -1,4 +1,4 @@
-﻿import { Classroom, Employee, Classroom, Student } from "@interfaces/interfaces";
+﻿import { Classroom, Employee, Student } from "@interfaces/interfaces";
 
 const classrooms: Classroom[] = [
     { id: 1, number: '1', name: 'A', subjectsCount: 10 },
@@ -28,10 +28,14 @@ const employees: Employee[] = [
 ]
 
 const students: Student[] = [
-    {id: '123', surname: 'Иванов', name: 'Иван', patronymic: 'Иванович'},
-    {id: '123', surname: 'Петров', name: 'Петр', patronymic: 'Петрович'},
-    {id: '123', surname: 'Сидоров', name: 'Радион', patronymic: 'Радионович'},
-    {id: '123', surname: 'Тришин', name: 'Петр', patronymic: 'Петрович'}
+    {id: '1', surname: 'Иванов', name: 'Иван', patronymic: 'Иванович', classId: 1 },
+    {id: '2', surname: 'Петров', name: 'Петр', patronymic: 'Петрович', classId: 1 },
+    {id: '3', surname: 'Сидоров', name: 'Радион', patronymic: 'Радионович', classId: 1 },
+    {id: '4', surname: 'Тришин', name: 'Петр', patronymic: 'Петрович', classId: 1 },
+    {id: '5', surname: 'Иванов1', name: 'Иван', patronymic: 'Иванович', classId: 2 },
+    {id: '6', surname: 'Петров1', name: 'Петр', patronymic: 'Петрович', classId: 2 },
+    {id: '7', surname: 'Сидоров1', name: 'Радион', patronymic: 'Радионович', classId: 2 },
+    {id: '8', surname: 'Тришин1', name: 'Петр', patronymic: 'Петрович', classId: 2 }
 ]
 
 function delay(ms: number) {
@@ -50,10 +54,20 @@ export const fetchEmployeesAsync = async () : Promise<Employee[]> => {
 
 export const fetchStudentsByClassId = async (id: number) : Promise<Student[]> => {
     await delay(1000);
-    return Promise.resolve(students)
+    return Promise.resolve(students.filter(x => x.classId == id))
 }
 
 export const fetchStudentById = async(id: number): Promise<Student> => {
     await delay(1000);
-    return Promise.resolve(students[0]);
+    return Promise.resolve(students[id-1]);
+}
+
+export const fetchEmployeeById = async(id: number): Promise<Employee> => {
+    await delay(1000);
+    return Promise.resolve(employees[id-1]);
+}
+
+export const fetchClassById = async(id: number): Promise<Classroom> => {
+    await delay(300);
+    return Promise.resolve(classrooms[id-1]);
 }

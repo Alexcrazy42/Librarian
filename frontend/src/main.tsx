@@ -8,8 +8,9 @@ import Main from '@pages/school/main/index';
 import Login from '@pages/login/login/index'
 import Registration from '@pages/login/registration/index';
 import ClassList from '@pages/peoples/class_list';
-import Employee from '@pages/peoples/employee';
 import StudentPage from '@pages/peoples/student';
+import EmployeePage from '@pages/peoples/employee';
+import EdBooksList from '@pages/ed_books/ed_books_list';
 
 const router = createBrowserRouter([
   {
@@ -26,12 +27,13 @@ const router = createBrowserRouter([
           },
           {
             path: 'employee/:id',
-            element: <Employee />
+            element: <EmployeePage />
           },
           {
             path: 'student/:id',
             element: <StudentPage />
-          }
+          },
+          
         ]
       },
       {
@@ -42,6 +44,10 @@ const router = createBrowserRouter([
         path: '/registration',
         element: <Registration />,
       },
+      {
+        path: '/ed-books',
+        element: <EdBooksList />
+      }
     ]
   }
 ]);

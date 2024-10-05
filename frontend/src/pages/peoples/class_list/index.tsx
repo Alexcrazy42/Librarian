@@ -14,17 +14,12 @@ const ClassList: React.FC = () => {
             .then(data => {
                 setStudents(data);
             });
-    }, []);
+    }, [id]);
 
-    if(students.length == 0){
-        return <CircularProgress color="primary" />;
-    }
-
+    
     return(
         <>
-            <h1 className="text-2xl font-bold mb-4">Класс с ID: {id}</h1>
             <div className="p-4">
-                
                 <StudentTable students={students} />
             </div>
         </>

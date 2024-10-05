@@ -1,5 +1,5 @@
 ﻿import React, { Suspense, useState } from 'react';
-import { List, ListItem, ListItemText, Typography, Collapse, Button } from '@mui/material';
+import { List, ListItem, ListItemText, Typography, Collapse, Button, Skeleton } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
@@ -32,12 +32,20 @@ const Sidebar: React.FC<SidebarProps> = ({ classrooms, employees, onClassSelect,
         <span className="ml-2">Классы</span>
       </Button>
       <Collapse in={classOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {classrooms.map((classroom) => (
-              <ListItem button key={classroom.id} onClick={() => onClassSelect(classroom)}>
-                <ListItemText primary={`${classroom.number} ${classroom.name}`} />
-              </ListItem>
-            ))}
+          <List>
+              {classrooms.length === 0 ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                      <ListItem key={index}>
+                          <ListItemText primary={<Skeleton width="200px" />} />
+                      </ListItem>
+                  ))
+              ) : (
+                  classrooms.map((classroom) => (
+                      <ListItem button key={classroom.id} onClick={() => onClassSelect(classroom)}>
+                          <ListItemText primary={`${classroom.number} ${classroom.name}`} />
+                      </ListItem>
+                  ))
+              )}
           </List>
       </Collapse>
 
@@ -47,13 +55,21 @@ const Sidebar: React.FC<SidebarProps> = ({ classrooms, employees, onClassSelect,
         <span className="ml-2">Сотрудники</span>
       </Button>
       <Collapse in={employeeOpen} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {employees.map((employee) => (
-            <ListItem button key={employee.id} onClick={() => onEmployeeSelect(employee)}>
-              <ListItemText primary={`${employee.fullName}`} />
-            </ListItem>
-          ))}
-        </List>
+        <List>
+              {employees.length === 0 ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                      <ListItem key={index}>
+                          <ListItemText primary={<Skeleton width="200px" />} />
+                      </ListItem>
+                  ))
+              ) : (
+                employees.map((employee) => (
+                      <ListItem button key={employee.id} onClick={() => onEmployeeSelect(employee)}>
+                          <ListItemText primary={`${employee.fullName}`} />
+                      </ListItem>
+                  ))
+              )}
+          </List>
       </Collapse>
     </div>
   );

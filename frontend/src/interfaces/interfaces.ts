@@ -33,5 +33,6 @@ export interface Student {
     surname: string;
     name: string;
     patronymic: string;
+    classId: number
 }
   
