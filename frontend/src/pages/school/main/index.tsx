@@ -9,17 +9,15 @@ import { fetchClassroomsAsync, fetchEmployeesAsync } from '@services/services';
 
 const Main: React.FC = () => {
   const navigate = useNavigate();
-
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-
   const [employees, setEmployees] = useState<Employee[]>([]);
-
+  
   const handleSelectClassroom = (classroom: Classroom) => {
-    navigate(`class/${classroom.id}`);
+    navigate(`/class/${classroom.id}`);
   };
 
   const handleSelectEmployee = (employee: Employee) => {
-    navigate(`employee/${employee.id}`);
+    navigate(`/employee/${employee.id}`);
   }
 
   useEffect(() => {

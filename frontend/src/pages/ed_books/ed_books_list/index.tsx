@@ -2,9 +2,7 @@
 
 const EdBooksList = () => {
     return(
-        <>
-            <BooksPage />
-        </>
+        <BooksPage />
     )
 }
 

@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Filters from './filters';
+import CreateEdBookDialog from './createEdBookDialog';
 
 interface Book {
     id: number;
@@ -77,7 +78,12 @@ const booksData: Book[] = generateRandomBooks(100); // Генерация 100 с
 const BooksPage: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [booksPerPage, setBooksPerPage] = useState<number>(5); // По умолчанию 5 книг на странице
+    const [booksPerPage, setBooksPerPage] = useState<number>(5);
+    const [open, setOpen] = useState(false);
+    
+    const handleClickOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
 
     const filteredBooks = booksData.filter(book =>
         book.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -92,9 +98,6 @@ const BooksPage: React.FC = () => {
         setCurrentPage(value);
     };
 
-    const handleCreateBook = () => {
-        console.log('Create new book');
-    };
 
     return (
         <Container>
@@ -104,7 +107,7 @@ const BooksPage: React.FC = () => {
                 <Button
                     variant="contained"
                     color="success"
-                    onClick={handleCreateBook}
+                    onClick={() => setOpen(true)}
                     startIcon={<AddIcon />}
                     style={{ marginLeft: '16px', minWidth: '40px' }}
                 />
@@ -146,6 +149,12 @@ const BooksPage: React.FC = () => {
             <Typography variant="body2" align="center" style={{ marginTop: '16px' }}>
                 {`Всего книг: ${filteredBooks.length}`}
             </Typography>
+
+
+            <CreateEdBookDialog
+                open={open}
+                onClose={handleClose}
+            />
         </Container>
     );
 };

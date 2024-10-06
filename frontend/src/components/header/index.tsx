@@ -19,7 +19,19 @@ const Header = () => {
   }, [])
 
   return (
-    <AppBar position="static" className="bg-blue-600">
+    <>
+    <AppBar position="static" className="bg-blue-600 w-full">
+            <Toolbar className="flex justify-between items-center">
+                <div className="flex space-x-4">
+                    {librarianId !== '' ? (
+                        <AuthHeader />
+                    ) : (
+                        <NoAuthHeader />
+                    )}
+                </div>
+            </Toolbar>
+        </AppBar>
+    {/* <AppBar position="static" className="bg-blue-600 w-full">
       <Toolbar className="flex justify-between">
         <div className="flex space-x-4">
           {librarianId != '' ? (
@@ -29,7 +41,8 @@ const Header = () => {
           )}
         </div>
       </Toolbar>
-    </AppBar>
+    </AppBar> */}
+    </>
   );
 };
 
