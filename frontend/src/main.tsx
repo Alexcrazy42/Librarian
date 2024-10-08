@@ -11,8 +11,8 @@ import ClassList from '@pages/peoples/class_list';
 import StudentPage from '@pages/peoples/student';
 import EmployeePage from '@pages/peoples/employee';
 import EdBooksList from '@pages/ed_books/ed_books_list';
-import VisitingReportPage from '@pages/reports/visiting_report';
 import SupplyPage from '@pages/supplies/supply_page';
+import ClassSubjectTree from '@pages/classSubjects';
 
 const router = createBrowserRouter([
   {
@@ -51,12 +51,12 @@ const router = createBrowserRouter([
         element: <EdBooksList />
       },
       {
-        path: '/visiting-report',
-        element: <VisitingReportPage />
-      },
-      {
         path: '/supplies',
         element: <SupplyPage />
+      },
+      {
+        path: '/class-subjects',
+        element: <ClassSubjectTree />
       },
     ]
   }
