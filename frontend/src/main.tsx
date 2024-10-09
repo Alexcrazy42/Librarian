@@ -13,6 +13,8 @@ import EmployeePage from '@pages/peoples/employee';
 import EdBooksList from '@pages/ed_books/ed_books_list';
 import SupplyPage from '@pages/supplies/supply_page';
 import ClassSubjectTree from '@pages/classSubjects';
+import Test from '@pages/test';
+import MyDialog from '@pages/test';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: '/class-subjects',
         element: <ClassSubjectTree />
+      },
+      {
+        path: '/test',
+        element: <MyDialog />
       },
     ]
   }

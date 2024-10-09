@@ -4,6 +4,7 @@ import { RootState } from '@state/appStore';
 import { useNavigate } from 'react-router-dom';
 import AuthHeader from './components/authHeader';
 import NoAuthHeader from './components/noAuthHeader';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
   const librarianId = useSelector((state: RootState) => state.auth.librarianId);

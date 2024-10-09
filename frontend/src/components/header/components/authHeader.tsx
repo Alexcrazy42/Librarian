@@ -39,6 +39,9 @@ const AuthHeader = () => {
         <Link to="/class-subjects" style={{ textDecoration: 'none' }}>
             <Button color="inherit">Предметы</Button>
         </Link>
+        <Link to="/test" style={{ textDecoration: 'none' }}>
+            <Button color="inherit">test</Button>
+        </Link>
         <Button
             aria-controls="simple-menu"
             aria-haspopup="true"

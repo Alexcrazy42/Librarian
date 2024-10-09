@@ -14,6 +14,7 @@ import {
     Select,
     InputLabel,
     FormControl,
+    Fab,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Filters from './filters';
@@ -104,13 +105,12 @@ const BooksPage: React.FC = () => {
             <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} mb={2}>
                 
                 <Filters searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => setOpen(true)}
-                    startIcon={<AddIcon />}
-                    style={{ marginLeft: '16px', minWidth: '40px' }}
-                />
+
+                <Fab color="primary" 
+                    aria-label="add" 
+                    onClick={() => setOpen(true)}>
+                    <AddIcon />
+                </Fab>
             </Box>
 
             <Paper>

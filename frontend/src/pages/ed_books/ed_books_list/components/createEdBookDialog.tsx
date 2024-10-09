@@ -7,12 +7,13 @@ import {
     DialogActions,
     Button,
     Autocomplete,
-    Skeleton,
-    Typography,
     Chip,
     Box,
+    CircularProgress,
+    IconButton,
 } from '@mui/material';
 import { Appointment, Language, Level } from '@interfaces/interfaces';
+import AddIcon from '@mui/icons-material/Add';
 
 interface Author {
     id: string;
@@ -69,6 +70,9 @@ const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; }> 
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [options, setOptions] = useState<string[]>([]);
+    const [inputValue, setInputValue] = useState<string>('');
+    const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
     const fetchAuthors = async (term: string) => {
         setLoading(true);
@@ -145,10 +149,6 @@ const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; }> 
         }));
     };
 
-    const handleCreateAuthor = () => {
-        alert('Создать нового автора');
-    };
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({
@@ -161,6 +161,27 @@ const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; }> 
         console.log(formData);
         onClose();
     };
+
+    const fetchOptions = (value: string) => {
+        setLoading(true);
+        setTimeout(() => {
+          const allOptions = ['Пушкин А.С.', 'Banana', 'Cherry', 'Date', 'Fig', 'Grape'];
+          const filteredOptions = allOptions.filter(option =>
+            option.toLowerCase().includes(value.toLowerCase())
+          );
+          setOptions(filteredOptions);
+          setLoading(false);
+        }, 1000);
+    };
+
+    const handleAddItem = () => {
+        if (inputValue && !selectedItems.includes(inputValue)) {
+            setSelectedItems(prev => [...prev, inputValue]);
+            setInputValue('');
+        }
+    };
+
+    const isButtonDisabled = !inputValue || selectedItems.includes(inputValue);
 
     return (
         <Dialog open={open} onClose={onClose}>
@@ -176,6 +197,61 @@ const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; }> 
                         <TextField {...params} label="Автор" margin="dense" fullWidth required />
                     )}
                 />
+
+                <Autocomplete
+                        freeSolo
+                        options={options}
+                        loading={loading}
+                        onInputChange={(event, newInputValue) => {
+                                setInputValue(newInputValue);
+                                if (newInputValue) {
+                                    fetchOptions(newInputValue);
+                                } else {
+                                    setOptions([]);
+                                }
+                            }
+                        }
+                        renderInput={(params) => {
+                            return (
+                                <TextField
+                                    {...params}
+                                    label="Другие авторы"
+                                    variant="outlined"
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        endAdornment: (
+                                            <>
+                                                {loading ? <CircularProgress size={20} /> : null}
+                                                <IconButton
+                                                    onClick={handleAddItem}
+                                                    size="small"
+                                                    disabled={isButtonDisabled}
+                                                >
+                                                    <AddIcon />
+                                                </IconButton>
+                                            </>
+                                        ),
+                                    }} />
+                            );
+                        }}
+                        value={inputValue}
+                        onChange={(event, newValue) => {
+                                setInputValue(newValue);
+                            }
+                        }
+                    />
+
+                <div style={{ marginTop: 16 }}>
+                    {selectedItems.map((item, index) => (
+                        <Chip 
+                            key={index} 
+                            label={item} 
+                            onDelete={() => setSelectedItems(prev => prev.filter(i => i !== item))}
+                            style={{ margin: '4px' }}
+                        />
+                    ))}
+                </div>
+
                 <Box display="flex" flexWrap="wrap" marginTop={1}>
                     {formData.authorIds.map(authorId => {
                         const author = authors.find(a => a.id === authorId);
