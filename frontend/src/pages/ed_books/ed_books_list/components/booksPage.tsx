@@ -1,162 +1,81 @@
 ﻿import React, { useState } from 'react';
-import {
-    Button,
-    TextField,
-    List,
-    ListItem,
-    ListItemText,
-    Pagination,
-    Typography,
-    Container,
-    Paper,
-    Box,
-    MenuItem,
-    Select,
-    InputLabel,
-    FormControl,
-    Fab,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import Filters from './filters';
-import CreateEdBookDialog from './createEdBookDialog';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
+import { EdBookInBalanceResponse } from '@interfaces/responses/edBooksResponses';
 
-interface Book {
-    id: number;
-    title: string;
-    author: string;
+
+interface EdBookTableProps {
+    data: EdBookInBalanceResponse[];
 }
 
-// Функция для генерации случайных книг
-const generateRandomBooks = (count: number): Book[] => {
-    const titles = [
-        '1984',
-        'To Kill a Mockingbird',
-        'The Great Gatsby',
-        'Moby Dick',
-        'War and Peace',
-        'Pride and Prejudice',
-        'The Catcher in the Rye',
-        'Brave New World',
-        'The Odyssey',
-        'The Brothers Karamazov',
-        'Crime and Punishment',
-        'Jane Eyre',
-        'Wuthering Heights',
-        'The Picture of Dorian Gray',
-        'Fahrenheit 451',
-    ];
 
-    const authors = [
-        'George Orwell',
-        'Harper Lee',
-        'F. Scott Fitzgerald',
-        'Herman Melville',
-        'Leo Tolstoy',
-        'Jane Austen',
-        'J.D. Salinger',
-        'Aldous Huxley',
-        'Homer',
-        'Fyodor Dostoevsky',
-        'Charlotte Brontë',
-        'Emily Brontë',
-        'Oscar Wilde',
-        'Ray Bradbury',
-        'Virginia Woolf',
-    ];
-
-    const books: Book[] = [];
-    for (let i = 0; i < count; i++) {
-        const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-        const randomAuthor = authors[Math.floor(Math.random() * authors.length)];
-        books.push({ id: i + 1, title: randomTitle, author: randomAuthor });
-    }
-
-    return books;
-};
-
-const booksData: Book[] = generateRandomBooks(100); // Генерация 100 случайных книг
-
-const BooksPage: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [booksPerPage, setBooksPerPage] = useState<number>(5);
-    const [open, setOpen] = useState(false);
+const EdBookTable: React.FC<EdBookTableProps> = ({ data }) => {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     
-    const handleClickOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-
-    const filteredBooks = booksData.filter(book =>
-        book.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
-    const indexOfLastBook = currentPage * booksPerPage;
-    const indexOfFirstBook = indexOfLastBook - booksPerPage;
-    const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
-
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setCurrentPage(value);
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
     };
-
-
+    
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+    
     return (
-        <Container>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} mb={2}>
-                
-                <Filters searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
-                <Fab color="primary" 
-                    aria-label="add" 
-                    onClick={() => setOpen(true)}>
-                    <AddIcon />
-                </Fab>
-            </Box>
-
-            <Paper>
-                <List>
-                    {currentBooks.map(book => (
-                        <ListItem key={book.id}>
-                            <ListItemText primary={book.title} secondary={`Автор: ${book.author}`} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Paper>
-
-            <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-                <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    color="primary"
-                />
-
-                <FormControl variant="outlined" size="small">
-                    <InputLabel>Книг на странице</InputLabel>
-                    <Select
-                        value={booksPerPage}
-                        onChange={(e) => setBooksPerPage(Number(e.target.value))}
-                        label="Книг на странице"
-                    >
-                        <MenuItem value={5}>5</MenuItem>
-                        <MenuItem value={10}>10</MenuItem>
-                        <MenuItem value={20}>20</MenuItem>
-                        <MenuItem value={50}>50</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
-
-            <Typography variant="body2" align="center" style={{ marginTop: '16px' }}>
-                {`Всего книг: ${filteredBooks.length}`}
-            </Typography>
-
-
-            <CreateEdBookDialog
-                open={open}
-                onClose={handleClose}
-            />
-        </Container>
+        <div className="p-4">
+        <TableContainer component={Paper}>
+            <Table>
+            <TableHead>
+                <TableRow>
+                <TableCell>Название</TableCell>
+                <TableCell>Серия издания</TableCell>
+                <TableCell>Язык</TableCell>
+                <TableCell>Уровень</TableCell>
+                <TableCell>Назначение</TableCell>
+                <TableCell>Глава</TableCell>
+                <TableCell>Начальный класс</TableCell>
+                <TableCell>Конечный класс</TableCell>
+                <TableCell>Цена</TableCell>
+                <TableCell>Состояние</TableCell>
+                <TableCell>Год</TableCell>
+                <TableCell>Примечание</TableCell>
+                <TableCell>Количество</TableCell>
+                <TableCell>Общее количество</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                <TableRow key={row.id}>
+                    <TableCell>{row.baseEdBook.title}</TableCell>
+                    <TableCell>{row.baseEdBook.publishingSeries}</TableCell>
+                    <TableCell>{row.baseEdBook.language}</TableCell>
+                    <TableCell>{row.baseEdBook.level}</TableCell>
+                    <TableCell>{row.baseEdBook.appointment}</TableCell>
+                    <TableCell>{row.baseEdBook.chapter}</TableCell>
+                    <TableCell>{row.baseEdBook.startClass}</TableCell>
+                    <TableCell>{row.baseEdBook.endClass}</TableCell>
+                    <TableCell>{row.price}</TableCell>
+                    <TableCell>{row.condition}</TableCell>
+                    <TableCell>{row.year}</TableCell>
+                    <TableCell>{row.note}</TableCell>
+                    <TableCell>{row.inPlaceCount}</TableCell>
+                    <TableCell>{row.totalCount}</TableCell>
+                </TableRow>
+                ))}
+            </TableBody>
+            </Table>
+        </TableContainer>
+        <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        </div>
     );
 };
 
-export default BooksPage;
+export default EdBookTable;

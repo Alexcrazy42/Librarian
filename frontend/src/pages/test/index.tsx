@@ -58,7 +58,7 @@ const MyDialog = () => {
 
   useEffect(() => {
     if (searching) {
-      setPreviousValues({ title, author, year, series }); // Сохраняем текущее состояние
+      setPreviousValues({ title, author, year, series });
       fetchSimilarBooks();
       setSearching(false);
     }
@@ -90,7 +90,7 @@ const MyDialog = () => {
     if (currentBookIndex !== null && currentBookIndex < similarBooks.length - 1) {
       const nextIndex = currentBookIndex + 1;
       setCurrentBookIndex(nextIndex);
-      updateFields(similarBooks[nextIndex]); // Обновляем поля ввода
+      updateFields(similarBooks[nextIndex]);
     }
   };
 
@@ -98,7 +98,7 @@ const MyDialog = () => {
     if (currentBookIndex !== null && currentBookIndex > 0) {
       const prevIndex = currentBookIndex - 1;
       setCurrentBookIndex(prevIndex);
-      updateFields(similarBooks[prevIndex]); // Обновляем поля ввода
+      updateFields(similarBooks[prevIndex]);
     }
   };
 

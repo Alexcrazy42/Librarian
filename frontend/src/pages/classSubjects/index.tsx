@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import {
     Box,
     Typography,
@@ -15,6 +15,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { SubjectResponse } from '@interfaces/responses/subjectResponses';
 
 const sampleData = [
     {
@@ -43,6 +44,12 @@ const books = [
     { id: '3', title: 'Учебник по физике' },
 ];
 
+const subjects: SubjectResponse[] = [
+    {id: '123', name: 'Математика'},
+    {id: '123', name: 'Русский'},
+    {id: '123', name: 'География'}
+]
+
 const ClassSubjectTree: React.FC = () => {
     const [data, setData] = useState(sampleData);
     const [open, setOpen] = useState<{ [key: string]: boolean }>({});
@@ -50,6 +57,13 @@ const ClassSubjectTree: React.FC = () => {
     const handleToggle = (groundId: string) => {
         setOpen(prev => ({ ...prev, [groundId]: !prev[groundId] }));
     };
+
+    const [options, setOptions] = useState<SubjectResponse[]>([]);
+
+    useEffect(() => {
+        // Имитация отправки на сервер и получения данных
+        setOptions(subjects);
+    }, [subjects]);
 
     const handleSubjectChange = (groundId: string, schoolClassId: string, subjectId: string | undefined, value: string) => {
         setData(prev => {
@@ -269,11 +283,18 @@ const ClassSubjectTree: React.FC = () => {
                                     <List>
                                         {classSubject.subjects.map(subject => (
                                             <ListItem key={subject.subjectId}>
-                                                <TextField
-                                                    label="Имя предмета"
-                                                    value={subject.subjectName || ''}
-                                                    onChange={(e) => handleSubjectChange(ground.groundId, classSubject.schoolClassId, subject.subjectId, e.target.value)}
-                                                    sx={{ width: '300px' }}
+                                                <Autocomplete
+                                                    options={options}
+                                                    getOptionLabel={(option) => option.name}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                        {...params}
+                                                        // label={label}
+                                                        // value={option.name}
+                                                        // onChange={onChange}
+                                                        // sx={sx}
+                                                        />
+                                                    )}
                                                 />
                                                 <IconButton onClick={() => removeSubject(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
                                                     <DeleteIcon />
