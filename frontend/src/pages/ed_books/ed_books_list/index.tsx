@@ -4,7 +4,8 @@ import Filters from "./components/filters";
 import { Box, Button, Fab } from "@mui/material";
 import { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import CreateEdBookDialog from "./components/createEdBookDialog";
+import CreateEdBookDialog from "./components/createBaseEdBookDialog";
+import CreateEdBookInBalanceDialog from "./components/createEdBookInBalanceDialog";
 
 const languages = ['Английский', 'Французский', 'Испанский', 'Немецкий', 'Русский'];
 const levels = ['Начальный', 'Средний', 'Продвинутый'];
@@ -49,11 +50,18 @@ const generateData = (count: number): EdBookInBalanceResponse[] => {
 
 const EdBooksList = () => {
     const data: EdBookInBalanceResponse[] = generateData(100);
-    const [open, setOpen] = useState<boolean>(false);
+    const [createBaseEdBookDialogOpen, setCreateBaseEdBookDialogOpen] = useState<boolean>(false);
+    const [createEdBookInBalanceDialogOpen, setCreateEdBookInBalanceDialogOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
+    
+    const handleBaseEdBookDialogClose = () => setCreateBaseEdBookDialogOpen(false);
 
-    const handleClickOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleBaseEdBookDialogSubmit = () => {
+      setCreateBaseEdBookDialogOpen(false);
+      setCreateEdBookInBalanceDialogOpen(true);
+    }
+
+    const handleEdBookInBalanceDialogClose = () => setCreateEdBookInBalanceDialogOpen(false);
     
     return (
         <>
@@ -63,7 +71,7 @@ const EdBooksList = () => {
 
                 <Fab color="primary" 
                     aria-label="add" 
-                    onClick={() => setOpen(true)}>
+                    onClick={() => setCreateBaseEdBookDialogOpen(true)}>
                     <AddIcon />
                 </Fab>
             </Box>
@@ -71,8 +79,14 @@ const EdBooksList = () => {
             <EdBookTable data={data} />
 
             <CreateEdBookDialog
-                open={open}
-                onClose={handleClose}
+                open={createBaseEdBookDialogOpen}
+                onClose={handleBaseEdBookDialogClose}
+                onSubmit={handleBaseEdBookDialogSubmit}
+            />
+
+            <CreateEdBookInBalanceDialog
+              open={createEdBookInBalanceDialogOpen}
+              onClose={handleEdBookInBalanceDialogClose}
             />
         </>
     );

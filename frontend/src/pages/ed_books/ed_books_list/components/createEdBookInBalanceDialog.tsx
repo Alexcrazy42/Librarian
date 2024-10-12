@@ -1,24 +1,22 @@
-﻿import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+﻿import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
-const CreateClassDialog: React.FC<{ open: boolean; onClose: () => void; }> = ({ open, onClose }) => {
+const CreateEdBookInBalanceDialog: React.FC<{ open: boolean; onClose: () => void; }> = ({ open, onClose }) => {
     const handleSubmit = () => {
         onClose();
     };
     
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Создать класс</DialogTitle>
+            <DialogTitle>Создать книжку</DialogTitle>
             <DialogContent>
-                <TextField>
-
-                </TextField>
+                
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">Отмена</Button>
                 <Button onClick={handleSubmit} color="primary">Добавить</Button>
             </DialogActions>
         </Dialog>
-    )
+    );
 }
 
-export default CreateClassDialog;
+export default CreateEdBookInBalanceDialog;

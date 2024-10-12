@@ -23,9 +23,6 @@ const StudentInfo: React.FC<StudentInfoProps> = ({student, classroom}) => {
 
 
     useEffect(() => {
-        console.log('useEffect');
-        console.log(student);
-
         setInitValues({
             surname: student?.surname,
             name: student?.name,
@@ -47,7 +44,7 @@ const StudentInfo: React.FC<StudentInfoProps> = ({student, classroom}) => {
     const handleSave = () => {
         
     };
-    
+
     return (
         <>
             <Card className="max-w-sm mx-auto shadow-lg rounded-lg">

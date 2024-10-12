@@ -150,7 +150,8 @@ const Registration: React.FC = () => {
       name: schoolName,
       venues,
     };
-    console.log(school); // Здесь можно сохранить данные о школе
+
+    
     alert('Данные успешно сохранены!');
   };
 

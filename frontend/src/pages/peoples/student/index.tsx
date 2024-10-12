@@ -49,6 +49,10 @@ const StudentPage: React.FC = () => {
         handleCloseDialog();
     };
 
+    if (!student) {
+        return <CircularProgress></CircularProgress>;
+    }
+
     return (
         <>
             <Button

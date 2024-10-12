@@ -51,10 +51,8 @@ const ClassList: React.FC = () => {
     };
 
     const handleSave = () => {
-        console.log('Отправка данных на сервер:', { field1, field2 });
 
         setTimeout(() => {
-            console.log('Данные успешно сохранены');
         }, 1000);
     };
 

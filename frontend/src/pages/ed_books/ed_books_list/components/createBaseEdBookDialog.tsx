@@ -47,7 +47,7 @@ interface CreateBaseEdBookRequest {
     leaveFromFederalBooksListAt: Date;
 }
 
-const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; }> = ({ open, onClose }) => {
+const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; onSubmit: () => void; }> = ({ open, onClose, onSubmit }) => {
     const [formData, setFormData] = useState<CreateBaseEdBookRequest>({
         authorIds: [],
         editorId: '',
@@ -155,11 +155,6 @@ const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; }> 
             ...formData,
             [name]: value,
         });
-    };
-
-    const handleSubmit = () => {
-        console.log(formData);
-        onClose();
     };
 
     const fetchOptions = (value: string) => {
@@ -363,7 +358,7 @@ const CreateBaseEdBookDialog: React.FC<{ open: boolean; onClose: () => void; }> 
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">Отмена</Button>
-                <Button onClick={handleSubmit} color="primary">Добавить</Button>
+                <Button onClick={onSubmit} color="primary">Далее</Button>
             </DialogActions>
         </Dialog>
     );

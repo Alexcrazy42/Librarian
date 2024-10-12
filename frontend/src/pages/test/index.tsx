@@ -103,7 +103,6 @@ const MyDialog = () => {
   };
 
   const handleCreateBook = () => {
-    console.log("Создать книгу с данными:", { title, author, year, series });
   };
 
   const handleRevertToPrevious = () => {
