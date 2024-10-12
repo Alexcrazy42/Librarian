@@ -4,6 +4,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
 import CreateClassDialog from './components/createClassDialog';
+import { Classroom } from '@interfaces/interfaces';
 
 interface SidebarProps {
   classrooms: Classroom[];

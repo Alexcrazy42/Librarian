@@ -53,6 +53,8 @@ const subjects: SubjectResponse[] = [
 const ClassSubjectTree: React.FC = () => {
     const [data, setData] = useState(sampleData);
     const [open, setOpen] = useState<{ [key: string]: boolean }>({});
+    const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleToggle = (groundId: string) => {
         setOpen(prev => ({ ...prev, [groundId]: !prev[groundId] }));
@@ -64,6 +66,30 @@ const ClassSubjectTree: React.FC = () => {
         // Имитация отправки на сервер и получения данных
         setOptions(subjects);
     }, [subjects]);
+
+    const fetchSubjects = async (term: string) => {
+        setLoading(true);
+        const response = await new Promise<SubjectResponse[]>((resolve) => {
+            setTimeout(() => {
+                const allSubjects: SubjectResponse[] = [
+                    {id: '123', name: 'Математика'},
+                    {id: '123', name: 'Русский'},
+                    {id: '123', name: 'География'}
+                ];
+                resolve(allSubjects.filter(author => author.name.toLowerCase().includes(term.toLowerCase())));
+            }, 500);
+        });
+        setOptions(response);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        if (searchTerm.length >= 3) {
+            fetchSubjects(searchTerm);
+        } else {
+            setOptions([])
+        }
+    }, [searchTerm]);
 
     const handleSubjectChange = (groundId: string, schoolClassId: string, subjectId: string | undefined, value: string) => {
         setData(prev => {
@@ -286,15 +312,13 @@ const ClassSubjectTree: React.FC = () => {
                                                 <Autocomplete
                                                     options={options}
                                                     getOptionLabel={(option) => option.name}
+                                                    loading={true}
+                                                    onInputChange={(event, value) => setSearchTerm(value)}
+                                                    onChange={(event, value) => () => {}}
                                                     renderInput={(params) => (
-                                                        <TextField
-                                                        {...params}
-                                                        // label={label}
-                                                        // value={option.name}
-                                                        // onChange={onChange}
-                                                        // sx={sx}
-                                                        />
+                                                        <TextField {...params} label="Предмет" margin="dense" fullWidth required />
                                                     )}
+                                                    style={{ width: '400px' }}
                                                 />
                                                 <IconButton onClick={() => removeSubject(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
                                                     <DeleteIcon />

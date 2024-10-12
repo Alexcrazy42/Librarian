@@ -1,6 +1,7 @@
 ﻿import { Classroom, Student } from "@interfaces/interfaces";
 import { Button, Card, CardContent, CircularProgress, Skeleton, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import MoveToAnotherClassDialog from "./moveToAnotherClassDialog";
 
 interface StudentInfoProps {
     student: Student;
@@ -16,6 +17,7 @@ const StudentInfo: React.FC<StudentInfoProps> = ({student, classroom}) => {
     });
 
     const [values, setValues] = useState(initValue);
+    const [moveDialogOpen, setMoveDialogOpen] = useState<boolean>(false);
 
     const isDirty = values.surname !== initValue.surname ||
         values.name !== initValue.name ||
@@ -98,7 +100,10 @@ const StudentInfo: React.FC<StudentInfoProps> = ({student, classroom}) => {
                         <Typography variant="body1" component="p" className="mb-1">
                             <strong>Класс:</strong>
                             {classroom ? (
-                                <span>{`${classroom.number} ${classroom.name}`}</span>
+                                <>
+                                    <span>{`${classroom.number} ${classroom.name}`}</span>
+                                    <Button onClick={() => setMoveDialogOpen(true)}>Перенести в другой класс</Button>
+                                </>
                             ) : (
                                 <Skeleton animation="wave" width="100px" style={{ display: 'inline-block', verticalAlign: 'middle' }} />
                             )}
@@ -119,6 +124,12 @@ const StudentInfo: React.FC<StudentInfoProps> = ({student, classroom}) => {
                 )}
             </CardContent>
         </Card>
+
+        <MoveToAnotherClassDialog 
+            open={moveDialogOpen}
+            onClose={()=>setMoveDialogOpen(false)}
+            onSubmit={()=>{}}
+        />
         </>
     )
 };
