@@ -74,7 +74,7 @@ const StudentPage: React.FC = () => {
                     <Tooltip
                         title={!conditionsMet ? "Нельзя удалить, пока не вернет все долги" : ""}
                         arrow
-                        placement="top"
+                        placemet="top"
                         open={tooltipOpen}
                     >   
                         <span

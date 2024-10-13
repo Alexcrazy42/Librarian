@@ -128,7 +128,6 @@ const StudentInfo: React.FC<StudentInfoProps> = ({student, classroom}) => {
         <MoveToAnotherClassDialog 
             open={moveDialogOpen}
             onClose={()=>setMoveDialogOpen(false)}
-            onSubmit={()=>{}}
         />
         </>
     )
