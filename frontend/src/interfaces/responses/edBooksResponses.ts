@@ -1,5 +1,6 @@
 ﻿import { Appointment, BookCondition, Language, Level } from "@interfaces/interfaces";
 
+// TODO: добавить все что связано с редакторами, авторами и тд
 export interface BaseEdBookResponse {
     id: string;
     title: string;

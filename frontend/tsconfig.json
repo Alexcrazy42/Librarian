@@ -25,6 +25,7 @@
         "@styles/*": ["./styles/*"],
         "@components/*": ["./components/*"],
         "@services/*": ["./services/*"],
+        "@interfaces/*": ["./interfaces/*"],
       }
   }
 }

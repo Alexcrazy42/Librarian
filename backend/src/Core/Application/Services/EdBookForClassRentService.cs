@@ -45,42 +45,44 @@ internal class EdBookForClassRentService : IEdBookForClassRentService
         var classSubjectChapterEdBookWithDetails = await classSubjectRepository.GetSubjectChapterWithEdBooksAsync(subjectChapterId, ct);
 
         var edBooksInBalance = classSubjectChapterEdBookWithDetails.EdBooks
-            .Select(x => x.EdBookInBalance).ToList();
-        var edBooksTotalCount = edBooksInBalance.Sum(x => x.TotalCount);
+            .Select(x => x.BaseEducationalBook).ToList();
+        throw new NotImplementedException();
 
-        var maxRentCount = int.Min(students.Count, edBooksTotalCount);
+        // TODO
+        //var edBooksTotalCount = edBooksInBalance.Sum(x => x.TotalCount);
 
-        var edBookStudentRents = new List<EducationalBookStudentRent>();
+        //var maxRentCount = int.Min(students.Count, edBooksTotalCount);
 
-        for (int i = 0; i < maxRentCount; i++)
-        {
-            var edBookIndex = GetEdBookIndexWhatCanGive(edBooksInBalance);
+        //var edBookStudentRents = new List<EducationalBookStudentRent>();
+
+        //for (int i = 0; i < maxRentCount; i++)
+        //{
+        //    var edBookIndex = GetEdBookIndexWhatCanGive(edBooksInBalance);
             
-            // TODO: избавиться от continue
-            if (edBookIndex == -1)
-            {
-                continue;
-            }
+        //    // TODO: избавиться от continue
+        //    if (edBookIndex == -1)
+        //    {
+        //        continue;
+        //    }
 
-            var student = students[i];
+        //    var student = students[i];
 
-            var edBookStudentRent = new EducationalBookStudentRent(
-                id: Guid.NewGuid(),
-                student: student,
-                book: edBooksInBalance[edBookIndex],
-                count: 1,
-                isArchived: false,
-                isOverdue: false,
-                startDate: DateOnly.FromDateTime(DateTime.Now),
-                endDate: rentUntil
-            );
+        //    var edBookStudentRent = new EducationalBookStudentRent(
+        //        id: Guid.NewGuid(),
+        //        student: student,
+        //        book: edBooksInBalance[edBookIndex],
+        //        count: 1,
+        //        isArchived: false,
+        //        isOverdue: false,
+        //        startDate: DateOnly.FromDateTime(DateTime.Now),
+        //        endDate: rentUntil
+        //    );
 
-            student.AddEdBookRent(edBookStudentRent);
-            edBooksInBalance[edBookIndex].InPlaceCount--;
-            edBookStudentRents.Add(edBookStudentRent);
-        }
-
-        return await edBookForClassRentRepository.CreateEdBooksStudentsRentsAsync(edBookStudentRents, ct);
+        //    student.AddEdBookRent(edBookStudentRent);
+        //    edBooksInBalance[edBookIndex].InPlaceCount--;
+        //    edBookStudentRents.Add(edBookStudentRent);
+        //}
+        //return await edBookForClassRentRepository.CreateEdBooksStudentsRentsAsync(edBookStudentRents, ct);
     }
 
     

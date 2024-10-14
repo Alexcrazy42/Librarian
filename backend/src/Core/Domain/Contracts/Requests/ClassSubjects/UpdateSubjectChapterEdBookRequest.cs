@@ -4,5 +4,5 @@ public class UpdateSubjectChapterEdBookRequest
 {
     public Guid Id { get; set; }
 
-    public Guid EdBookInBalanceId { get; set; }
+    public Guid BaseEdBookId { get; set; }
 }

@@ -51,32 +51,39 @@ public class ClassSubjectController : ControllerBase
                             .Where(edBook => edBook != null)
                             .Select(edBook => new EdBookInBalanceResponse()
                             {
-                                Id = edBook.EdBookInBalance.Id,
-                                BaseEdBook = new BaseEdBookResponse()
-                                {
-                                    Id = edBook.EdBookInBalance.BaseEducationalBook.Id,
-                                    Title = edBook.EdBookInBalance.BaseEducationalBook.Title,
-                                    PublishingSeries = edBook.EdBookInBalance.BaseEducationalBook.PublishingSeries,
-                                    Language = edBook.EdBookInBalance.BaseEducationalBook.Language,
-                                    Level = edBook.EdBookInBalance.BaseEducationalBook.Level,
-                                    Appointment = edBook.EdBookInBalance.BaseEducationalBook.Appointment,
-                                    Chapter = edBook.EdBookInBalance.BaseEducationalBook.Chapter,
-                                    StartClass = edBook.EdBookInBalance.BaseEducationalBook.StartClass,
-                                    EndClass = edBook.EdBookInBalance.BaseEducationalBook.EndClass
-                                },
-                                Price = edBook.EdBookInBalance.Price,
-                                Condition = edBook.EdBookInBalance.Condition,
-                                Year = edBook.EdBookInBalance.Year,
-                                Note = edBook.EdBookInBalance.Note,
-                                InPlaceCount = edBook.EdBookInBalance.TotalCount,
-                                TotalCount = edBook.EdBookInBalance.TotalCount,
-                                InStock = edBook.EdBookInBalance.InStock
+                                // TODO: и в остальных местах тоже
+                                //Id = edBook.EdBookInBalance.Id,
+                                //BaseEdBook = new BaseEdBookResponse()
+                                //{
+                                //    Id = edBook.EdBookInBalance.BaseEducationalBook.Id,
+                                //    Title = edBook.EdBookInBalance.BaseEducationalBook.Title,
+                                //    PublishingSeries = edBook.EdBookInBalance.BaseEducationalBook.PublishingSeries,
+                                //    Language = edBook.EdBookInBalance.BaseEducationalBook.Language,
+                                //    Level = edBook.EdBookInBalance.BaseEducationalBook.Level,
+                                //    Appointment = edBook.EdBookInBalance.BaseEducationalBook.Appointment,
+                                //    Chapter = edBook.EdBookInBalance.BaseEducationalBook.Chapter,
+                                //    StartClass = edBook.EdBookInBalance.BaseEducationalBook.StartClass,
+                                //    EndClass = edBook.EdBookInBalance.BaseEducationalBook.EndClass
+                                //},
+                                //Price = edBook.EdBookInBalance.Price,
+                                //Condition = edBook.EdBookInBalance.Condition,
+                                //Year = edBook.EdBookInBalance.Year,
+                                //Note = edBook.EdBookInBalance.Note,
+                                //InPlaceCount = edBook.EdBookInBalance.TotalCount,
+                                //TotalCount = edBook.EdBookInBalance.TotalCount,
+                                //InStock = edBook.EdBookInBalance.InStock
                             })
                             .ToList()
                     }).ToList()
                 }).ToList()
             })
             .ToList();
+    }
+
+    [HttpGet("subject-chapter-ed-books/{}")]
+    public async Task<IReadOnlyCollection<EdBookInBalanceResponse>> GetEdBooksInBalanceWhatMatchToBaseEdBookInChapterAsync([FromRoute] Guid subjectChapterId, CancellationToken ct)
+    {
+        throw new NotImplementedException();
     }
 
     [HttpPost]
@@ -121,28 +128,28 @@ public class ClassSubjectController : ControllerBase
             Title = x.SubjectChapter.Title,
             EdBookInBalance = new EdBookInBalanceResponse()
             {
-                Id = x.EdBookInBalance.Id,
-                BaseEdBook = new BaseEdBookResponse()
-                {
-                    Id = x.EdBookInBalance.BaseEducationalBook.Id,
-                    Title = x.EdBookInBalance.BaseEducationalBook.Title,
-                    PublishingSeries = x.EdBookInBalance.BaseEducationalBook.PublishingSeries,
-                    Language = x.EdBookInBalance.BaseEducationalBook.Language,
-                    Level = x.EdBookInBalance.BaseEducationalBook.Level,
-                    Appointment = x.EdBookInBalance.BaseEducationalBook.Appointment,
-                    Chapter = x.EdBookInBalance.BaseEducationalBook.Chapter,
-                    StartClass = x.EdBookInBalance.BaseEducationalBook.StartClass,
-                    EndClass = x.EdBookInBalance.BaseEducationalBook.EndClass
-                },
-                Price = x.EdBookInBalance.Price,
-                Condition = x.EdBookInBalance.Condition,
-                Year = x.EdBookInBalance.Year,
-                Note = x.EdBookInBalance.Note,
-                InPlaceCount = x.EdBookInBalance.InPlaceCount,
-                TotalCount = x.EdBookInBalance.TotalCount,
-                SupplyId = x.EdBookInBalance.Supply?.Id,
-                GroundId = x.EdBookInBalance.BookOwnerGround?.Id,
-                InStock = x.EdBookInBalance.InStock
+                //Id = x.EdBookInBalance.Id,
+                //BaseEdBook = new BaseEdBookResponse()
+                //{
+                //    Id = x.EdBookInBalance.BaseEducationalBook.Id,
+                //    Title = x.EdBookInBalance.BaseEducationalBook.Title,
+                //    PublishingSeries = x.EdBookInBalance.BaseEducationalBook.PublishingSeries,
+                //    Language = x.EdBookInBalance.BaseEducationalBook.Language,
+                //    Level = x.EdBookInBalance.BaseEducationalBook.Level,
+                //    Appointment = x.EdBookInBalance.BaseEducationalBook.Appointment,
+                //    Chapter = x.EdBookInBalance.BaseEducationalBook.Chapter,
+                //    StartClass = x.EdBookInBalance.BaseEducationalBook.StartClass,
+                //    EndClass = x.EdBookInBalance.BaseEducationalBook.EndClass
+                //},
+                //Price = x.EdBookInBalance.Price,
+                //Condition = x.EdBookInBalance.Condition,
+                //Year = x.EdBookInBalance.Year,
+                //Note = x.EdBookInBalance.Note,
+                //InPlaceCount = x.EdBookInBalance.InPlaceCount,
+                //TotalCount = x.EdBookInBalance.TotalCount,
+                //SupplyId = x.EdBookInBalance.Supply?.Id,
+                //GroundId = x.EdBookInBalance.BookOwnerGround?.Id,
+                //InStock = x.EdBookInBalance.InStock
             }
         }).ToList();
     }
@@ -186,28 +193,28 @@ public class ClassSubjectController : ControllerBase
             Id = x.Id,
             EdBookInBalance = new EdBookInBalanceResponse()
             {
-                Id = x.EdBookInBalance.Id,
-                BaseEdBook = new BaseEdBookResponse()
-                {
-                    Id = x.EdBookInBalance.BaseEducationalBook.Id,
-                    Title = x.EdBookInBalance.BaseEducationalBook.Title,
-                    PublishingSeries = x.EdBookInBalance.BaseEducationalBook.PublishingSeries,
-                    Language = x.EdBookInBalance.BaseEducationalBook.Language,
-                    Level = x.EdBookInBalance.BaseEducationalBook.Level,
-                    Appointment = x.EdBookInBalance.BaseEducationalBook.Appointment,
-                    Chapter = x.EdBookInBalance.BaseEducationalBook.Chapter,
-                    StartClass = x.EdBookInBalance.BaseEducationalBook.StartClass,
-                    EndClass = x.EdBookInBalance.BaseEducationalBook.EndClass
-                },
-                Price = x.EdBookInBalance.Price,
-                Condition = x.EdBookInBalance.Condition,
-                Year = x.EdBookInBalance.Year,
-                Note = x.EdBookInBalance.Note,
-                InPlaceCount = x.EdBookInBalance.InPlaceCount,
-                TotalCount = x.EdBookInBalance.TotalCount,
-                SupplyId = x.EdBookInBalance.Supply?.Id,
-                GroundId = x.EdBookInBalance.BookOwnerGround?.Id,
-                InStock = x.EdBookInBalance.InStock
+                //Id = x.EdBookInBalance.Id,
+                //BaseEdBook = new BaseEdBookResponse()
+                //{
+                //    Id = x.EdBookInBalance.BaseEducationalBook.Id,
+                //    Title = x.EdBookInBalance.BaseEducationalBook.Title,
+                //    PublishingSeries = x.EdBookInBalance.BaseEducationalBook.PublishingSeries,
+                //    Language = x.EdBookInBalance.BaseEducationalBook.Language,
+                //    Level = x.EdBookInBalance.BaseEducationalBook.Level,
+                //    Appointment = x.EdBookInBalance.BaseEducationalBook.Appointment,
+                //    Chapter = x.EdBookInBalance.BaseEducationalBook.Chapter,
+                //    StartClass = x.EdBookInBalance.BaseEducationalBook.StartClass,
+                //    EndClass = x.EdBookInBalance.BaseEducationalBook.EndClass
+                //},
+                //Price = x.EdBookInBalance.Price,
+                //Condition = x.EdBookInBalance.Condition,
+                //Year = x.EdBookInBalance.Year,
+                //Note = x.EdBookInBalance.Note,
+                //InPlaceCount = x.EdBookInBalance.InPlaceCount,
+                //TotalCount = x.EdBookInBalance.TotalCount,
+                //SupplyId = x.EdBookInBalance.Supply?.Id,
+                //GroundId = x.EdBookInBalance.BookOwnerGround?.Id,
+                //InStock = x.EdBookInBalance.InStock
             }
         }).ToList();
     }

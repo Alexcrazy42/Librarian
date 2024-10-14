@@ -16,9 +16,9 @@ public class ClassSubjectChapterEdBookConfiguration : IEntityTypeConfiguration<C
             .WithMany(e => e.EdBooks)
             .HasForeignKey("subject_chapter_id");
 
-        builder.HasOne(x => x.EdBookInBalance)
+        builder.HasOne(x => x.BaseEducationalBook)
             .WithMany()
-            .HasForeignKey("ed_book_in_balance_id")
+            .HasForeignKey("base_ed_book_id")
             .IsRequired(false);
     }
 }

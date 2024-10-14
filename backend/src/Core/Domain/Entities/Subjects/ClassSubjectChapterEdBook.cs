@@ -8,11 +8,11 @@ public class ClassSubjectChapterEdBook
 
     public ClassSubjectChapter SubjectChapter { get; private set; }
 
-    public EducationalBookInBalance EdBookInBalance { get; private set; }
+    public BaseEducationalBook BaseEducationalBook { get; private set; }
 
-    public void SetEdBookInBalance(EducationalBookInBalance edBookInBalance)
+    public void SetEdBookInBalance(BaseEducationalBook baseEducationalBook)
     {
-        EdBookInBalance = edBookInBalance;
+        BaseEducationalBook = baseEducationalBook;
     }
 
     private ClassSubjectChapterEdBook() { }
@@ -24,10 +24,10 @@ public class ClassSubjectChapterEdBook
 
     public ClassSubjectChapterEdBook(Guid id,
         ClassSubjectChapter subjectChapter,
-        EducationalBookInBalance edBookInBalance)
+        BaseEducationalBook baseEducationalBook)
     {
         Id = id;
         SubjectChapter = subjectChapter;
-        EdBookInBalance = edBookInBalance;
+        BaseEducationalBook = baseEducationalBook;
     }
 }

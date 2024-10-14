@@ -36,8 +36,9 @@ internal class ClassSubjectRepository : IClassSubjectRepository
             .Include(x => x.Subject)    
             .Include(x => x.Chapters)
                 .ThenInclude(chapter => chapter.EdBooks)
-                    .ThenInclude(edBook => edBook.EdBookInBalance)
-                        .ThenInclude(edBookInBalance => edBookInBalance.BaseEducationalBook)
+                    .ThenInclude(edBook => edBook.BaseEducationalBook)
+                        // TODO
+                        //.ThenInclude(edBookInBalance => edBookInBalance.BaseEducationalBook)
             .Where(x => x.SchoolClass.Id == classId)
             .ToListAsync(ct);
     }
@@ -46,7 +47,7 @@ internal class ClassSubjectRepository : IClassSubjectRepository
     {
         return await libraryDbContext.ClassSubjectChapters
             .Include(x => x.EdBooks)
-                .ThenInclude(edBook => edBook.EdBookInBalance)
+                .ThenInclude(edBook => edBook.BaseEducationalBook)
             .FirstOrDefaultAsync(x => x.Id == chapterId, ct)
             ?? throw new NotFoundException("Такая часть предмета не найдена!");
     }
@@ -56,7 +57,7 @@ internal class ClassSubjectRepository : IClassSubjectRepository
     {
         foreach (var i in classSubjectChapterEdBooks)
         {
-            libraryDbContext.Attach(i.EdBookInBalance);
+            libraryDbContext.Attach(i.BaseEducationalBook);
             libraryDbContext.Attach(i.SubjectChapter);
         }
 
@@ -66,15 +67,16 @@ internal class ClassSubjectRepository : IClassSubjectRepository
 
         foreach (var i in classSubjectChapterEdBooks)
         {
-            libraryDbContext.Entry(i.EdBookInBalance).State = EntityState.Detached;
+            libraryDbContext.Entry(i.BaseEducationalBook).State = EntityState.Detached;
             libraryDbContext.Entry(i.SubjectChapter).State = EntityState.Detached;
         }
 
 
         return await libraryDbContext.ClassSubjectChapterEdBooks
             .Include(x => x.SubjectChapter)
-            .Include(x => x.EdBookInBalance)
-                .ThenInclude(edBookInBalance => edBookInBalance.BaseEducationalBook)
+            .Include(x => x.BaseEducationalBook)
+                // TODO
+                //.ThenInclude(edBookInBalance => edBookInBalance.BaseEducationalBook)
             .Where(x => classSubjectChapterEdBooks.Select(x => x.Id).Contains(x.Id))
             .ToListAsync(ct);
     }
@@ -127,20 +129,21 @@ internal class ClassSubjectRepository : IClassSubjectRepository
             .ToListAsync(ct);
     }
 
+    // TODO
     public async Task<IReadOnlyCollection<ClassSubjectChapterEdBook>> UpdateSubjectChapterEdBookAsync(IReadOnlyCollection<UpdateSubjectChapterEdBookRequest> requests, CancellationToken ct)
     {
-        var edBooksInBalance = new List<EducationalBookInBalance>();
+        var baseEducationalBooks = new List<BaseEducationalBook>();
 
         foreach (var request in requests)
         {
             var classSubjectChapterEdBook = new ClassSubjectChapterEdBook(request.Id);
-            var edBookInBalance = new EducationalBookInBalance(request.EdBookInBalanceId);
-            edBooksInBalance.Add(edBookInBalance);
+            var baseEdBook = new BaseEducationalBook(request.BaseEdBookId);
+            baseEducationalBooks.Add(baseEdBook);
             
-            classSubjectChapterEdBook.SetEdBookInBalance(edBookInBalance);
+            classSubjectChapterEdBook.SetEdBookInBalance(baseEdBook);
             
             libraryDbContext.Entry(classSubjectChapterEdBook).State = EntityState.Modified;
-            libraryDbContext.Attach(edBookInBalance);
+            libraryDbContext.Attach(baseEdBook);
 
             
             libraryDbContext.Entry(classSubjectChapterEdBook).State = EntityState.Modified;
@@ -148,15 +151,16 @@ internal class ClassSubjectRepository : IClassSubjectRepository
 
         await libraryDbContext.SaveChangesAsync(ct);
 
-        foreach (var edBook in edBooksInBalance)
+        foreach (var edBook in baseEducationalBooks)
         {
             libraryDbContext.Entry(edBook).State = EntityState.Detached;
         }
 
         return await libraryDbContext.ClassSubjectChapterEdBooks
             .AsNoTracking()
-            .Include(x => x.EdBookInBalance)
-                .ThenInclude(edBook => edBook.BaseEducationalBook)
+            .Include(x => x.BaseEducationalBook)
+                // TODO
+                //.ThenInclude(edBook => edBook.BaseEducationalBook)
             .Where(x => requests.Select(x => x.Id).ToList().Contains(x.Id))
             .ToListAsync(ct);
     }

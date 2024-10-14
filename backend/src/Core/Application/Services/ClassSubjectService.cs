@@ -78,12 +78,12 @@ internal class ClassSubjectService : IClassSubjectService
         foreach (var i in request)
         {
             var classSubjectChapter = new ClassSubjectChapter(i.ClassSubjectChapterId);
-            var edBookInBalance = new EducationalBookInBalance(i.EdBookInBalanceId);
+            var baseEdBook = new BaseEducationalBook(i.BaseEducationalBookId);
 
             var classSubjectChapterEdBook = new ClassSubjectChapterEdBook(
                 id: Guid.NewGuid(),
                 subjectChapter: classSubjectChapter,
-                edBookInBalance: edBookInBalance
+                baseEducationalBook: baseEdBook
             );
 
             allClassSubjectChapters.Add(classSubjectChapterEdBook);

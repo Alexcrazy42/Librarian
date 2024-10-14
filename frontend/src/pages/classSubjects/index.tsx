@@ -16,6 +16,11 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { SubjectResponse } from '@interfaces/responses/subjectResponses';
+import { BaseEdBookResponse } from '@interfaces/responses/edBooksResponses';
+import { Appointment, Language, Level } from '@interfaces/interfaces';
+import EdBooksInBalanceToChapterDialog from './components/edBooksInBalanceToChapterDialog';
+import AttachBaseEdBookToChapterDialog from './components/attachBaseEdBookToChapterDialog';
+
 
 const sampleData = [
     {
@@ -27,10 +32,7 @@ const sampleData = [
                     {
                         subjectId: '1',
                         subjectName: 'Математика',
-                        chapterNames: [
-                            { name: 'Алгебра', bookId: '1' },
-                            { name: 'Геометрия', bookId: '2' }
-                        ]
+                        chapterNames: []
                     }
                 ]
             }
@@ -46,19 +48,19 @@ const books = [
 
 const subjects: SubjectResponse[] = [
     {id: '123', name: 'Математика'},
-    {id: '123', name: 'Русский'},
-    {id: '123', name: 'География'}
+    {id: '123', name: 'Русский язык'},
+    {id: '123', name: 'География'},
+    {id: '123', name: 'История'},
+    {id: '123', name: 'Физика'},
 ]
 
 const ClassSubjectTree: React.FC = () => {
     const [data, setData] = useState(sampleData);
     const [open, setOpen] = useState<{ [key: string]: boolean }>({});
+    const [edBooksToChapterDialogOpen, setEdBooksToChapterDialogOpen] = useState<boolean>(false);
+    const [attachBaseEdBookToChapterDialogOpen, setAttachBaseEdBookToChapterDialogOpen] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
-
-    const handleToggle = (groundId: string) => {
-        setOpen(prev => ({ ...prev, [groundId]: !prev[groundId] }));
-    };
 
     const [options, setOptions] = useState<SubjectResponse[]>([]);
 
@@ -66,6 +68,18 @@ const ClassSubjectTree: React.FC = () => {
         // Имитация отправки на сервер и получения данных
         setOptions(subjects);
     }, [subjects]);
+
+    useEffect(() => {
+        if (searchTerm.length >= 3) {
+            fetchSubjects(searchTerm);
+        } else {
+            setOptions([])
+        }
+    }, [searchTerm]);
+
+    const handleToggle = (groundId: string) => {
+        setOpen(prev => ({ ...prev, [groundId]: !prev[groundId] }));
+    };
 
     const fetchSubjects = async (term: string) => {
         setLoading(true);
@@ -82,14 +96,6 @@ const ClassSubjectTree: React.FC = () => {
         setOptions(response);
         setLoading(false);
     }
-
-    useEffect(() => {
-        if (searchTerm.length >= 3) {
-            fetchSubjects(searchTerm);
-        } else {
-            setOptions([])
-        }
-    }, [searchTerm]);
 
     const handleSubjectChange = (groundId: string, schoolClassId: string, subjectId: string | undefined, value: string) => {
         setData(prev => {
@@ -285,85 +291,91 @@ const ClassSubjectTree: React.FC = () => {
     };
 
     return (
-        <Box>
-            <Typography variant="h4">Структура классов и предметов</Typography>
-            {data.map(ground => (
-                <Box key={ground.groundId} mb={2} sx={{ border: '1px solid #ccc', borderRadius: '4px', padding: '16px' }}>
-                    <Typography variant="h5" onClick={() => handleToggle(ground.groundId)}>
-                        {open[ground.groundId] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                        Ground ID: {ground.groundId}
-                    </Typography>
-                    <Collapse in={open[ground.groundId]}>
-                        <List>
-                            {ground.classSubjects.map(classSubject => (
-                                <List key={classSubject.schoolClassId}>
-                                    <ListItem>
-                                        <ListItemText primary={`Class ID: ${classSubject.schoolClassId}`} />
-                                        <IconButton onClick={() => removeClassSubject(ground.groundId, classSubject.schoolClassId)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                        <IconButton onClick={() => addSubject(ground.groundId, classSubject.schoolClassId)}>
-                                            <AddIcon />
-                                        </IconButton>
-                                    </ListItem>
-                                    <List>
-                                        {classSubject.subjects.map(subject => (
-                                            <ListItem key={subject.subjectId}>
-                                                <Autocomplete
-                                                    options={options}
-                                                    getOptionLabel={(option) => option.name}
-                                                    loading={true}
-                                                    onInputChange={(event, value) => setSearchTerm(value)}
-                                                    onChange={(event, value) => () => {}}
-                                                    renderInput={(params) => (
-                                                        <TextField {...params} label="Предмет" margin="dense" fullWidth required />
-                                                    )}
-                                                    style={{ width: '400px' }}
-                                                />
-                                                <IconButton onClick={() => removeSubject(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                                <IconButton onClick={() => addChapter(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
-                                                    <AddIcon />
-                                                </IconButton>
-                                                <List>
-                                                    {subject.chapterNames.map((chapter, index) => (
-                                                        <ListItem key={index}>
-                                                            <TextField
-                                                                label={`Глава ${index + 1}`}
-                                                                value={chapter.name}
-                                                                onChange={(e) => handleChapterChange(ground.groundId, classSubject.schoolClassId, subject.subjectId, index, e.target.value, chapter.bookId)}
-                                                                sx={{ width: '300px' }}
-                                                            />
-                                                            <Autocomplete
-                                                                options={books}
-                                                                getOptionLabel={(option) => option.title}
-                                                                onChange={(event, newValue) => {
-                                                                    handleChapterChange(ground.groundId, classSubject.schoolClassId, subject.subjectId, index, chapter.name, newValue ? newValue.id : '');
-                                                                }}
-                                                                renderInput={(params) => (
-                                                                    <TextField {...params} label="Выбрать книгу" variant="outlined" />
-                                                                )}
-                                                                value={books.find(book => book.id === chapter.bookId) || null}
-                                                                sx={{ width: '300px', marginLeft: '16px' }}
-                                                            />
-                                                            <IconButton onClick={() => removeChapter(ground.groundId, classSubject.schoolClassId, subject.subjectId, index)}>
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                        </ListItem>
-                                                    ))}
-                                                </List>
-                                            </ListItem>
-                                        ))}
+        <>
+            <Box>
+                <Typography variant="h4">Структура классов и предметов</Typography>
+                {data.map(ground => (
+                    <Box key={ground.groundId} mb={2} sx={{ border: '1px solid #ccc', borderRadius: '4px', padding: '16px' }}>
+                        <Typography variant="h5" onClick={() => handleToggle(ground.groundId)}>
+                            {open[ground.groundId] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                            Ground ID: {ground.groundId}
+                        </Typography>
+                        <Collapse in={open[ground.groundId]}>
+                            <List>
+                                {ground.classSubjects.map(classSubject => (
+                                    <List key={classSubject.schoolClassId}>
+                                        <ListItem>
+                                            <ListItemText primary={`Class ID: ${classSubject.schoolClassId}`} />
+                                            <IconButton onClick={() => removeClassSubject(ground.groundId, classSubject.schoolClassId)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                            <IconButton onClick={() => addSubject(ground.groundId, classSubject.schoolClassId)}>
+                                                <AddIcon />
+                                            </IconButton>
+                                        </ListItem>
+                                        <List>
+                                            {classSubject.subjects.map(subject => (
+                                                <ListItem key={subject.subjectId}>
+                                                    <Autocomplete
+                                                        options={options}
+                                                        getOptionLabel={(option) => option.name}
+                                                        loading={true}
+                                                        onInputChange={(event, value) => setSearchTerm(value)}
+                                                        onChange={(event, value) => () => {}}
+                                                        renderInput={(params) => (
+                                                            <TextField {...params} label="Предмет" margin="dense" fullWidth required />
+                                                        )}
+                                                        style={{ width: '400px' }}
+                                                    />
+                                                    <IconButton onClick={() => removeSubject(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                    <IconButton onClick={() => addChapter(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
+                                                        <AddIcon />
+                                                    </IconButton>
+                                                    <List>
+                                                        {subject.chapterNames.map((chapter, index) => (
+                                                            <ListItem key={index}>
+                                                                <TextField
+                                                                    label={`Глава ${index + 1}`}
+                                                                    value={chapter.name}
+                                                                    onChange={(e) => handleChapterChange(ground.groundId, classSubject.schoolClassId, subject.subjectId, index, e.target.value, chapter.bookId)}
+                                                                    sx={{ width: '300px' }}
+                                                                />
+                                                                <Autocomplete
+                                                                    options={books}
+                                                                    getOptionLabel={(option) => option.title}
+                                                                    onChange={(event, newValue) => {
+                                                                        handleChapterChange(ground.groundId, classSubject.schoolClassId, subject.subjectId, index, chapter.name, newValue ? newValue.id : '');
+                                                                    }}
+                                                                    renderInput={(params) => (
+                                                                        <TextField {...params} label="Выбрать книгу" variant="outlined" />
+                                                                    )}
+                                                                    value={books.find(book => book.id === chapter.bookId) || null}
+                                                                    sx={{ width: '300px', marginLeft: '16px' }}
+                                                                />
+                                                                <IconButton onClick={() => removeChapter(ground.groundId, classSubject.schoolClassId, subject.subjectId, index)}>
+                                                                    <DeleteIcon />
+                                                                </IconButton>
+                                                            </ListItem>
+                                                        ))}
+                                                    </List>
+                                                </ListItem>
+                                            ))}
+                                        </List>
                                     </List>
-                                </List>
-                            ))}
-                        </List>
-                    </Collapse>
-                </Box>
-            ))}
-            <Button variant="contained" onClick={() => console.log(data)}>Сохранить изменения</Button>
-        </Box>
+                                ))}
+                            </List>
+                        </Collapse>
+                    </Box>
+                ))}
+                <Button variant="contained" onClick={() => console.log(data)}>Сохранить изменения</Button>
+            </Box>
+
+            <EdBooksInBalanceToChapterDialog open={edBooksToChapterDialogOpen} onClose={() => setEdBooksToChapterDialogOpen(false)}/>
+
+            <AttachBaseEdBookToChapterDialog open={attachBaseEdBookToChapterDialogOpen} onClose={() => setAttachBaseEdBookToChapterDialogOpen(false)} onSubmit={()=>{}} />
+        </>
     );
 };
 
