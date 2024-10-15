@@ -1,7 +1,10 @@
 ﻿import { Appointment, getAppointmentName, getLanguageName, getLevelName, Language, Level } from "@interfaces/interfaces";
 import { BaseEdBookResponse } from "@interfaces/responses/edBooksResponses";
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, getAppBarUtilityClass, InputLabel, MenuItem, Select, Snackbar, TextField } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, getAppBarUtilityClass, IconButton, InputLabel, MenuItem, Select, Snackbar, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import UndoIcon from '@mui/icons-material/Undo';
 
 
 const baseEdBooks: BaseEdBookResponse[] = [
@@ -181,10 +184,12 @@ const AttachBaseEdBookToChapterDialog: React.FC<{ open: boolean; onClose: () => 
     const [language, setLanguage] = useState<Language | null>(null);
     const [appointment, setAppointment] = useState<Appointment | null>(null);
     const [level, setLevel] = useState<Level | null>(null);
-    const [familiarBaseBooks, setFamiliarBooks] = useState<BaseEdBookResponse[]>();
+    const [familiarBaseBooks, setFamiliarBooks] = useState<BaseEdBookResponse[]>([]);
     const [findFamiliarBooks, setFindFamiliarBooks] = useState<boolean>(false);
     const [alertToFindFamiliarBookOpen, setAlertToFindFamiliarBookOpen] = useState<boolean>(false);
     const [currentBookIndex, setCurrentBookIndex] = useState<number | null>(null);
+    const [wantToShowSimilarBooks, setWantToShowSimilarBooks] = useState<boolean | null>(false);
+    const [previousBaseEdBook, setPreviousBaseEdBook] = useState<BaseEdBookResponse | null>(null);
 
     const fetchFamiliars = () => {
         setFamiliarBooks(baseEdBooks);
@@ -205,15 +210,54 @@ const AttachBaseEdBookToChapterDialog: React.FC<{ open: boolean; onClose: () => 
         setLevel(baseEdBook.level);
     }
 
+    const returnToPreviousInput = () => {
+        updateFields(previousBaseEdBook);
+    }
+
     const handleSelectBook = () => {
         if (currentBookIndex !== null) {
           const selectedBook = familiarBaseBooks[currentBookIndex];
           updateFields(selectedBook);
+          setWantToShowSimilarBooks(true);
         }
-      };
+    };
+
+    const handleNextBook = () => {
+        if (currentBookIndex !== null && currentBookIndex < familiarBaseBooks.length - 1) {
+          const nextIndex = currentBookIndex + 1;
+          setCurrentBookIndex(nextIndex);
+          updateFields(familiarBaseBooks[nextIndex]);
+        }
+    };
+    
+    const handlePreviousBook = () => {
+        if (currentBookIndex !== null && currentBookIndex > 0) {
+            const prevIndex = currentBookIndex - 1;
+            setCurrentBookIndex(prevIndex);
+            updateFields(familiarBaseBooks[prevIndex]);
+        }
+    };
 
     useEffect(() => {
         fetchFamiliars();
+        if(baseEdBooks.length > 0) {
+            //setPreviousBaseEdBook()
+            const previousBaseBook: BaseEdBookResponse = {
+                id: "unnown",
+                title: "Introduction to Programming",
+                publishingSeries: 101,
+                language: Language.English,
+                level: Level.Advanced,
+                appointment: Appointment.Allowance,
+                chapter: 1,
+                startClass: 1,
+                endClass: 10
+            }
+            setPreviousBaseEdBook(previousBaseBook);
+
+            setAlertToFindFamiliarBookOpen(true);
+            setCurrentBookIndex(0);
+        }
     }, [title, startClass, endClass, chapter, publishingSeries, language, appointment, level])
 
 
@@ -222,10 +266,34 @@ const AttachBaseEdBookToChapterDialog: React.FC<{ open: boolean; onClose: () => 
             <Dialog open={open} onClose={onClose}>
                 <DialogTitle>Привязать книжку</DialogTitle>
                 <DialogContent>
+                    {wantToShowSimilarBooks  && (
+                        <>
+                        <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center' }}>
+                            <IconButton onClick={handlePreviousBook} disabled={currentBookIndex === 0}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            {currentBookIndex !== null && (
+                                <div style={{ margin: '0 16px' }}>
+                                    <strong>Книга:</strong>
+                                    <div>{familiarBaseBooks[currentBookIndex].title}</div>
+                                </div>
+                            )}
+                            <IconButton onClick={handleNextBook} disabled={currentBookIndex === familiarBaseBooks.length - 1}>
+                                <ArrowForwardIcon />
+                            </IconButton>
+                        </div>
+
+                        <Button onClick={returnToPreviousInput} color="secondary" startIcon={<UndoIcon />} style={{ marginTop: '16px' }}>
+                            Вернуться к предыдущим данным
+                        </Button>
+                        </>
+
+                    )}
+
                     <TextField
                         label="Название"
+                        fullWidth
                         variant="outlined"
-                        fullWidth 
                         value={title}
                         onChange={(event) => setTitle(event.target.value)}
                         margin="normal"
@@ -233,8 +301,8 @@ const AttachBaseEdBookToChapterDialog: React.FC<{ open: boolean; onClose: () => 
                     <TextField
                         label="Стартовый класс"
                         type="number"
-                        variant="outlined"
                         fullWidth
+                        variant="outlined"
                         value={startClass}
                         onChange={(event) => setStartClass(Number(event.target.value))}
                         margin="normal"

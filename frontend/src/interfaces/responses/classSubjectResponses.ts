@@ -1,4 +1,4 @@
-﻿import { EdBookInBalanceResponse } from "./edBooksResponses";
+﻿import { BaseEdBookResponse, EdBookInBalanceResponse } from "./edBooksResponses";
 import { SubjectResponse } from "./subjectResponses";
 
 export interface ClassSubjectChapterResponse {
@@ -25,7 +25,7 @@ export interface ClassSubjectResponse {
 export interface ClassSubjectChapterWithBookDto {
     id: string;
     title: string;
-    edBooks: EdBookInBalanceResponse[];
+    edBook: BaseEdBookResponse;
 }
 
 export interface UpdateClassSubjectResponse {

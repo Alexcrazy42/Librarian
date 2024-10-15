@@ -16,355 +16,194 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { SubjectResponse } from '@interfaces/responses/subjectResponses';
-import { BaseEdBookResponse } from '@interfaces/responses/edBooksResponses';
 import { Appointment, Language, Level } from '@interfaces/interfaces';
 import EdBooksInBalanceToChapterDialog from './components/edBooksInBalanceToChapterDialog';
 import AttachBaseEdBookToChapterDialog from './components/attachBaseEdBookToChapterDialog';
+import { ClassSubjectDto } from '@interfaces/responses/classSubjectResponses';
 
 
-const sampleData = [
+const mockData: ClassSubjectDto[] = [
     {
-        groundId: '1',
-        classSubjects: [
+        schoolClassId: '1',
+        number: 1,
+        name: 'A',
+        subjects: [
             {
-                schoolClassId: '1',
-                subjects: [
+                id: '1',
+                subjectId: '1',
+                name: 'Математика',
+                chapters: [
                     {
-                        subjectId: '1',
-                        subjectName: 'Математика',
-                        chapterNames: []
+                        id: '1',
+                        title: 'Математика 1 часть',
+                        edBook: null
+                    },
+                    {
+                        id: '2',
+                        title: 'Математика 2 часть',
+                        edBook: {
+                            id: '1',
+                            title: "Introduction to Programming",
+                            publishingSeries: 101,
+                            language: Language.English,
+                            level: Level.Advanced,
+                            appointment: Appointment.Allowance,
+                            chapter: 1,
+                            startClass: 1,
+                            endClass: 10
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        schoolClassId: '2',
+        number: 2,
+        name: 'А',
+        subjects: [
+            {
+                id: '14',
+                subjectId: '1',
+                name: 'Математика',
+                chapters: [
+                    {
+                        id: '11',
+                        title: 'Математика 1 часть',
+                        edBook: null
+                    },
+                    {
+                        id: '21',
+                        title: 'Математика 2 часть',
+                        edBook: {
+                            id: '1',
+                            title: "Introduction to Programming",
+                            publishingSeries: 101,
+                            language: Language.English,
+                            level: Level.Advanced,
+                            appointment: Appointment.Allowance,
+                            chapter: 1,
+                            startClass: 1,
+                            endClass: 10
+                        }
                     }
                 ]
             }
         ]
     }
-];
+]
 
-const books = [
-    { id: '1', title: 'Учебник по алгебре' },
-    { id: '2', title: 'Учебник по геометрии' },
-    { id: '3', title: 'Учебник по физике' },
-];
-
-const subjects: SubjectResponse[] = [
-    {id: '123', name: 'Математика'},
-    {id: '123', name: 'Русский язык'},
-    {id: '123', name: 'География'},
-    {id: '123', name: 'История'},
-    {id: '123', name: 'Физика'},
+const allSubjects: SubjectResponse[] = [
+    {id: '1', name: 'Математика'},
+    {id: '2', name: 'Русский язык'},
+    {id: '3', name: 'География'},
+    {id: '4', name: 'История'},
+    {id: '5', name: 'Физика'},
 ]
 
 const ClassSubjectTree: React.FC = () => {
-    const [data, setData] = useState(sampleData);
+    const [data, setData] = useState(mockData);
     const [open, setOpen] = useState<{ [key: string]: boolean }>({});
     const [edBooksToChapterDialogOpen, setEdBooksToChapterDialogOpen] = useState<boolean>(false);
-    const [attachBaseEdBookToChapterDialogOpen, setAttachBaseEdBookToChapterDialogOpen] = useState<boolean>(true);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [attachBaseEdBookToChapterDialogOpen, setAttachBaseEdBookToChapterDialogOpen] = useState<boolean>(false);
+    const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
+    const [subjectSearchTerm, setSubjectSearchTerm] = useState('');
+    const [subjectLoading, setSubjectLoading] = useState(false);
 
-    const [options, setOptions] = useState<SubjectResponse[]>([]);
-
-    useEffect(() => {
-        // Имитация отправки на сервер и получения данных
-        setOptions(subjects);
-    }, [subjects]);
-
-    useEffect(() => {
-        if (searchTerm.length >= 3) {
-            fetchSubjects(searchTerm);
-        } else {
-            setOptions([])
-        }
-    }, [searchTerm]);
-
-    const handleToggle = (groundId: string) => {
-        setOpen(prev => ({ ...prev, [groundId]: !prev[groundId] }));
+    const handleToggle = (id: string) => {
+        setOpen(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const fetchSubjects = async (term: string) => {
-        setLoading(true);
-        const response = await new Promise<SubjectResponse[]>((resolve) => {
-            setTimeout(() => {
-                const allSubjects: SubjectResponse[] = [
-                    {id: '123', name: 'Математика'},
-                    {id: '123', name: 'Русский'},
-                    {id: '123', name: 'География'}
-                ];
-                resolve(allSubjects.filter(author => author.name.toLowerCase().includes(term.toLowerCase())));
-            }, 500);
-        });
-        setOptions(response);
-        setLoading(false);
+    const fetchSubjects = async(term: string) => {
+        setSubjectLoading(true);
+            const subjects = await new Promise<SubjectResponse[]>((resolve) => {
+                setTimeout(() => {
+                    resolve(allSubjects.filter(subject => subject.name.toLowerCase().includes(term.toLowerCase())));
+                }, 500);
+            });
+
+            setSubjects(subjects);
+            setSubjectLoading(false);
     }
 
-    const handleSubjectChange = (groundId: string, schoolClassId: string, subjectId: string | undefined, value: string) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: ground.classSubjects.map(subject => {
-                            if (subject.schoolClassId === schoolClassId) {
-                                return {
-                                    ...subject,
-                                    subjects: subject.subjects.map(sub => {
-                                        if (sub.subjectId === subjectId) {
-                                            return { ...sub, subjectName: value };
-                                        }
-                                        return sub;
-                                    })
-                                };
-                            }
-                            return subject;
-                        })
-                    };
-                }
-                return ground;
-            });
-        });
-    };
+    useEffect(() => {
+        setSubjects(subjects);
+    }, [subjects])
 
-    const addClassSubject = (groundId: string) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: [
-                            ...ground.classSubjects,
-                            { schoolClassId: `${ground.classSubjects.length + 1}`, subjects: [] }
-                        ]
-                    };
-                }
-                return ground;
-            });
-        });
-    };
+    useEffect(() => {
+        if (subjectSearchTerm.length >= 2) {
+            fetchSubjects(subjectSearchTerm);
+        } else {
+            setSubjects([]);
+        }
 
-    const removeClassSubject = (groundId: string, schoolClassId: string) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: ground.classSubjects.filter(subject => subject.schoolClassId !== schoolClassId)
-                    };
-                }
-                return ground;
-            });
-        });
-    };
-
-    const addSubject = (groundId: string, schoolClassId: string) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: ground.classSubjects.map(subject => {
-                            if (subject.schoolClassId === schoolClassId) {
-                                return {
-                                    ...subject,
-                                    subjects: [
-                                        ...subject.subjects,
-                                        { subjectId: `${subject.subjects.length + 1}`, subjectName: '', chapterNames: [] }
-                                    ]
-                                };
-                            }
-                            return subject;
-                        })
-                    };
-                }
-                return ground;
-            });
-        });
-    };
-
-    const removeSubject = (groundId: string, schoolClassId: string, subjectId: string) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: ground.classSubjects.map(subject => {
-                            if (subject.schoolClassId === schoolClassId) {
-                                return {
-                                    ...subject,
-                                    subjects: subject.subjects.filter(sub => sub.subjectId !== subjectId)
-                                };
-                            }
-                            return subject;
-                        })
-                    };
-                }
-                return ground;
-            });
-        });
-    };
-
-    const addChapter = (groundId: string, schoolClassId: string, subjectId: string | undefined) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: ground.classSubjects.map(subject => {
-                            if (subject.schoolClassId === schoolClassId) {
-                                return {
-                                    ...subject,
-                                    subjects: subject.subjects.map(sub => {
-                                        if (sub.subjectId === subjectId) {
-                                            return {
-                                                ...sub,
-                                                chapterNames: [...sub.chapterNames, { name: '', bookId: '' }]
-                                            };
-                                        }
-                                        return sub;
-                                    })
-                                };
-                            }
-                            return subject;
-                        })
-                    };
-                }
-                return ground;
-            });
-        });
-    };
-
-    const handleChapterChange = (groundId: string, schoolClassId: string, subjectId: string | undefined, chapterIndex: number, value: string, bookId: string) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: ground.classSubjects.map(subject => {
-                            if (subject.schoolClassId === schoolClassId) {
-                                return {
-                                    ...subject,
-                                    subjects: subject.subjects.map(sub => {
-                                        if (sub.subjectId === subjectId) {
-                                            const newChapterNames = [...sub.chapterNames];
-                                            newChapterNames[chapterIndex] = { name: value, bookId };
-                                            return { ...sub, chapterNames: newChapterNames };
-                                        }
-                                        return sub;
-                                    })
-                                };
-                            }
-                            return subject;
-                        })
-                    };
-                }
-                return ground;
-            });
-        });
-    };
-
-    const removeChapter = (groundId: string, schoolClassId: string, subjectId: string | undefined, chapterIndex: number) => {
-        setData(prev => {
-            return prev.map(ground => {
-                if (ground.groundId === groundId) {
-                    return {
-                        ...ground,
-                        classSubjects: ground.classSubjects.map(subject => {
-                            if (subject.schoolClassId === schoolClassId) {
-                                return {
-                                    ...subject,
-                                    subjects: subject.subjects.map(sub => {
-                                        if (sub.subjectId === subjectId) {
-                                            const newChapterNames = [...sub.chapterNames];
-                                            newChapterNames.splice(chapterIndex, 1);
-                                            return { ...sub, chapterNames: newChapterNames };
-                                        }
-                                        return sub;
-                                    })
-                                };
-                            }
-                            return subject;
-                        })
-                    };
-                }
-                return ground;
-            });
-        });
-    };
+    }, [subjectSearchTerm])
 
     return (
         <>
             <Box>
                 <Typography variant="h4">Структура классов и предметов</Typography>
-                {data.map(ground => (
-                    <Box key={ground.groundId} mb={2} sx={{ border: '1px solid #ccc', borderRadius: '4px', padding: '16px' }}>
-                        <Typography variant="h5" onClick={() => handleToggle(ground.groundId)}>
-                            {open[ground.groundId] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            Ground ID: {ground.groundId}
+                {/* Классы */}
+                {data.map(clas => (
+                    <Box>
+                        <Typography variant="h5" onClick={() => handleToggle(clas.schoolClassId)}>
+                            {open[clas.schoolClassId] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                            {clas.number}{clas.name}
                         </Typography>
-                        <Collapse in={open[ground.groundId]}>
+                        <Collapse in={open[clas.schoolClassId]}>
                             <List>
-                                {ground.classSubjects.map(classSubject => (
-                                    <List key={classSubject.schoolClassId}>
-                                        <ListItem>
-                                            <ListItemText primary={`Class ID: ${classSubject.schoolClassId}`} />
-                                            <IconButton onClick={() => removeClassSubject(ground.groundId, classSubject.schoolClassId)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                            <IconButton onClick={() => addSubject(ground.groundId, classSubject.schoolClassId)}>
-                                                <AddIcon />
-                                            </IconButton>
-                                        </ListItem>
-                                        <List>
-                                            {classSubject.subjects.map(subject => (
-                                                <ListItem key={subject.subjectId}>
-                                                    <Autocomplete
-                                                        options={options}
-                                                        getOptionLabel={(option) => option.name}
-                                                        loading={true}
-                                                        onInputChange={(event, value) => setSearchTerm(value)}
-                                                        onChange={(event, value) => () => {}}
-                                                        renderInput={(params) => (
-                                                            <TextField {...params} label="Предмет" margin="dense" fullWidth required />
-                                                        )}
-                                                        style={{ width: '400px' }}
-                                                    />
-                                                    <IconButton onClick={() => removeSubject(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => addChapter(ground.groundId, classSubject.schoolClassId, subject.subjectId)}>
-                                                        <AddIcon />
-                                                    </IconButton>
-                                                    <List>
-                                                        {subject.chapterNames.map((chapter, index) => (
-                                                            <ListItem key={index}>
-                                                                <TextField
-                                                                    label={`Глава ${index + 1}`}
-                                                                    value={chapter.name}
-                                                                    onChange={(e) => handleChapterChange(ground.groundId, classSubject.schoolClassId, subject.subjectId, index, e.target.value, chapter.bookId)}
-                                                                    sx={{ width: '300px' }}
-                                                                />
-                                                                <Autocomplete
-                                                                    options={books}
-                                                                    getOptionLabel={(option) => option.title}
-                                                                    onChange={(event, newValue) => {
-                                                                        handleChapterChange(ground.groundId, classSubject.schoolClassId, subject.subjectId, index, chapter.name, newValue ? newValue.id : '');
-                                                                    }}
-                                                                    renderInput={(params) => (
-                                                                        <TextField {...params} label="Выбрать книгу" variant="outlined" />
-                                                                    )}
-                                                                    value={books.find(book => book.id === chapter.bookId) || null}
-                                                                    sx={{ width: '300px', marginLeft: '16px' }}
-                                                                />
-                                                                <IconButton onClick={() => removeChapter(ground.groundId, classSubject.schoolClassId, subject.subjectId, index)}>
-                                                                    <DeleteIcon />
-                                                                </IconButton>
-                                                            </ListItem>
-                                                        ))}
-                                                    </List>
-                                                </ListItem>
-                                            ))}
-                                        </List>
+                                {/* Предметы на класс */}
+                                {clas.subjects.map(subject => (
+                                    <ListItem key={subject.id}>
+                                        <Autocomplete
+                                            options={subjects}
+                                            value={subject}
+                                            getOptionLabel={(subject) => subject.name}
+                                            loading={subjectLoading}
+                                            onInputChange={(event, value) => setSubjectSearchTerm(value)}
+                                            onChange={(event, value) => () => {}}
+                                            renderInput={(params) => (
+                                                <TextField {...params} label="Предмет" margin="dense" fullWidth required />
+                                            )}
+                                            style={{ width: '400px' }}
+                                        />
+
+                                    <IconButton>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    
+                                    <IconButton>
+                                        <AddIcon />
+                                    </IconButton>
+
+                                    <List>
+                                        {/* Главы на предметы */}
+                                        {subject.chapters.map(chapter => (
+                                            <ListItem key={chapter.id}>
+                                                <TextField
+                                                    value={chapter.title}
+                                                />
+
+                                                <Box sx={{ mx: 2 }} />
+
+                                                {chapter.edBook != null ? (
+                                                    <div>
+                                                        {`${chapter.edBook.title}: с ${chapter.edBook.startClass} по ${chapter.edBook.endClass} классы, часть: ${chapter.edBook.chapter}`}
+                                                        <Box sx={{ mx: 2 }} />
+                                                        <Button variant="contained" onClick={() => setEdBooksToChapterDialogOpen(true)}>Посмотреть книги на балансе</Button>
+                                                    </div>
+                                                    
+                                                ) : (
+                                                    <Button variant="contained" startIcon={<AddIcon />} onClick={() => setAttachBaseEdBookToChapterDialogOpen(true)}>
+                                                        Прикрепить
+                                                    </Button>
+                                                )}
+                                            </ListItem>
+                                        ))}
                                     </List>
+                                    </ListItem>
                                 ))}
+                                
                             </List>
                         </Collapse>
                     </Box>

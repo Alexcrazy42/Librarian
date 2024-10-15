@@ -1,6 +1,7 @@
 ﻿import { Appointment, BookCondition, Language, Level } from "@interfaces/interfaces";
 import { EdBookInBalanceResponse } from "@interfaces/responses/edBooksResponses";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, ListItemText } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
 const edBooksInBalance: EdBookInBalanceResponse[] = [
     {
@@ -288,6 +289,10 @@ const EdBooksInBalanceToChapterDialog: React.FC<{ open: boolean; onClose: () => 
             <Dialog open={open} onClose={onClose}>
                 <DialogTitle>Связанные книжки</DialogTitle>
                 <DialogContent>
+
+                    <Button variant="contained" startIcon={<AddIcon />} onClick={() => {}}>
+                        Создать учебную книгу
+                    </Button>
                     <List>
                         {edBooksInBalance.map(book => (
                             <ListItem key={book.id}>
