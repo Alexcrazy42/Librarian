@@ -12,13 +12,13 @@ internal class EdBookForClassRentService : IEdBookForClassRentService
 {
     private readonly IClassRepository classRepository;
     private readonly IStudentRepository studentRepository;
-    private readonly IClassSubjectRepository classSubjectRepository;
+    private readonly IUmkRepository classSubjectRepository;
     private readonly IEdBookForClassRentRepository edBookForClassRentRepository;
     private readonly IEdBookInBalanceRepository edBookInBalanceRepository;
 
     public EdBookForClassRentService(
         IClassRepository classRepository,
-        IClassSubjectRepository classSubjectRepository,
+        IUmkRepository classSubjectRepository,
         IStudentRepository studentRepository,
         IEdBookForClassRentRepository edBookForClassRentRepository,
         IEdBookInBalanceRepository edBookInBalanceRepository)
@@ -33,19 +33,19 @@ internal class EdBookForClassRentService : IEdBookForClassRentService
     public async Task<IReadOnlyCollection<EducationalBookStudentRent>> IssueEdBooksToClassBySubjectChapterAsync(Guid classId, Guid subjectChapterId, 
         DateOnly rentUntil, CancellationToken ct)
     {
-        var classWithStudentsAndClassSubjectChapters = await classRepository.GetSchoolClassWithStudentsAndClassSubjectsChaptersAsync(classId, ct);
+        //var classWithStudentsAndClassSubjectChapters = await classRepository.GetSchoolClassWithStudentsAndClassSubjectsChaptersAsync(classId, ct);
         
-        if (!IsClassHasThisSubjectChapter(subjectChapterId, classWithStudentsAndClassSubjectChapters))
-        {
-            throw new CommonException("У данного класса нет такой части предмета!");
-        }
+        //if (!IsClassHasThisSubjectChapter(subjectChapterId, classWithStudentsAndClassSubjectChapters))
+        //{
+        //    throw new CommonException("У данного класса нет такой части предмета!");
+        //}
 
-        var students = classWithStudentsAndClassSubjectChapters.Students;
+        //var students = classWithStudentsAndClassSubjectChapters.Students;
 
-        var classSubjectChapterEdBookWithDetails = await classSubjectRepository.GetSubjectChapterWithEdBooksAsync(subjectChapterId, ct);
+        //var classSubjectChapterEdBookWithDetails = await classSubjectRepository.GetSubjectChapterWithEdBooksAsync(subjectChapterId, ct);
 
-        var edBooksInBalance = classSubjectChapterEdBookWithDetails.EdBooks
-            .Select(x => x.BaseEducationalBook).ToList();
+        //var edBooksInBalance = classSubjectChapterEdBookWithDetails.EdBooks
+        //    .Select(x => x.BaseEducationalBook).ToList();
         throw new NotImplementedException();
 
         // TODO

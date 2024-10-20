@@ -8,8 +8,6 @@ public class SchoolClassWithoutManagerResponse
 
     public string Name { get; private set; }
 
-    public int SubjectCount { get; private set; }
-
     public Guid GroundId { get; private set; }
 
     public Guid SchoolId { get; private set; }
@@ -17,14 +15,12 @@ public class SchoolClassWithoutManagerResponse
     public SchoolClassWithoutManagerResponse(Guid id,
         int number,
         string name,
-        int subjectCount,
         Guid groundId,
         Guid schoolId)
     {
         Id = id;
         Number = number;
         Name = name;
-        SubjectCount = subjectCount;
         GroundId = groundId;
         SchoolId = schoolId;
     }

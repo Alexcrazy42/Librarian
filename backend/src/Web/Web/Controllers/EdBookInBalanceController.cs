@@ -130,7 +130,7 @@ public class EdBookInBalanceController : ControllerBase
         };
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public async Task WriteOffEdBookInBalanceAsync(Guid id, CancellationToken ct)
     {
         throw new NotImplementedException();
@@ -142,5 +142,11 @@ public class EdBookInBalanceController : ControllerBase
 		var edBookInBalance = await edBookRepository.GetEdBookInBalanceAsync(edBookInBalanceId, ct);
 
 		return edBookInBalance.CanIssue(count);
+    }
+
+    [HttpGet("ed-books-in-balance-to-subject-and-class")]
+    public async Task<IReadOnlyCollection<EdBookInBalanceResponse>> GetEdBooksInBalanceBySubjectAndClass([FromQuery] int @class, Guid subjectId, CancellationToken ct)
+    {
+        throw new NotImplementedException();
     }
 }

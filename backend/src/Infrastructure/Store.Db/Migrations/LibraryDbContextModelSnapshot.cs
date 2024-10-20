@@ -22,6 +22,21 @@ namespace Store.Db.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ClassSubjectChapterEdBookEducationalBookInBalance", b =>
+                {
+                    b.Property<Guid>("ClassSubjectChapterEdBookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("EdBooksInBalanceId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ClassSubjectChapterEdBookId", "EdBooksInBalanceId");
+
+                    b.HasIndex("EdBooksInBalanceId");
+
+                    b.ToTable("ClassSubjectChapterEdBookEducationalBookInBalance");
+                });
+
             modelBuilder.Entity("Domain.Entities.Acts.EdBookDecommissioning", b =>
                 {
                     b.Property<Guid>("Id")
@@ -544,6 +559,9 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("EmployeeStatus")
                         .HasColumnType("integer");
 
@@ -593,6 +611,9 @@ namespace Store.Db.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsGeneral")
                         .HasColumnType("boolean");
@@ -675,9 +696,6 @@ namespace Store.Db.Migrations
                     b.Property<Guid?>("SchoolGroundId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("SubjectCount")
-                        .HasColumnType("integer");
-
                     b.Property<Guid?>("managing_teacher_id")
                         .HasColumnType("uuid");
 
@@ -726,6 +744,9 @@ namespace Store.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
 
@@ -767,70 +788,6 @@ namespace Store.Db.Migrations
                     b.ToTable("students", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubject", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("school_class_id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("subject_id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("school_class_id");
-
-                    b.HasIndex("subject_id");
-
-                    b.ToTable("class_subjects", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapter", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("title");
-
-                    b.Property<Guid>("class_subject_id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("class_subject_id");
-
-                    b.ToTable("class_subject_chapters", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapterEdBook", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("base_ed_book_id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("subject_chapter_id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("base_ed_book_id");
-
-                    b.HasIndex("subject_chapter_id");
-
-                    b.ToTable("class_subject_chapter_ed_books", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.Supplies.BookSupply", b =>
                 {
                     b.Property<Guid>("Id")
@@ -870,6 +827,115 @@ namespace Store.Db.Migrations
                     b.HasIndex("school_id");
 
                     b.ToTable("book_supplies", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("Fullness")
+                        .HasColumnType("real");
+
+                    b.Property<int>("NeedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("SchoolClassId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("subject_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("umk_school_class_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolClassId");
+
+                    b.HasIndex("subject_id");
+
+                    b.HasIndex("umk_school_class_id");
+
+                    b.ToTable("class_subjects", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("AdjustmentCount")
+                        .HasColumnType("integer");
+
+                    b.Property<float>("Fullness")
+                        .HasColumnType("real");
+
+                    b.Property<int>("NeedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("title");
+
+                    b.Property<int>("TotalBookCount")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("class_subject_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("class_subject_id");
+
+                    b.ToTable("class_subject_chapters", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapterEdBook", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("subject_chapter_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("subject_chapter_id");
+
+                    b.ToTable("class_subject_chapter_ed_books", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.UMKClass", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("Fullness")
+                        .HasColumnType("real");
+
+                    b.Property<int>("NeedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("student_count");
+
+                    b.Property<Guid>("school_class_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("school_class_id")
+                        .IsUnique();
+
+                    b.ToTable("umk_classes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.HelpingEntities.BookAuthor", b =>
@@ -1030,6 +1096,21 @@ namespace Store.Db.Migrations
                     b.HasIndex("base_ed_book_id");
 
                     b.ToTable("ed_books_another_authors");
+                });
+
+            modelBuilder.Entity("ClassSubjectChapterEdBookEducationalBookInBalance", b =>
+                {
+                    b.HasOne("Domain.Entities.UMK.ClassSubjectChapterEdBook", null)
+                        .WithMany()
+                        .HasForeignKey("ClassSubjectChapterEdBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Books.EducationalBookInBalance", null)
+                        .WithMany()
+                        .HasForeignKey("EdBooksInBalanceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Acts.EdBookDecommissioning", b =>
@@ -1395,53 +1476,6 @@ namespace Store.Db.Migrations
                     b.Navigation("SchoolClass");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubject", b =>
-                {
-                    b.HasOne("Domain.Entities.SchoolStructure.SchoolClass", "SchoolClass")
-                        .WithMany("ClassSubjects")
-                        .HasForeignKey("school_class_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.HelpingEntities.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("subject_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SchoolClass");
-
-                    b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapter", b =>
-                {
-                    b.HasOne("Domain.Entities.Subjects.ClassSubject", "ClassSubject")
-                        .WithMany("Chapters")
-                        .HasForeignKey("class_subject_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClassSubject");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapterEdBook", b =>
-                {
-                    b.HasOne("Domain.Entities.Books.BaseEducationalBook", "BaseEducationalBook")
-                        .WithMany()
-                        .HasForeignKey("base_ed_book_id");
-
-                    b.HasOne("Domain.Entities.Subjects.ClassSubjectChapter", "SubjectChapter")
-                        .WithMany("EdBooks")
-                        .HasForeignKey("subject_chapter_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BaseEducationalBook");
-
-                    b.Navigation("SubjectChapter");
-                });
-
             modelBuilder.Entity("Domain.Entities.Supplies.BookSupply", b =>
                 {
                     b.HasOne("Domain.Entities.SchoolStructure.SchoolGround", "Ground")
@@ -1459,6 +1493,62 @@ namespace Store.Db.Migrations
                     b.Navigation("Ground");
 
                     b.Navigation("School");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubject", b =>
+                {
+                    b.HasOne("Domain.Entities.SchoolStructure.SchoolClass", null)
+                        .WithMany("ClassSubjects")
+                        .HasForeignKey("SchoolClassId");
+
+                    b.HasOne("Domain.HelpingEntities.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("subject_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.UMK.UMKClass", "Class")
+                        .WithMany("ClassSubjects")
+                        .HasForeignKey("umk_school_class_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapter", b =>
+                {
+                    b.HasOne("Domain.Entities.UMK.ClassSubject", "ClassSubject")
+                        .WithMany("Chapters")
+                        .HasForeignKey("class_subject_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassSubject");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapterEdBook", b =>
+                {
+                    b.HasOne("Domain.Entities.UMK.ClassSubjectChapter", "SubjectChapter")
+                        .WithMany("EdBooks")
+                        .HasForeignKey("subject_chapter_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SubjectChapter");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.UMKClass", b =>
+                {
+                    b.HasOne("Domain.Entities.SchoolStructure.SchoolClass", "SchoolClass")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.UMK.UMKClass", "school_class_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SchoolClass");
                 });
 
             modelBuilder.Entity("ed_books_another_authors", b =>
@@ -1531,19 +1621,24 @@ namespace Store.Db.Migrations
                     b.Navigation("EdBookRents");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubject", b =>
+            modelBuilder.Entity("Domain.Entities.Supplies.BookSupply", b =>
+                {
+                    b.Navigation("EdBooks");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubject", b =>
                 {
                     b.Navigation("Chapters");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapter", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapter", b =>
                 {
                     b.Navigation("EdBooks");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Supplies.BookSupply", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.UMKClass", b =>
                 {
-                    b.Navigation("EdBooks");
+                    b.Navigation("ClassSubjects");
                 });
 
             modelBuilder.Entity("Domain.HelpingEntities.BookAuthor", b =>

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Contracts.Requests.ClassSubjects;
 
-public class CreateClassSubjectStructureRequest
+public class CreateUmkStructureRequest
 {
     public Guid GroundId { get; set; }
 
@@ -16,9 +16,7 @@ public class CreateClassSubject
 
 public class CreateSubjectRequest
 {
-    public Guid? SubjectId { get; set; }
-
-    public string? SubjectName { get; set; }
+    public Guid SubjectId { get; set; }
 
     public IReadOnlyCollection<string> ChapterNames { get; set; } = new List<string>();
 }

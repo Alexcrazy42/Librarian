@@ -1,15 +1,18 @@
-﻿using Domain.Entities.SchoolStructure;
-using Domain.HelpingEntities;
+﻿using Domain.HelpingEntities;
 
-namespace Domain.Entities.Subjects;
+namespace Domain.Entities.UMK;
 
 public class ClassSubject
 {
     public Guid Id { get; private set; }
     
-    public SchoolClass SchoolClass { get; private set; }
+    public UMKClass Class { get; private set; }
 
     public Subject Subject { get; private set; }
+
+    public float Fullness { get; set; }
+
+    public int NeedCount { get; set; }
 
     public IReadOnlyCollection<ClassSubjectChapter> Chapters { get; private set; } = new List<ClassSubjectChapter>();
 
@@ -27,12 +30,12 @@ public class ClassSubject
 
     public ClassSubject(
         Guid id,
-        SchoolClass schoolClass,
+        UMKClass umkClass,
         Subject subject,
         IReadOnlyCollection<ClassSubjectChapter> chapters)
     {
         Id = id;
-        SchoolClass = schoolClass;
+        Class = umkClass;
         Subject = subject;
         Chapters = chapters;
     }

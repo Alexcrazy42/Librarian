@@ -187,7 +187,7 @@ public sealed class EducationalBookInBalance
         {
             return new CanIssueEdBookInBalanceResponse(true);
         }
-        return new CanIssueEdBookInBalanceResponse(false, "Нет книг на балансе!");
+        return new CanIssueEdBookInBalanceResponse(false, "Нет такого количества книг на балансе!");
     }
 
     private EducationalBookInBalance()

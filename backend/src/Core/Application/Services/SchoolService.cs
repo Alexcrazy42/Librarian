@@ -38,7 +38,6 @@ internal class SchoolService : ISchoolService
                 id: Guid.NewGuid(),
                 number: x.Number,
                 name: x.Name,
-                subjectCount: x.SubjectCount,
                 ground: schoolGround,
                 school: school
             )).ToList();
@@ -47,6 +46,7 @@ internal class SchoolService : ISchoolService
                 id: Guid.NewGuid(),
                 surname: x.Surname,
                 name: x.Name,
+                birthDate: x.BirthDate,
                 patronymic: x.Patronymic,
                 isGeneral: x.IsGeneral,
                 ground: schoolGround,

@@ -3,7 +3,7 @@ using Domain.Entities.RentRequests;
 using Domain.Entities.Rents.People;
 using Domain.Entities.Rents.School;
 using Domain.Entities.SchoolStructure;
-using Domain.Entities.Subjects;
+using Domain.Entities.UMK;
 using Domain.Entities.Supplies;
 using Domain.HelpingEntities;
 using Microsoft.EntityFrameworkCore;

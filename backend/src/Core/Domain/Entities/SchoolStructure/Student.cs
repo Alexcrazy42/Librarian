@@ -40,11 +40,12 @@ public class Student : Person
         bool isArchived,
         string surname,
         string name,
-        string patronymic,
+        DateOnly birthDate,
+        string? patronymic,
         SchoolClass schoolClass,
         School school,
         SchoolGround ground)
-        : base(surname, name, patronymic)
+        : base(surname, name, birthDate, patronymic)
     {
         Id = id;
         SchoolClass = schoolClass;

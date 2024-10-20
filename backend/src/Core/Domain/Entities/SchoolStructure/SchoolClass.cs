@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Subjects;
+﻿using Domain.Entities.UMK;
 
 namespace Domain.Entities.SchoolStructure;
 
@@ -9,8 +9,6 @@ public sealed class SchoolClass
     public int Number { get; private set; }
 
     public string Name { get; private set; }
-
-    public int SubjectCount { get; private set; }
 
     public SchoolGround Ground { get; private set; }
 
@@ -48,14 +46,12 @@ public sealed class SchoolClass
     public SchoolClass(Guid id,
         int number,
         string name,
-        int subjectCount,
         SchoolGround ground,
         School school)
     {
         Id = id;
         Number = number;
         Name = name;
-        SubjectCount = subjectCount;
         Ground = ground;
         School = school;
     }

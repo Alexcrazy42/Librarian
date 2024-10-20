@@ -35,11 +35,12 @@ public sealed class Employee : Person
     public Employee(Guid id,
         string surname,
         string name,
+        DateOnly birthDate,
         string? patronymic,
         EmployeeStatusEnum employeeStatus,
         School school,
         SchoolGround  ground)
-        : base(surname, name, patronymic)
+        : base(surname, name, birthDate, patronymic)
     {
         Id = id;
         EmployeeStatus = employeeStatus;

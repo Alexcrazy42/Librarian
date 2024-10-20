@@ -755,7 +755,7 @@ namespace Store.Db.Migrations
                     b.ToTable("students", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubject", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubject", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -776,7 +776,7 @@ namespace Store.Db.Migrations
                     b.ToTable("class_subjects", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapter", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapter", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -798,7 +798,7 @@ namespace Store.Db.Migrations
                     b.ToTable("class_subject_chapters", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapterEdBook", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapterEdBook", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1017,7 +1017,7 @@ namespace Store.Db.Migrations
 
             modelBuilder.Entity("ClassSubjectChapterEdBookEducationalBookInBalance", b =>
                 {
-                    b.HasOne("Domain.Entities.Subjects.ClassSubjectChapterEdBook", null)
+                    b.HasOne("Domain.Entities.UMK.ClassSubjectChapterEdBook", null)
                         .WithMany()
                         .HasForeignKey("ClassSubjectChapterEdBookId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1387,7 +1387,7 @@ namespace Store.Db.Migrations
                     b.Navigation("SchoolClass");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubject", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubject", b =>
                 {
                     b.HasOne("Domain.Entities.SchoolStructure.SchoolClass", "SchoolClass")
                         .WithMany("ClassSubjects")
@@ -1406,9 +1406,9 @@ namespace Store.Db.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapter", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapter", b =>
                 {
-                    b.HasOne("Domain.Entities.Subjects.ClassSubject", "ClassSubject")
+                    b.HasOne("Domain.Entities.UMK.ClassSubject", "ClassSubject")
                         .WithMany("Chapters")
                         .HasForeignKey("class_subject_id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1417,9 +1417,9 @@ namespace Store.Db.Migrations
                     b.Navigation("ClassSubject");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapterEdBook", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapterEdBook", b =>
                 {
-                    b.HasOne("Domain.Entities.Subjects.ClassSubjectChapter", "SubjectChapter")
+                    b.HasOne("Domain.Entities.UMK.ClassSubjectChapter", "SubjectChapter")
                         .WithMany("EdBooks")
                         .HasForeignKey("subject_chapter_id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1517,12 +1517,12 @@ namespace Store.Db.Migrations
                     b.Navigation("EdBookRents");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubject", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubject", b =>
                 {
                     b.Navigation("Chapters");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subjects.ClassSubjectChapter", b =>
+            modelBuilder.Entity("Domain.Entities.UMK.ClassSubjectChapter", b =>
                 {
                     b.Navigation("EdBooks");
                 });

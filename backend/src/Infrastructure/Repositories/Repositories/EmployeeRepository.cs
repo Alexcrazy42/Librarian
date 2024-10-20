@@ -31,6 +31,7 @@ internal class EmployeeRepository : IEmployeeRepository
             Guid.NewGuid(),
             request.Surname,
             request.Name,
+            request.BirthDate,
             request.Patronymic,
             request.EmployeeStatus,
             new School(request.SchoolId),

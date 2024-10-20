@@ -1,4 +1,6 @@
-﻿namespace Domain.Contracts.Requests.School;
+﻿using Domain.Common;
+
+namespace Domain.Contracts.Requests.School;
 
 public class CreateSchoolStructureRequest
 {
@@ -23,17 +25,9 @@ public class CreateSchoolClassRequest
     public int Number { get; set; }
 
     public string Name { get; set; }
-
-    public int SubjectCount { get; set; }
 }
 
-public class CreateLibrarianRequest
+public class CreateLibrarianRequest : Person
 {
-    public string Surname { get; set; }
-
-    public string Name { get; set; }
-
-    public string Patronymic { get; set; }
-
     public bool IsGeneral { get; set; }
 }

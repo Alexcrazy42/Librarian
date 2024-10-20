@@ -29,11 +29,12 @@ public class Librarian : Person
     public Librarian(Guid id,
         string surname,
         string name,
-        string patronymic,
+        DateOnly birthDate,
+        string? patronymic,
         bool isGeneral,
         SchoolGround ground,
         School school)
-        : base(surname, name, patronymic)
+        : base(surname, name, birthDate, patronymic)
     {
         Id = id;
         IsGeneral = isGeneral;

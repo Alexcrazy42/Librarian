@@ -29,6 +29,7 @@ internal class StudentService : IStudentService
                 isArchived: false,
                 surname: creationStudent.Surname,
                 name: creationStudent.Name,
+                birthDate: creationStudent.BirthDate,
                 patronymic: creationStudent.Patronymic,
                 schoolClass: schoolClass,
                 school: school,

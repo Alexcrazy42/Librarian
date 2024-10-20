@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Books;
 
-namespace Domain.Entities.Subjects;
+namespace Domain.Entities.UMK;
 
 public class ClassSubjectChapterEdBook
 {
@@ -8,11 +8,12 @@ public class ClassSubjectChapterEdBook
 
     public ClassSubjectChapter SubjectChapter { get; private set; }
 
-    public BaseEducationalBook BaseEducationalBook { get; private set; }
 
-    public void SetEdBookInBalance(BaseEducationalBook baseEducationalBook)
+    public IReadOnlyCollection<EducationalBookInBalance> EdBooksInBalance = new List<EducationalBookInBalance>();
+
+    public void SetEdBooksInBalance(IReadOnlyCollection<EducationalBookInBalance> edBooksInBalance)
     {
-        BaseEducationalBook = baseEducationalBook;
+        EdBooksInBalance = edBooksInBalance;
     }
 
     private ClassSubjectChapterEdBook() { }
@@ -24,10 +25,10 @@ public class ClassSubjectChapterEdBook
 
     public ClassSubjectChapterEdBook(Guid id,
         ClassSubjectChapter subjectChapter,
-        BaseEducationalBook baseEducationalBook)
+        IReadOnlyCollection<EducationalBookInBalance> edBooksInBalance)
     {
         Id = id;
         SubjectChapter = subjectChapter;
-        BaseEducationalBook = baseEducationalBook;
+        EdBooksInBalance = edBooksInBalance;
     }
 }

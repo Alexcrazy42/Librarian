@@ -3,10 +3,7 @@ using Domain.Entities.Books;
 using Domain.HelpingEntities;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 using Store.Db;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Repositories.Repositories;
 

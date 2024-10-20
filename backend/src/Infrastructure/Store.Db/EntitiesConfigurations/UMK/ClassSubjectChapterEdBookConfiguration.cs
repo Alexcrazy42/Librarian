@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Subjects;
+﻿using Domain.Entities.UMK;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,9 +16,7 @@ public class ClassSubjectChapterEdBookConfiguration : IEntityTypeConfiguration<C
             .WithMany(e => e.EdBooks)
             .HasForeignKey("subject_chapter_id");
 
-        builder.HasOne(x => x.BaseEducationalBook)
-            .WithMany()
-            .HasForeignKey("base_ed_book_id")
-            .IsRequired(false);
+        builder.HasMany(x => x.EdBooksInBalance)
+            .WithMany();
     }
 }

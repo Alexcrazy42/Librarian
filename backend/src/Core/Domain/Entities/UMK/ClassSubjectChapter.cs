@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Subjects;
+﻿namespace Domain.Entities.UMK;
 
 public class ClassSubjectChapter
 {
@@ -9,6 +9,14 @@ public class ClassSubjectChapter
     public string Title { get; set; }
 
     public ClassSubject ClassSubject { get; private set; }
+
+    public int? AdjustmentCount { get; set; }
+
+    public float Fullness { get; set; }
+
+    public int NeedCount { get; set; }
+
+    public int TotalBookCount { get; set; }
 
     public IReadOnlyCollection<ClassSubjectChapterEdBook> EdBooks { get; private set; } = new List<ClassSubjectChapterEdBook>();
 

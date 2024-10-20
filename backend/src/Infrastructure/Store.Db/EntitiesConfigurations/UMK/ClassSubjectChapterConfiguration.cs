@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Subjects;
+﻿using Domain.Entities.UMK;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,7 +10,7 @@ public class ClassSubjectChapterConfiguration : IEntityTypeConfiguration<ClassSu
     {
         builder.ToTable("class_subject_chapters");
 
-        builder.HasKey(x => x.Id);            
+        builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Title)
             .HasMaxLength(ClassSubjectChapter.TitleMaxLength)

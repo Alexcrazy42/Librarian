@@ -11,7 +11,7 @@ public static class DIRepositoryExtenstion
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<ISchoolRepository, SchoolRepository>();
-        services.AddScoped<IClassSubjectRepository, ClassSubjectRepository>();
+        services.AddScoped<IUmkRepository, UmkRepository>();
         services.AddScoped<ISubjectRepository, SubjectRepository>();
         services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<IClassRepository, ClassRepository>();

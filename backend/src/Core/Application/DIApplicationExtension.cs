@@ -9,7 +9,7 @@ public static class DIApplicationExtension
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<ISchoolService, SchoolService>();
-        services.AddScoped<IClassSubjectService, ClassSubjectService>();
+        services.AddScoped<IUmkService, UmkService>();
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<ISupplyService, SupplyService>();
         services.AddScoped<IEdBookForClassRentService, EdBookForClassRentService>();

@@ -15,7 +15,6 @@
     <ProjectReference Include="..\..\Core\Application\Application.csproj" />
     <ProjectReference Include="..\..\Core\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Repositories\Repositories.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Store.Cache\Store.Cache.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Store.Db\Store.Db.csproj" />
   </ItemGroup>
 

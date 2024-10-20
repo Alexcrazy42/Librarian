@@ -2,10 +2,8 @@ using Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Repositories;
-using Store.Cache;
 using Store.Db;
 using Web.Mapper;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,12 +39,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
-
-builder.Services.AddStore(builder.Configuration);
-builder.Services.AddCache(builder.Configuration);
-builder.Services.AddServices();
-builder.Services.AddRepositories();
+builder.Services.AddStore(builder.Configuration)
+    .AddServices()
+    .AddRepositories();
 
 
 var app = builder.Build();
